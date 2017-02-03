@@ -16,40 +16,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
-#include "XBotGUI/main_interface.h"
-#include <iostream>
 
-XBotGUI::main_interface::main_interface(std::string config_file): QWidget()
+#include <string>
+#include "XBotGUI/utils.h"
+
+std::string blue_string(std::string s)
 {
-    config = YAML::LoadFile(config_file);
-  
-    test_button.setText("Test");
-    main_layout.addWidget(&test_button);
-    setLayout(&main_layout);
-    
-    connect(&test_button,SIGNAL(clicked(bool)),this,SLOT(test_slot()));
+    std::string b="\033[0;94m";
+    std::string n="\033[0m";
+    return b+s+n;
 }
 
-std::string XBotGUI::main_interface::getRobot()
+std::string red_string(std::string s)
 {
-    if(config["x_bot_interface"])
-    {
-	if(config["x_bot_interface"]["urdf_filename"])
-	{
-	    return "test"; //TODO parse urdf
-	}
-    }
-
-    std::cout<<red_string("CAN NOT FIND ROBOT NAME")<<std::endl;
-    return "unknown robot";
+    std::string b="\033[0;91m";
+    std::string n="\033[0m";
+    return b+s+n;
 }
 
-void XBotGUI::main_interface::test_slot()
+std::string green_string(std::string s)
 {
-    std::cout<<"test"<<std::endl;
+    std::string b="\033[0;92m";
+    std::string n="\033[0m";
+    return b+s+n;
 }
 
-XBotGUI::main_interface::~main_interface()
+std::string cyan_string(std::string s)
 {
-
+    std::string b="\033[0;96m";
+    std::string n="\033[0m";
+    return b+s+n;
 }

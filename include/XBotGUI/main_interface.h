@@ -17,12 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef XBOTGUI_MAIN
-#define XBOTGUI_MAIN
+#ifndef XBOTGUI_MAIN_H
+#define XBOTGUI_MAIN_H
 
 #include <QWidget>
 #include <QPushButton>
 #include <QBoxLayout>
+
+#include <yaml-cpp/yaml.h>
+
+#include "utils.h"
 
 namespace XBotGUI
 {
@@ -30,16 +34,19 @@ class main_interface: public QWidget
 {
 Q_OBJECT
 public:
-    main_interface();
+    main_interface(std::string config_file);
     ~main_interface();
+
+    std::string getRobot();
 
 private Q_SLOTS:
     void test_slot();
     
 private:
     QPushButton test_button;
-
     QHBoxLayout main_layout;
+    
+    YAML::Node config;
 };
 }
 

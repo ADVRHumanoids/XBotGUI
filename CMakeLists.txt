@@ -19,11 +19,12 @@ qt4_wrap_cpp(XBOT_MOC_FILES
 set(XBOT_SOURCE_FILES
   ${XBOT_MOC_FILES}
   src/main_interface.cpp
+  src/utils.cpp
 )
 
 add_executable(main_interface src/main.cpp ${XBOT_SOURCE_FILES})
 
-target_link_libraries(main_interface ${QT_LIBRARIES})
+target_link_libraries(main_interface ${QT_LIBRARIES} yaml-cpp)
 
 install(DIRECTORY resources/
     DESTINATION "resources"

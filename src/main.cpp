@@ -19,15 +19,28 @@
 #include "XBotGUI/main_interface.h"
 #include <QApplication>
 #include <qicon.h>
+#include <iostream>
 
 int main(int argc, char** argv)
 {
     QApplication app(argc,argv);
 
-    XBotGUI::main_interface gui;
+    if(argc < 2)
+    {
+	std::cout<<red_string("ERROR: please, pass the configuration file")<<std::endl;
+	abort();
+    }
+    if(argc > 2)
+    {
+	std::cout<<red_string("ERROR: please, pass ONLY the configuration file")<<std::endl;
+	abort();
+    }
+    
+    std::string config_file = std::string(argv[1]);
+    XBotGUI::main_interface gui(config_file);
   
     gui.show();
-    gui.setWindowTitle("XBotGUI");
+    gui.setWindowTitle(QString::fromStdString("XBotGUI : " + gui.getRobot()));
     gui.setWindowIcon(QIcon("resources/logo.png"));
   
     return app.exec();
