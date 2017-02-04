@@ -18,11 +18,40 @@
 */
 #include "XBotGUI/main_interface.h"
 #include <iostream>
+#include <string>
+#include <cstdlib>
 
-XBotGUI::main_interface::main_interface(std::string config_file): QWidget()
+XBot::GUI::GUI(std::string config_file): QWidget()
 {
     config = YAML::LoadFile(config_file);
-  
+
+    std::string urdf_filename, srdf_filename, joint_map_config;
+    std::string file_path = "/external/XBotInterface/IXBotInterface/configs/";
+
+    if(const char* robotology_root = std::getenv("ROBOTOLOGY_ROOT"))
+    {
+	urdf_filename = std::string(robotology_root)+file_path+config["x_bot_interface"]["urdf_filename"].as<std::string>();
+	srdf_filename = std::string(robotology_root)+file_path+config["x_bot_interface"]["srdf_filename"].as<std::string>();
+	joint_map_config = std::string(robotology_root)+file_path+config["x_bot_interface"]["joint_map_config"].as<std::string>();
+
+	std::cout<<cyan_string("    - URDF: " + urdf_filename)<<std::endl;
+	std::cout<<cyan_string("    - SRDF: " + srdf_filename)<<std::endl;
+	std::cout<<cyan_string("    - JOINT_MAP_CONFIG: " + joint_map_config)<<std::endl;
+    }
+    else
+    {
+	std::cout<<red_string("ERROR: Robotology environment not sourced, can not retrive files")<<std::endl; 
+        abort();
+    }
+
+    if (!_XBotModel.init(urdf_filename,srdf_filename,joint_map_config))
+    {
+        std::cout<<red_string("ERROR: model initialization failed, please check the urdf_path and srdf_path in your YAML config file.")<<std::endl; 
+        abort();
+    }
+    // generate the robot
+    _XBotModel.generate_robot();
+    
     test_button.setText("Test");
     main_layout.addWidget(&test_button);
     setLayout(&main_layout);
@@ -30,26 +59,17 @@ XBotGUI::main_interface::main_interface(std::string config_file): QWidget()
     connect(&test_button,SIGNAL(clicked(bool)),this,SLOT(test_slot()));
 }
 
-std::string XBotGUI::main_interface::getRobot()
+std::string XBot::GUI::getRobot()
 {
-    if(config["x_bot_interface"])
-    {
-	if(config["x_bot_interface"]["urdf_filename"])
-	{
-	    return "test"; //TODO parse urdf
-	}
-    }
-
-    std::cout<<red_string("CAN NOT FIND ROBOT NAME")<<std::endl;
-    return "unknown robot";
+	    return _XBotModel.getName();
 }
 
-void XBotGUI::main_interface::test_slot()
+void XBot::GUI::test_slot()
 {
     std::cout<<"test"<<std::endl;
 }
 
-XBotGUI::main_interface::~main_interface()
+XBot::GUI::~GUI()
 {
 
 }

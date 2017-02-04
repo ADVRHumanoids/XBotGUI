@@ -23,6 +23,8 @@
 
 int main(int argc, char** argv)
 {
+    std::cout<<cyan_string(" - Starting XBotGUI...")<<std::endl;
+
     QApplication app(argc,argv);
 
     if(argc < 2)
@@ -37,11 +39,14 @@ int main(int argc, char** argv)
     }
     
     std::string config_file = std::string(argv[1]);
-    XBotGUI::main_interface gui(config_file);
+    XBot::GUI gui(config_file);
   
     gui.show();
     gui.setWindowTitle(QString::fromStdString("XBotGUI : " + gui.getRobot()));
     gui.setWindowIcon(QIcon("resources/logo.png"));
-  
+
+    std::cout<<std::endl;
+    std::cout<<green_string(" >> Started XBotGUI for robot ")<<cyan_string(gui.getRobot())<<green_string(" <<")<<std::endl<<std::endl;
+
     return app.exec();
 }

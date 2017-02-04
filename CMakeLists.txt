@@ -6,9 +6,10 @@ add_definitions(-std=c++11)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR})
 
 find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+find_package(XBotCoreModel REQUIRED)
 
 include(${QT_USE_FILE})
-include_directories(include)
+include_directories(include ${XBotCoreModel_INCLUDE_DIRS})
 
 add_definitions(-DQT_NO_KEYWORDS)
 
@@ -24,7 +25,7 @@ set(XBOT_SOURCE_FILES
 
 add_executable(main_interface src/main.cpp ${XBOT_SOURCE_FILES})
 
-target_link_libraries(main_interface ${QT_LIBRARIES} yaml-cpp)
+target_link_libraries(main_interface ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES})
 
 install(DIRECTORY resources/
     DESTINATION "resources"

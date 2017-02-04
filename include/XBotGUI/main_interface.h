@@ -25,17 +25,18 @@
 #include <QBoxLayout>
 
 #include <yaml-cpp/yaml.h>
+#include <XBotCoreModel.h>
 
 #include "utils.h"
 
-namespace XBotGUI
+namespace XBot
 {
-class main_interface: public QWidget
+class GUI: public QWidget
 {
 Q_OBJECT
 public:
-    main_interface(std::string config_file);
-    ~main_interface();
+    GUI(std::string config_file);
+    ~GUI();
 
     std::string getRobot();
 
@@ -47,6 +48,7 @@ private:
     QHBoxLayout main_layout;
     
     YAML::Node config;
+    XBotCoreModel _XBotModel;
 };
 }
 
