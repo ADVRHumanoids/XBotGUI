@@ -22,7 +22,12 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QSlider>
 #include <QBoxLayout>
+#include <urdf_parser/urdf_parser.h>
+
+#define RAD2DEG 180.0/3.1415
+#define DEG2RAD 3.1415/180.0
 
 namespace XBot
 {
@@ -32,11 +37,15 @@ class joint: public QWidget
 {
 Q_OBJECT
 public:
-    joint(std::string name);
+    joint(std::string name_,boost::shared_ptr<urdf::ModelInterface const> urdf);
     ~joint();
+
+private Q_SLOTS:
+    void slider_slot();
 
 private:
     QLabel title;
+    QSlider slider;
     QVBoxLayout main_layout;
 
     std::string name;

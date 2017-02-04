@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <map>
+#include <urdf_parser/urdf_parser.h>
 
 #include "joint.h"
 
@@ -35,7 +36,7 @@ class chain: public QWidget
 {
 Q_OBJECT
 public:
-    chain(std::string name_,std::vector<std::string> joint_names);
+    chain(std::string name_,std::vector<std::string> joint_names, boost::shared_ptr<urdf::ModelInterface const> urdf);
     ~chain();
 
 private:

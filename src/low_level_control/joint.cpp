@@ -19,13 +19,32 @@
 
 #include "XBotGUI/low_level_control/joint.h"
 
-XBot::widgets::joint::joint(std::string name): QWidget()
+XBot::widgets::joint::joint(std::string name_, boost::shared_ptr<urdf::ModelInterface const> urdf): QWidget()
 {
+    name = name_;
     title.setText(QString::fromStdString(name));
-    
+
+    auto urdf_joint = urdf->getJoint(name);
+
+    slider.setOrientation(Qt::Horizontal);
+    slider.setTickInterval(0.02);
+    slider.setTickPosition(QSlider::TicksBelow);
+    slider.setMinimum(urdf_joint->limits->lower*RAD2DEG);
+    slider.setMaximum(urdf_joint->limits->upper*RAD2DEG);
+    slider.setValue(0);
+
     main_layout.addWidget(&title);
-    
+    main_layout.addWidget(&slider);
+
     setLayout(&main_layout);
+    setStyleSheet("border: 1px solid black");
+
+    connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(slider_slot()));
+}
+
+void XBot::widgets::joint::slider_slot()
+{
+    std::cout<<name<<" : "<<slider.value()<<std::endl;
 }
 
 XBot::widgets::joint::~joint()

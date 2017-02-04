@@ -26,13 +26,12 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     config = YAML::LoadFile(config_file);
 
     std::string urdf_filename, srdf_filename, joint_map_config;
-    std::string file_path = "/external/XBotInterface/IXBotInterface/configs/";
 
     if(const char* robotology_root = std::getenv("ROBOTOLOGY_ROOT"))
     {
-	urdf_filename = std::string(robotology_root)+file_path+config["x_bot_interface"]["urdf_filename"].as<std::string>();
-	srdf_filename = std::string(robotology_root)+file_path+config["x_bot_interface"]["srdf_filename"].as<std::string>();
-	joint_map_config = std::string(robotology_root)+file_path+config["x_bot_interface"]["joint_map_config"].as<std::string>();
+	urdf_filename = std::string(robotology_root)+"/"+config["XBotInterface"]["urdf_path"].as<std::string>();
+	srdf_filename = std::string(robotology_root)+"/"+config["XBotInterface"]["srdf_path"].as<std::string>();
+	joint_map_config = std::string(robotology_root)+"/"+config["XBotInterface"]["joint_map_path"].as<std::string>();
 
 	std::cout<<"    - URDF: " + cyan_string(urdf_filename)<<std::endl;
 	std::cout<<"    - SRDF: " + cyan_string(srdf_filename)<<std::endl;

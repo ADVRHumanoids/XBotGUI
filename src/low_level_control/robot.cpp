@@ -30,7 +30,7 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model)
     {
         std::vector<std::string> joint_names;
 	for(auto j:chain_.second) joint_names.push_back(model.rid2Joint(j));
-        chain* c = new chain(chain_.first,joint_names);
+        chain* c = new chain(chain_.first,joint_names,model.get_urdf_model());
 	chains[chain_.first] = c;
 	tabs.addTab(c,QString::fromStdString(chain_.first));
     }
@@ -41,5 +41,8 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model)
 
 XBot::widgets::robot::~robot()
 {
-
+    for(auto c:chains)
+    {
+	delete c.second;
+    }
 }
