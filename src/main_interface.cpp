@@ -61,7 +61,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 std::string XBot::GUI::getRobot()
 {
-	    return _XBotModel.getName();
+    return _XBotModel.getName();
 }
 
 void XBot::GUI::test_slot()
