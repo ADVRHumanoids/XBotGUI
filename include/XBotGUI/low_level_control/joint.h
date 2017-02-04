@@ -20,6 +20,28 @@
 #ifndef XBOTGUI_JOINT_H
 #define XBOTGUI_JOINT_H
 
+#include <QWidget>
+#include <QLabel>
+#include <QBoxLayout>
 
+namespace XBot
+{
+namespace widgets
+{
+class joint: public QWidget
+{
+Q_OBJECT
+public:
+    joint(std::string name);
+    ~joint();
+
+private:
+    QLabel title;
+    QVBoxLayout main_layout;
+
+    std::string name;
+};
+};
+};
 
 #endif

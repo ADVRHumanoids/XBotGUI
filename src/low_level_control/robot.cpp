@@ -18,3 +18,28 @@
 */
 
 #include "XBotGUI/low_level_control/robot.h"
+
+XBot::widgets::robot::robot(): QWidget()
+{
+
+}
+
+void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model)
+{
+    for(auto chain_:model.get_robot())
+    {
+        std::vector<std::string> joint_names;
+	for(auto j:chain_.second) joint_names.push_back(model.rid2Joint(j));
+        chain* c = new chain(chain_.first,joint_names);
+	chains[chain_.first] = c;
+	tabs.addTab(c,QString::fromStdString(chain_.first));
+    }
+    
+    main_layout.addWidget(&tabs);
+    setLayout(&main_layout);
+}
+
+XBot::widgets::robot::~robot()
+{
+
+}

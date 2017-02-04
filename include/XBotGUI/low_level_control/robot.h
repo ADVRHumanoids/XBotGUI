@@ -20,6 +20,37 @@
 #ifndef XBOTGUI_ROBOT_H
 #define XBOTGUI_ROBOT_H
 
+#include <QWidget>
+#include <QLabel>
+#include <QBoxLayout>
+#include <QTabWidget>
+#include <map>
 
+#include <XBotCoreModel.h>
+
+#include "chain.h"
+
+namespace XBot
+{
+namespace widgets
+{
+class robot: public QWidget
+{
+Q_OBJECT
+public:
+    robot();
+    ~robot();
+
+    void generateRobotWidgetFromModel(XBotCoreModel& model);
+
+private:
+    QTabWidget tabs;
+    QHBoxLayout main_layout;
+
+    std::map<std::string,chain*> chains;
+
+};
+};
+};
 
 #endif

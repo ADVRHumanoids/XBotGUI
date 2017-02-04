@@ -19,3 +19,16 @@
 
 #include "XBotGUI/low_level_control/joint.h"
 
+XBot::widgets::joint::joint(std::string name): QWidget()
+{
+    title.setText(QString::fromStdString(name));
+    
+    main_layout.addWidget(&title);
+    
+    setLayout(&main_layout);
+}
+
+XBot::widgets::joint::~joint()
+{
+
+}

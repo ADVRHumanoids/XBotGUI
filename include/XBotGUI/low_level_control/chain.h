@@ -20,6 +20,31 @@
 #ifndef XBOTGUI_CHAIN_H
 #define XBOTGUI_CHAIN_H
 
+#include <QWidget>
+#include <QLabel>
+#include <QBoxLayout>
+#include <map>
 
+#include "joint.h"
+
+namespace XBot
+{
+namespace widgets
+{
+class chain: public QWidget
+{
+Q_OBJECT
+public:
+    chain(std::string name_,std::vector<std::string> joint_names);
+    ~chain();
+
+private:
+    std::map<std::string,joint*> joints;
+    QHBoxLayout main_layout;
+
+    std::string name;
+};
+};
+};
 
 #endif

@@ -51,22 +51,16 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     // generate the robot
     _XBotModel.generate_robot();
-    
-    test_button.setText("Test");
-    main_layout.addWidget(&test_button);
-    setLayout(&main_layout);
-    
-    connect(&test_button,SIGNAL(clicked(bool)),this,SLOT(test_slot()));
+
+    robot_widget.generateRobotWidgetFromModel(_XBotModel);
+
+    main_layout.addWidget(&robot_widget);
+    setLayout(&main_layout);    
 }
 
 std::string XBot::GUI::getRobot()
 {
     return _XBotModel.getName();
-}
-
-void XBot::GUI::test_slot()
-{
-    std::cout<<"test"<<std::endl;
 }
 
 XBot::GUI::~GUI()

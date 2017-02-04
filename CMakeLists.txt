@@ -37,9 +37,9 @@ set(XBOT_SOURCE_FILES
   src/utils.cpp
 )
 
-add_executable(main_interface src/main.cpp ${XBOT_SOURCE_FILES})
+add_executable(XBotGUI src/main.cpp ${XBOT_SOURCE_FILES})
 
-target_link_libraries(main_interface ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES})
+target_link_libraries(XBotGUI ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES})
 
 install(DIRECTORY resources/
     DESTINATION "resources"

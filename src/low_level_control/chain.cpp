@@ -18,3 +18,22 @@
 */
 
 #include "XBotGUI/low_level_control/chain.h"
+
+XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_names): QWidget()
+{
+    name = name_;
+
+    for(auto joint_:joint_names)
+    {
+        joint* j = new joint(joint_);
+	joints[joint_] = j;
+	main_layout.addWidget(j);
+    }
+    
+    setLayout(&main_layout);
+}
+
+XBot::widgets::chain::~chain()
+{
+
+}

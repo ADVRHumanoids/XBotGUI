@@ -28,6 +28,7 @@
 #include <XBotCoreModel.h>
 
 #include "utils.h"
+#include "low_level_control/robot.h"
 
 namespace XBot
 {
@@ -40,11 +41,8 @@ public:
 
     std::string getRobot();
 
-private Q_SLOTS:
-    void test_slot();
-    
 private:
-    QPushButton test_button;
+    widgets::robot robot_widget;
     QHBoxLayout main_layout;
     
     YAML::Node config;
