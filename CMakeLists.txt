@@ -17,8 +17,22 @@ qt4_wrap_cpp(XBOT_MOC_FILES
   include/XBotGUI/main_interface.h
 )
 
+file(GLOB LOW_LEVEL_CONTROL_H_FILES
+    "${CMAKE_SOURCE_DIR}/include/XBotGUI/low_level_control/*.h"
+)
+
+qt4_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES
+  ${LOW_LEVEL_CONTROL_H_FILES}
+)
+
+file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
+    "${CMAKE_SOURCE_DIR}/src/low_level_control/*.cpp"
+)
+
 set(XBOT_SOURCE_FILES
   ${XBOT_MOC_FILES}
+  ${LOW_LEVEL_CONTROL_MOC_FILES}
+  ${LOW_LEVEL_CONTROL_SOURCE_FILES}
   src/main_interface.cpp
   src/utils.cpp
 )
