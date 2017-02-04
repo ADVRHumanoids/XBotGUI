@@ -1,1 +1,3 @@
 XBotGUI
+
+![](resources/logo.png)
