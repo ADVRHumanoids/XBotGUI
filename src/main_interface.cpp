@@ -34,9 +34,9 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	srdf_filename = std::string(robotology_root)+file_path+config["x_bot_interface"]["srdf_filename"].as<std::string>();
 	joint_map_config = std::string(robotology_root)+file_path+config["x_bot_interface"]["joint_map_config"].as<std::string>();
 
-	std::cout<<cyan_string("    - URDF: " + urdf_filename)<<std::endl;
-	std::cout<<cyan_string("    - SRDF: " + srdf_filename)<<std::endl;
-	std::cout<<cyan_string("    - JOINT_MAP_CONFIG: " + joint_map_config)<<std::endl;
+	std::cout<<"    - URDF: " + cyan_string(urdf_filename)<<std::endl;
+	std::cout<<"    - SRDF: " + cyan_string(srdf_filename)<<std::endl;
+	std::cout<<"    - JOINT_MAP_CONFIG: " + cyan_string(joint_map_config)<<std::endl;
     }
     else
     {

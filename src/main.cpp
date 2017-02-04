@@ -23,7 +23,7 @@
 
 int main(int argc, char** argv)
 {
-    std::cout<<cyan_string(" - Starting XBotGUI...")<<std::endl;
+    std::cout<<" - Starting XBotGUI..."<<std::endl;
 
     QApplication app(argc,argv);
 
