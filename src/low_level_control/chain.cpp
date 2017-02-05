@@ -23,11 +23,19 @@ XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_
 {
     name = name_;
 
+    int r = 0;
+    int c = 0;
     for(auto joint_:joint_names)
     {
         joint* j = new joint(joint_,urdf);
 	joints[joint_] = j;
-	main_layout.addWidget(j);
+	main_layout.addWidget(j,r,c);
+	c++;
+	if(c==4)
+	{
+	    r++;
+	    c=0;
+	}
     }
     
     setLayout(&main_layout);

@@ -19,35 +19,69 @@
 
 #include "XBotGUI/low_level_control/joint.h"
 
-XBot::widgets::joint::joint(std::string name_, boost::shared_ptr<urdf::ModelInterface const> urdf): QWidget()
+XBot::widgets::joint::joint(std::string name_, boost::shared_ptr<urdf::ModelInterface const> urdf): QFrame()
 {
     name = name_;
     title.setText(QString::fromStdString(name));
 
     auto urdf_joint = urdf->getJoint(name);
 
+    QPalette palette;
+    palette.setColor(QPalette::Foreground,Qt::black);
+    
     slider.setOrientation(Qt::Horizontal);
     slider.setTickInterval(0.02);
-    slider.setTickPosition(QSlider::TicksBelow);
+    slider.setTickPosition(QSlider::NoTicks);
     slider.setMinimum(urdf_joint->limits->lower*RAD2DEG);
     slider.setMaximum(urdf_joint->limits->upper*RAD2DEG);
     slider.setValue(0);
 
+    current.label.setText(QString::number(slider.value(),'f',2));
+    current.setFixedSize(70,30);
+    min.label.setText(QString::number(urdf_joint->limits->lower*RAD2DEG,'f',2));
+    min.setFixedSize(70,30);
+    min.setFrameStyle(QFrame::Box);
+    min.setPalette(palette);
+    max.label.setText(QString::number(urdf_joint->limits->upper*RAD2DEG,'f',2));
+    max.setFixedSize(70,30);
+    max.setFrameStyle(QFrame::Box);
+    max.setPalette(palette);
+    labels_layout.addWidget(&min,Qt::AlignLeft);
+    labels_layout.addWidget(&current,Qt::AnchorHorizontalCenter);
+    labels_layout.addWidget(&max,Qt::AlignRight);
+
     main_layout.addWidget(&title);
     main_layout.addWidget(&slider);
+    main_layout.addLayout(&labels_layout);
+
+    setFrameStyle(QFrame::Box);
+    setAutoFillBackground(true);
+    palette.setColor(QPalette::Background, Qt::lightGray);
+    setPalette(palette);
 
     setLayout(&main_layout);
-    setStyleSheet("border: 1px solid black");
+    setFixedSize(240,210);
 
     connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(slider_slot()));
 }
 
 void XBot::widgets::joint::slider_slot()
 {
-    std::cout<<name<<" : "<<slider.value()<<std::endl;
+    current.label.setText(QString::number(slider.value(),'f',2));
 }
 
 XBot::widgets::joint::~joint()
+{
+
+}
+
+XBot::widgets::QBoxedLabel::QBoxedLabel(): QFrame()
+{
+    layout.addWidget(&label);
+    setLayout(&layout);
+}
+
+XBot::widgets::QBoxedLabel::~QBoxedLabel()
 {
 
 }

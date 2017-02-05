@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QBoxLayout>
+#include <QGridLayout>
 #include <map>
 #include <urdf_parser/urdf_parser.h>
 
@@ -41,7 +42,7 @@ public:
 
 private:
     std::map<std::string,joint*> joints;
-    QHBoxLayout main_layout;
+    QGridLayout main_layout;
 
     std::string name;
 };

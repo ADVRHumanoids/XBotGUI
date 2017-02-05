@@ -23,7 +23,9 @@
 #include <QWidget>
 #include <QLabel>
 #include <QSlider>
-#include <QBoxLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QFrame>
 #include <urdf_parser/urdf_parser.h>
 
 #define RAD2DEG 180.0/3.1415
@@ -33,7 +35,17 @@ namespace XBot
 {
 namespace widgets
 {
-class joint: public QWidget
+class QBoxedLabel: public QFrame
+{
+public:
+    QBoxedLabel();
+    ~QBoxedLabel();
+
+    QLabel label;
+    QHBoxLayout layout;
+};
+
+class joint: public QFrame
 {
 Q_OBJECT
 public:
@@ -45,7 +57,11 @@ private Q_SLOTS:
 
 private:
     QLabel title;
+    QBoxedLabel min;
+    QBoxedLabel max;
+    QBoxedLabel current;
     QSlider slider;
+    QHBoxLayout labels_layout;
     QVBoxLayout main_layout;
 
     std::string name;
