@@ -23,19 +23,52 @@
 
 XBot::GUI::GUI(std::string config_file): QWidget()
 {
+    std::cout<<"    - CONFIG: " + cyan_string(config_file)<<std::endl;
+
     config = YAML::LoadFile(config_file);
+    
+    if(config.IsNull())
+    {
+	std::cout<<red_string("ERROR: cannot load configuration file")<<std::endl; 
+	abort();
+    }
 
     std::string urdf_filename, srdf_filename, joint_map_config;
 
     if(const char* robotology_root = std::getenv("ROBOTOLOGY_ROOT"))
     {
-	urdf_filename = std::string(robotology_root)+"/"+config["XBotInterface"]["urdf_path"].as<std::string>();
-	srdf_filename = std::string(robotology_root)+"/"+config["XBotInterface"]["srdf_path"].as<std::string>();
-	joint_map_config = std::string(robotology_root)+"/"+config["XBotInterface"]["joint_map_path"].as<std::string>();
+        if(!config["XBotInterface"].IsNull())
+	{
+	    if(config["XBotInterface"]["urdf_path"].IsNull())
+	    {
+		std::cout<<red_string("ERROR: urdf_path field is not in the configuration file")<<std::endl; 
+		abort();
+	    }
+	    urdf_filename = std::string(robotology_root)+"/"+config["XBotInterface"]["urdf_path"].as<std::string>();
+	    
+	    if(config["XBotInterface"]["srdf_path"].IsNull())
+	    {
+		std::cout<<red_string("ERROR: srdf_path field is not in the configuration file")<<std::endl; 
+		abort();
+	    }
+	    srdf_filename = std::string(robotology_root)+"/"+config["XBotInterface"]["srdf_path"].as<std::string>();
+	    
+	    if(config["XBotInterface"]["joint_map_path"].IsNull())
+	    {
+		std::cout<<red_string("ERROR: joint_map_path field is not in the configuration file")<<std::endl; 
+		abort();
+	    }
+	    joint_map_config = std::string(robotology_root)+"/"+config["XBotInterface"]["joint_map_path"].as<std::string>();
 
-	std::cout<<"    - URDF: " + cyan_string(urdf_filename)<<std::endl;
-	std::cout<<"    - SRDF: " + cyan_string(srdf_filename)<<std::endl;
-	std::cout<<"    - JOINT_MAP_CONFIG: " + cyan_string(joint_map_config)<<std::endl;
+	    std::cout<<"    - URDF: " + cyan_string(urdf_filename)<<std::endl;
+	    std::cout<<"    - SRDF: " + cyan_string(srdf_filename)<<std::endl;
+	    std::cout<<"    - JOINT_MAP_CONFIG: " + cyan_string(joint_map_config)<<std::endl;
+	}
+	else
+	{
+	    std::cout<<red_string("ERROR: XBotInterface field is not in the configuration file")<<std::endl; 
+	    abort();
+	}
     }
     else
     {
