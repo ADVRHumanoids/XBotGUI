@@ -26,6 +26,7 @@
 
 #include <yaml-cpp/yaml.h>
 #include <XBotCoreModel.h>
+#include <XBotInterface/RobotInterface.h>
 
 #include "utils.h"
 #include "low_level_control/robot.h"
@@ -47,6 +48,7 @@ private:
     
     YAML::Node config;
     XBotCoreModel _XBotModel;
+    RobotInterface::Ptr _RobotInterface;
 };
 }
 

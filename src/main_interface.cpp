@@ -84,6 +84,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     // generate the robot
     _XBotModel.generate_robot();
 
+    _RobotInterface = XBot::RobotInterface::getRobot(config_file);
+
     robot_widget.generateRobotWidgetFromModel(_XBotModel);
 
     main_layout.addWidget(&robot_widget);
