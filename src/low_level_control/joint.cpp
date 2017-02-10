@@ -53,8 +53,8 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     else if(control_mode.isEffortEnabled())
     {
 	current.label.setText(QString::number(slider.value(),'f',2));
-	min.label.setText(QString::number(-(URDFjoint->limits->effort*RAD2DEG),'f',2));
-	max.label.setText(QString::number(URDFjoint->limits->effort*RAD2DEG,'f',2));
+	min.label.setText(QString::number(-(URDFjoint->limits->effort),'f',2));
+	max.label.setText(QString::number(URDFjoint->limits->effort,'f',2));
 	control_mode_label.setText(" - Torque [Nm]");
     }
     
