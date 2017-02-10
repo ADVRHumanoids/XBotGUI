@@ -27,6 +27,7 @@
 #include <map>
 
 #include <XBotCoreModel.h>
+#include <XBotInterface/RobotInterface.h>
 
 #include "chain.h"
 
@@ -41,7 +42,7 @@ public:
     robot();
     ~robot();
 
-    void generateRobotWidgetFromModel(XBotCoreModel& model);
+    void generateRobotWidgetFromModel(XBotCoreModel& model, RobotInterface::Ptr robot_interface);
 
 private:
     QTabWidget tabs;

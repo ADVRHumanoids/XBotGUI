@@ -19,12 +19,12 @@
 
 #include "XBotGUI/low_level_control/joint.h"
 
-XBot::widgets::joint::joint(std::string name_, boost::shared_ptr<urdf::ModelInterface const> urdf): QFrame()
+XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Joint > URDFjoint_, XBot::ControlMode control_mode_): QFrame()
 {
     name = name_;
+    URDFjoint = URDFjoint_;
+    control_mode = control_mode_;
     title.setText(QString::fromStdString(name));
-
-    auto urdf_joint = urdf->getJoint(name);
 
     QPalette palette;
     palette.setColor(QPalette::Foreground,Qt::black);
@@ -32,17 +32,17 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr<urdf::ModelInte
     slider.setOrientation(Qt::Horizontal);
     slider.setTickInterval(0.02);
     slider.setTickPosition(QSlider::NoTicks);
-    slider.setMinimum(urdf_joint->limits->lower*RAD2DEG);
-    slider.setMaximum(urdf_joint->limits->upper*RAD2DEG);
+    slider.setMinimum(URDFjoint->limits->lower*RAD2DEG);
+    slider.setMaximum(URDFjoint->limits->upper*RAD2DEG);
     slider.setValue(0);
 
     current.label.setText(QString::number(slider.value(),'f',2));
     current.setFixedSize(70,30);
-    min.label.setText(QString::number(urdf_joint->limits->lower*RAD2DEG,'f',2));
+    min.label.setText(QString::number(URDFjoint->limits->lower*RAD2DEG,'f',2));
     min.setFixedSize(70,30);
     min.setFrameStyle(QFrame::Box);
     min.setPalette(palette);
-    max.label.setText(QString::number(urdf_joint->limits->upper*RAD2DEG,'f',2));
+    max.label.setText(QString::number(URDFjoint->limits->upper*RAD2DEG,'f',2));
     max.setFixedSize(70,30);
     max.setFrameStyle(QFrame::Box);
     max.setPalette(palette);

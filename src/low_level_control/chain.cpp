@@ -19,7 +19,7 @@
 
 #include "XBotGUI/low_level_control/chain.h"
 
-XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_names, boost::shared_ptr<urdf::ModelInterface const> urdf): QWidget()
+XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_names, boost::shared_ptr<urdf::ModelInterface const> urdf, std::map<std::string,XBot::ControlMode> control_map): QWidget()
 {
     name = name_;
 
@@ -27,7 +27,7 @@ XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_
     int c = 0;
     for(auto joint_:joint_names)
     {
-        joint* j = new joint(joint_,urdf);
+        joint* j = new joint(joint_,urdf->getJoint(joint_),control_map.at(joint_));
 	joints[joint_] = j;
 	main_layout.addWidget(j,r,c);
 	c++;

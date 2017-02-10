@@ -24,13 +24,16 @@ XBot::widgets::robot::robot(): QWidget()
 
 }
 
-void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model)
+void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, RobotInterface::Ptr robot_interface)
 {
+    std::map<std::string,XBot::ControlMode> control_map ;
+    robot_interface->getControlMode(control_map);
+
     for(auto chain_:model.get_robot())
     {
         std::vector<std::string> joint_names;
 	for(auto j:chain_.second) joint_names.push_back(model.rid2Joint(j));
-        chain* c = new chain(chain_.first,joint_names,model.get_urdf_model());
+        chain* c = new chain(chain_.first,joint_names,model.get_urdf_model(), control_map);
 	chains[chain_.first] = c;
 	tabs.addTab(c,QString::fromStdString(chain_.first));
     }

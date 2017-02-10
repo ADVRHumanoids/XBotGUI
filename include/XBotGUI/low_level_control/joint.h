@@ -27,6 +27,7 @@
 #include <QVBoxLayout>
 #include <QFrame>
 #include <urdf_parser/urdf_parser.h>
+#include <XBotInterface/RobotInterface.h>
 
 #define RAD2DEG 180.0/3.1415
 #define DEG2RAD 3.1415/180.0
@@ -49,7 +50,7 @@ class joint: public QFrame
 {
 Q_OBJECT
 public:
-    joint(std::string name_,boost::shared_ptr<urdf::ModelInterface const> urdf);
+    joint(std::string name_, boost::shared_ptr <const urdf::Joint > URDFjoint_, XBot::ControlMode control_mode_);
     ~joint();
 
 private Q_SLOTS:
@@ -65,6 +66,8 @@ private:
     QVBoxLayout main_layout;
 
     std::string name;
+    XBot::ControlMode control_mode;
+    boost::shared_ptr <const urdf::Joint > URDFjoint;
 };
 };
 };
