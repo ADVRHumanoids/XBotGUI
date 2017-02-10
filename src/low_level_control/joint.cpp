@@ -36,16 +36,37 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     slider.setMaximum(URDFjoint->limits->upper*RAD2DEG);
     slider.setValue(0);
 
-    current.label.setText(QString::number(slider.value(),'f',2));
+    if(control_mode.isPositionEnabled())
+    {
+	current.label.setText(QString::number(slider.value(),'f',2));
+	min.label.setText(QString::number(URDFjoint->limits->lower*RAD2DEG,'f',2));
+	max.label.setText(QString::number(URDFjoint->limits->upper*RAD2DEG,'f',2));
+	control_mode_label.setText(" - Position [deg]");
+    }
+    else if(control_mode.isVelocityEnabled())
+    {
+	current.label.setText(QString::number(slider.value(),'f',2));
+	min.label.setText(QString::number(-(URDFjoint->limits->velocity*RAD2DEG),'f',2));
+	max.label.setText(QString::number(URDFjoint->limits->velocity*RAD2DEG,'f',2));
+	control_mode_label.setText(" - Velocity [deg/s]");
+    }
+    else if(control_mode.isEffortEnabled())
+    {
+	current.label.setText(QString::number(slider.value(),'f',2));
+	min.label.setText(QString::number(-(URDFjoint->limits->effort*RAD2DEG),'f',2));
+	max.label.setText(QString::number(URDFjoint->limits->effort*RAD2DEG,'f',2));
+	control_mode_label.setText(" - Torque [Nm]");
+    }
+    
     current.setFixedSize(70,30);
-    min.label.setText(QString::number(URDFjoint->limits->lower*RAD2DEG,'f',2));
     min.setFixedSize(70,30);
     min.setFrameStyle(QFrame::Box);
     min.setPalette(palette);
-    max.label.setText(QString::number(URDFjoint->limits->upper*RAD2DEG,'f',2));
     max.setFixedSize(70,30);
     max.setFrameStyle(QFrame::Box);
     max.setPalette(palette);
+    control_mode_label.setPalette(palette);
+
     labels_layout.addWidget(&min,Qt::AlignLeft);
     labels_layout.addWidget(&current,Qt::AnchorHorizontalCenter);
     labels_layout.addWidget(&max,Qt::AlignRight);
@@ -53,6 +74,8 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     main_layout.addWidget(&title);
     main_layout.addWidget(&slider);
     main_layout.addLayout(&labels_layout);
+    main_layout.addWidget(&control_mode_label);
+    
 
     setFrameStyle(QFrame::Box);
     setAutoFillBackground(true);

@@ -63,6 +63,7 @@ private:
     QBoxedLabel current;
     QSlider slider;
     QHBoxLayout labels_layout;
+    QLabel control_mode_label;
     QVBoxLayout main_layout;
 
     std::string name;
