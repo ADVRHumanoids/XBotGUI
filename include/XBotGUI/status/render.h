@@ -17,51 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef XBOTGUI_MAIN_H
-#define XBOTGUI_MAIN_H
+#ifndef XBOTGUI_RENDER_H
+#define XBOTGUI_RENDER_H
 
-#include <QWidget>
-#include <QPushButton>
+#include <ros/ros.h>
+#include <rviz/visualization_manager.h>
+#include <rviz/render_panel.h>
+#include <rviz/display.h>
 #include <QBoxLayout>
-
-#include <yaml-cpp/yaml.h>
-#include <XBotCoreModel.h>
-#include <XBotInterface/RobotInterface.h>
-
-#include "utils.h"
-#include "low_level_control/robot.h"
-#include "cmake_options.h"
-
-#ifndef BUILD_ROBOT_RENDER
-#else
-#include "status/render.h"
-#endif
 
 namespace XBot
 {
-class GUI: public QWidget
+namespace widgets
 {
-Q_OBJECT
+class render: public QWidget
+{
 public:
-    GUI(std::string config_file);
-    ~GUI();
-
-    std::string getRobot();
+    render();
+    ~render();
 
 private:
-    widgets::robot robot_widget;
-    QHBoxLayout main_layout;
-    QTabWidget tabs;
-    
-    YAML::Node config;
-    XBotCoreModel _XBotModel;
-    RobotInterface::Ptr _RobotInterface;
+    rviz::VisualizationManager* visualization_manager_=NULL;
+    rviz::RenderPanel* render_panel_=NULL;
 
-    #ifndef BUILD_ROBOT_RENDER
-    #else
-    widgets::render robot_render;
-    #endif
+    QHBoxLayout main_layout;
+
 };
-}
+};
+};
 
 #endif

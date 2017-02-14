@@ -25,6 +25,14 @@ int main(int argc, char** argv)
 {
     std::cout<<" - Starting XBotGUI..."<<std::endl;
 
+    #ifndef BUILD_ROBOT_RENDER
+    #else
+    if(!ros::isInitialized())
+    {
+	ros::init(argc,argv,"XBotGUI");
+    }
+    #endif
+    
     QApplication app(argc,argv);
 
     if(argc < 2)
@@ -47,6 +55,6 @@ int main(int argc, char** argv)
 
     std::cout<<std::endl;
     std::cout<<green_string(" >> Started XBotGUI for robot ")<<cyan_string(gui.getRobot())<<green_string(" <<")<<std::endl<<std::endl;
-
+    
     return app.exec();
 }

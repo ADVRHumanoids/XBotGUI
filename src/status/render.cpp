@@ -16,52 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
+#include "XBotGUI/status/render.h"
 
-#ifndef XBOTGUI_MAIN_H
-#define XBOTGUI_MAIN_H
-
-#include <QWidget>
-#include <QPushButton>
-#include <QBoxLayout>
-
-#include <yaml-cpp/yaml.h>
-#include <XBotCoreModel.h>
-#include <XBotInterface/RobotInterface.h>
-
-#include "utils.h"
-#include "low_level_control/robot.h"
-#include "cmake_options.h"
-
-#ifndef BUILD_ROBOT_RENDER
-#else
-#include "status/render.h"
-#endif
-
-namespace XBot
+XBot::widgets::render::render(): QWidget()
 {
-class GUI: public QWidget
-{
-Q_OBJECT
-public:
-    GUI(std::string config_file);
-    ~GUI();
-
-    std::string getRobot();
-
-private:
-    widgets::robot robot_widget;
-    QHBoxLayout main_layout;
-    QTabWidget tabs;
+    render_panel_ = new rviz::RenderPanel();
+    render_panel_->setMinimumHeight(30);
+    render_panel_->setMinimumWidth(30);
     
-    YAML::Node config;
-    XBotCoreModel _XBotModel;
-    RobotInterface::Ptr _RobotInterface;
+    visualization_manager_ = new rviz::VisualizationManager( render_panel_ );
+    render_panel_->initialize( visualization_manager_->getSceneManager(), visualization_manager_ );
+    visualization_manager_->initialize();
+    visualization_manager_->startUpdate();
+    visualization_manager_->setFixedFrame("/base_link");
 
-    #ifndef BUILD_ROBOT_RENDER
-    #else
-    widgets::render robot_render;
-    #endif
-};
+    main_layout.addWidget(render_panel_);
+
+    setLayout(&main_layout);
 }
 
-#endif
+XBot::widgets::render::~render()
+{
+    delete visualization_manager_;
+    delete render_panel_;
+}

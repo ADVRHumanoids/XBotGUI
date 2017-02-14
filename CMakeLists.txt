@@ -3,6 +3,10 @@ project(pilot_interface)
 
 add_definitions(-std=c++11)
 
+option(BUILD_ROBOT_RENDER "Compile robot render, require ROS" OFF)
+configure_file( cmake_options.h.in ${CMAKE_BINARY_DIR}/generated/cmake_options.h )
+include_directories( ${CMAKE_BINARY_DIR}/generated/ )
+
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR})
 
 set(CMAKE_AUTOMOC ON)
@@ -27,10 +31,17 @@ file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
 qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
 qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
 
+if(BUILD_ROBOT_RENDER) #if so, required variables are filled
+  find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy)
+  include_directories(${catkin_INCLUDE_DIRS})
+  set(RENDER_SOURCE_FILES src/status/render.cpp)
+endif()
+
 set(XBOT_SOURCE_FILES
   ${XBOT_MOC_FILES}
   ${LOW_LEVEL_CONTROL_MOC_FILES}
   ${LOW_LEVEL_CONTROL_SOURCE_FILES}
+  ${RENDER_SOURCE_FILES}
   src/main_interface.cpp
   src/utils.cpp
 )
@@ -39,7 +50,7 @@ add_executable(XBotGUI src/main.cpp ${XBOT_SOURCE_FILES})
 
 qt5_use_modules(XBotGUI Widgets Gui)
 
-target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES})
+target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES})
 
 install(DIRECTORY resources/
     DESTINATION "resources"

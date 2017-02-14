@@ -88,8 +88,18 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     robot_widget.generateRobotWidgetFromModel(_XBotModel,_RobotInterface);
 
-    main_layout.addWidget(&robot_widget);
-    setLayout(&main_layout);    
+    tabs.addTab(&robot_widget,"Robot");
+    
+    #ifndef BUILD_ROBOT_RENDER
+    std::cout<<"    - Render: " + cyan_string("OFF")<<std::endl;
+    #else
+    tabs.addTab(&robot_render,"Render");
+    std::cout<<"    - Render: " + cyan_string("ON")<<std::endl;
+    #endif
+    
+    main_layout.addWidget(&tabs);
+
+    setLayout(&main_layout);
 }
 
 std::string XBot::GUI::getRobot()
