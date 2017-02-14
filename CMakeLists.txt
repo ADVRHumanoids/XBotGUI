@@ -5,30 +5,27 @@ add_definitions(-std=c++11)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR})
 
-find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Gui REQUIRED)
+
 find_package(XBotCoreModel REQUIRED)
 find_package(XBotInterface REQUIRED)
 
-include(${QT_USE_FILE})
-include_directories(include ${XBotCoreModel_INCLUDE_DIRS} ${XBotInterface_INCLUDE_DIRS})
-
-add_definitions(-DQT_NO_KEYWORDS)
-
-qt4_wrap_cpp(XBOT_MOC_FILES
-  include/XBotGUI/main_interface.h
-)
+include_directories(include ${XBotCoreModel_INCLUDE_DIRS} ${XBotInterface_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS})
 
 file(GLOB LOW_LEVEL_CONTROL_H_FILES
     "${CMAKE_SOURCE_DIR}/include/XBotGUI/low_level_control/*.h"
 )
 
-qt4_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES
-  ${LOW_LEVEL_CONTROL_H_FILES}
-)
-
 file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/low_level_control/*.cpp"
 )
+
+qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
+qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
 
 set(XBOT_SOURCE_FILES
   ${XBOT_MOC_FILES}
@@ -40,7 +37,9 @@ set(XBOT_SOURCE_FILES
 
 add_executable(XBotGUI src/main.cpp ${XBOT_SOURCE_FILES})
 
-target_link_libraries(XBotGUI ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES})
+qt5_use_modules(XBotGUI Widgets Gui)
+
+target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES})
 
 install(DIRECTORY resources/
     DESTINATION "resources"
