@@ -40,6 +40,8 @@ private:
     rviz::VisualizationManager* visualization_manager_=NULL;
     rviz::RenderPanel* render_panel_=NULL;
 
+    rviz::Display* model;
+
     QHBoxLayout main_layout;
 
 };

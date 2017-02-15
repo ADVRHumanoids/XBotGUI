@@ -30,6 +30,8 @@ XBot::widgets::render::render(): QWidget()
     visualization_manager_->startUpdate();
     visualization_manager_->setFixedFrame("/base_link");
 
+    model = visualization_manager_->createDisplay( "rviz/RobotModel", "robot", true );
+    
     main_layout.addWidget(render_panel_);
 
     setLayout(&main_layout);
