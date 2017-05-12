@@ -47,3 +47,10 @@ std::string cyan_string(std::string s)
     std::string n="\033[0m";
     return b+s+n;
 }
+
+std::string purple_string(std::string s)
+{
+    std::string b="\033[0;95m";
+    std::string n="\033[0m";
+    return b+s+n;
+}

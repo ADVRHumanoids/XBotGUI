@@ -92,11 +92,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     
     std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
 
+    std::cout<<"    - Joints Control: " + cyan_string("ON")<<std::endl;
+    
     #ifndef BUILD_ROBOT_RENDER
-    std::cout<<"    - Render: " + cyan_string("OFF")<<std::endl;
+    std::cout<<"    - Render:         " + purple_string("OFF")<<std::endl;
     #else
     tabs.addTab(&robot_render,"Render");
-    std::cout<<"    - Render: " + cyan_string("ON")<<std::endl;
+    std::cout<<"    - Render:         " + cyan_string("ON")<<std::endl;
     #endif
     
     main_layout.addWidget(&tabs);
