@@ -23,7 +23,7 @@
 
 int main(int argc, char** argv)
 {
-    std::cout<<" - Starting XBotGUI..."<<std::endl;
+    std::cout<<std::endl<<" - Starting XBotGUI..."<<std::endl;
 
     #ifndef BUILD_ROBOT_RENDER
     #else

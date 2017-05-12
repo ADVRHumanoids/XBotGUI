@@ -90,6 +90,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     tabs.addTab(&robot_widget,"Robot");
     
+    std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
+
     #ifndef BUILD_ROBOT_RENDER
     std::cout<<"    - Render: " + cyan_string("OFF")<<std::endl;
     #else

@@ -28,7 +28,7 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, Ro
 {
     std::map<std::string,XBot::ControlMode> control_map ;
     robot_interface->getControlMode(control_map);
-
+   
     for(auto chain_:model.get_robot())
     {
         std::vector<std::string> joint_names;

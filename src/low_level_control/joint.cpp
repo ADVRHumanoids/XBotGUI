@@ -21,6 +21,7 @@
 
 XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Joint > URDFjoint_, XBot::ControlMode control_mode_): QFrame()
 {
+    bool idle = false;
     name = name_;
     URDFjoint = URDFjoint_;
     control_mode = control_mode_;
@@ -57,6 +58,14 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
 	max.label.setText(QString::number(URDFjoint->limits->effort,'f',2));
 	control_mode_label.setText(" - Torque [Nm]");
     }
+    else if(control_mode.getName()=="IDLE")
+    {
+	current.label.setText("-");
+	min.label.setText("-");
+	max.label.setText("-");
+	control_mode_label.setText("IDLE");
+	idle=true;
+    }
     
     current.setFixedSize(70,30);
     min.setFixedSize(70,30);
@@ -76,6 +85,7 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     main_layout.addLayout(&labels_layout);
     main_layout.addWidget(&control_mode_label);
     
+    slider.setEnabled(!idle);
 
     setFrameStyle(QFrame::Box);
     setAutoFillBackground(true);
