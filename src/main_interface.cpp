@@ -72,7 +72,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     else
     {
-	std::cout<<red_string("ERROR: Robotology environment not sourced, can not retrive files")<<std::endl; 
+	std::cout<<red_string("ERROR: Robotology environment not sourced, can not retrieve files")<<std::endl; 
         abort();
     }
 
