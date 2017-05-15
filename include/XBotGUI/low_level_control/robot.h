@@ -25,9 +25,11 @@
 #include <QBoxLayout>
 #include <QTabWidget>
 #include <map>
+#include <unordered_map>
 
 #include <XBotCoreModel.h>
 #include <XBotInterface/RobotInterface.h>
+#include <XBotInterface/TypedefAndEnums.h>
 
 #include "chain.h"
 
@@ -49,6 +51,7 @@ private:
     QHBoxLayout main_layout;
 
     std::map<std::string,chain*> chains;
+    std::map<std::string,XBot::JointNameMap> chains_q_sense;
 
 };
 };
