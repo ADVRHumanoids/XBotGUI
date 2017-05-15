@@ -45,13 +45,13 @@ public:
     ~robot();
 
     void generateRobotWidgetFromModel(XBotCoreModel& model, RobotInterface::Ptr robot_interface);
+    void setChainsJoints(std::map<std::string,XBot::JointNameMap> chains_q_sense);
 
 private:
     QTabWidget tabs;
     QHBoxLayout main_layout;
 
     std::map<std::string,chain*> chains;
-    std::map<std::string,XBot::JointNameMap> chains_q_sense;
 
 };
 };

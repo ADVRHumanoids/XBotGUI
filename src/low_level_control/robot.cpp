@@ -32,11 +32,9 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, Ro
     for(auto chain_:model.get_robot())
     {
         std::vector<std::string> joint_names;
-	chains_q_sense[chain_.first];
 	for(auto j:chain_.second)
 	{
 	    joint_names.push_back(model.rid2Joint(j));
-	    chains_q_sense.at(chain_.first)[model.rid2Joint(j)]=0.0;
 	}
         chain* c = new chain(chain_.first,joint_names,model.get_urdf_model(), control_map);
 	chains[chain_.first] = c;
@@ -45,14 +43,13 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, Ro
     
     main_layout.addWidget(&tabs);
     setLayout(&main_layout);
+}
 
+void XBot::widgets::robot::setChainsJoints(std::map< std::string, XBot::JointNameMap > chains_q_sense)
+{
     for(auto chain_:chains_q_sense)
     {
-	std::cout<<" - "<<chain_.first<<std::endl;
-	for(auto joint_:chain_.second)
-	{
-	    std::cout<<" - "<<joint_.first<<" : "<<joint_.second<<std::endl;
-	}
+        chains.at(chain_.first)->setJoints(chain_.second);
     }
 }
 

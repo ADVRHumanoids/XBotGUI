@@ -40,6 +40,7 @@ Q_OBJECT
 public:
     chain(std::string name_,std::vector<std::string> joint_names, boost::shared_ptr<urdf::ModelInterface const> urdf, std::map<std::string,XBot::ControlMode> control_map);
     ~chain();
+    void setJoints(XBot::JointNameMap joints_q_sense);
 
 private:
     std::map<std::string,joint*> joints;

@@ -86,6 +86,25 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     _RobotInterface = XBot::RobotInterface::getRobot(config_file);
 
+    for(auto chain_:_XBotModel.get_robot())
+    {
+	chains_q_sense[chain_.first];
+	for(auto joint_:chain_.second)
+	{
+	    chains_q_sense.at(chain_.first)[_XBotModel.rid2Joint(joint_)]=0.0;
+	}
+    }
+
+    // DEBUG 
+    for(auto chain_:chains_q_sense)
+    {
+	std::cout<<" - "<<chain_.first<<std::endl;
+	for(auto joint_:chain_.second)
+	{
+	    std::cout<<" -- "<<joint_.first<<" : "<<joint_.second<<std::endl;
+	}
+    }
+
     robot_widget.generateRobotWidgetFromModel(_XBotModel,_RobotInterface);
 
     tabs.addTab(&robot_widget,"Robot");
@@ -103,7 +122,22 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     
     main_layout.addWidget(&tabs);
 
+    connect(&sense_timer, SIGNAL(timeout()), this, SLOT(sense()));
+    sense_timer.start(10);
+
     setLayout(&main_layout);
+}
+
+void XBot::GUI::sense()
+{
+    _RobotInterface->sense();
+
+    for(auto chain_:chains_q_sense)
+    {
+	_RobotInterface->getJointPosition(chain_.second);
+    }
+
+    robot_widget.setChainsJoints(chains_q_sense);
 }
 
 std::string XBot::GUI::getRobot()

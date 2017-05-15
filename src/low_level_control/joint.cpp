@@ -98,6 +98,11 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(slider_slot()));
 }
 
+void XBot::widgets::joint::set(double q_sense)
+{
+    slider.setValue(q_sense);
+}
+
 void XBot::widgets::joint::slider_slot()
 {
     current.label.setText(QString::number(slider.value(),'f',2));

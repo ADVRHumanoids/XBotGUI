@@ -52,6 +52,7 @@ Q_OBJECT
 public:
     joint(std::string name_, boost::shared_ptr <const urdf::Joint > URDFjoint_, XBot::ControlMode control_mode_);
     ~joint();
+    void set(double q_sense);
 
 private Q_SLOTS:
     void slider_slot();

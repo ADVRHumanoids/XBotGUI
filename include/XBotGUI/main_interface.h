@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QBoxLayout>
+#include <QTimer>
 
 #include <yaml-cpp/yaml.h>
 #include <XBotCoreModel.h>
@@ -57,10 +58,17 @@ private:
     XBotCoreModel _XBotModel;
     RobotInterface::Ptr _RobotInterface;
 
+    QTimer sense_timer;
+    std::map<std::string,XBot::JointNameMap> chains_q_sense;
+
     #ifndef BUILD_ROBOT_RENDER
     #else
     widgets::render robot_render;
     #endif
+
+private Q_SLOTS:
+    void sense();
+
 };
 }
 
