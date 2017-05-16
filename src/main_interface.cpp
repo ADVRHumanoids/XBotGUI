@@ -23,6 +23,24 @@
 
 XBot::GUI::GUI(std::string config_file): QWidget()
 {
+    std::string filename = "/build/external/XBotGUI/configs/xbotgui.xml";
+    filename = std::getenv("ROBOTOLOGY_ROOT") + filename;
+
+    TiXmlDocument doc(filename);
+    bool loadOkay = doc.LoadFile();
+    if (!loadOkay)
+    {
+        std::cout<<red_string("Failed to load file "+filename)<<std::endl;
+        abort();
+    }
+    
+    int t = doc.Type();
+    if (t!=TiXmlNode::TINYXML_DOCUMENT)
+    {
+        std::cout<<red_string("Expected a document at the beginning of the file "+filename+", found something else.")<<std::endl;
+        abort();
+    }
+    
     std::cout<<"    - CONFIG: " + cyan_string(config_file)<<std::endl;
 
     config = YAML::LoadFile(config_file);
@@ -116,9 +134,48 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     #ifndef BUILD_ROBOT_RENDER
     std::cout<<"    - Render:         " + purple_string("OFF")<<std::endl;
     #else
-    robot_render->add_display("model","rviz/RobotModel");
-    tabs.addTab(&robot_render,"Render");
+
     std::cout<<"    - Render:         " + cyan_string("ON")<<std::endl;
+
+    TiXmlElement* displays=doc.FirstChildElement("displays");
+    if (displays==NULL || displays->Type()!=TiXmlNode::TINYXML_ELEMENT)
+    {
+        std::cout<<yellow_string("Could not find element displays into file "+filename)<<std::endl;
+    }
+    else
+    {
+        std::cout<<"    - - displays"<<std::endl;
+	TiXmlElement* display = displays->FirstChildElement("display");
+	TiXmlElement* property;
+	std::map<std::string,std::string> properties;	
+
+	while(display)
+	{
+	    properties.clear();
+	    std::string display_name = display->Attribute("name");
+	    std::string display_type = display->Attribute("type");
+
+	    std::cout<<"    - - > "<<display_name<<" ( "<<display_type<<" )"<<std::endl;
+	    
+	    property = display->FirstChildElement("property");
+	    
+	    while(property)
+	    {
+		properties[property->Attribute("name")] = property->Attribute("value");
+
+		std::cout<<"    - - |> "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
+		
+		property = property->NextSiblingElement("property");
+	    }
+
+	    robot_render.add_display(display_name.c_str(),display_type.c_str(),properties);
+
+	    display = display->NextSiblingElement("display");
+	}
+    }
+    
+    tabs.addTab(&robot_render,"Render");
+    
     #endif
     
     main_layout.addWidget(&tabs);

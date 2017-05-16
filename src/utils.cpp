@@ -54,3 +54,10 @@ std::string purple_string(std::string s)
     std::string n="\033[0m";
     return b+s+n;
 }
+
+std::string yellow_string(std::string s)
+{
+    std::string b="\033[0;93m";
+    std::string n="\033[0m";
+    return b+s+n;
+}

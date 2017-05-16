@@ -37,11 +37,11 @@ XBot::widgets::render::render(): QWidget()
 
 void XBot::widgets::render::add_display(std::string name, std::string type, std::map< std::string, std::string > properties)
 {
-    displays[name] =  visualization_manager_->createDisplay( type, name, true );
+    displays[name] =  visualization_manager_->createDisplay( type.c_str(), name.c_str(), true );
 
     for(auto property:properties)
     {
-	displays.at(name)->subProp(property.first)->setValue(property.second);
+	displays.at(name)->subProp(property.first.c_str())->setValue(property.second.c_str());
     }
 }
 

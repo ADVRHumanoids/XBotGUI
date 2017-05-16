@@ -32,4 +32,6 @@ std::string cyan_string(std::string s);
 
 std::string purple_string(std::string s);
 
+std::string yellow_string(std::string s);
+
 #endif
