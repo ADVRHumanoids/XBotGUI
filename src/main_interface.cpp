@@ -116,6 +116,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     #ifndef BUILD_ROBOT_RENDER
     std::cout<<"    - Render:         " + purple_string("OFF")<<std::endl;
     #else
+    robot_render->add_display("model","rviz/RobotModel");
     tabs.addTab(&robot_render,"Render");
     std::cout<<"    - Render:         " + cyan_string("ON")<<std::endl;
     #endif

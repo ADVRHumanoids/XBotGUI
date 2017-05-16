@@ -29,12 +29,20 @@ XBot::widgets::render::render(): QWidget()
     visualization_manager_->initialize();
     visualization_manager_->startUpdate();
     visualization_manager_->setFixedFrame("/base_link");
-
-    model = visualization_manager_->createDisplay( "rviz/RobotModel", "robot", true );
     
     main_layout.addWidget(render_panel_);
 
     setLayout(&main_layout);
+}
+
+void XBot::widgets::render::add_display(std::string name, std::string type, std::map< std::string, std::string > properties)
+{
+    displays[name] =  visualization_manager_->createDisplay( type, name, true );
+
+    for(auto property:properties)
+    {
+	displays.at(name)->subProp(property.first)->setValue(property.second);
+    }
 }
 
 XBot::widgets::render::~render()

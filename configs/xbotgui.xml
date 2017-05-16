@@ -1,0 +1,18 @@
+<displays>
+  <!-- NOTE: the properties reflect rviz display properties, please use the correct name -->
+
+  <display name="robot" type="rviz/RobotModel"/>
+
+  <display name="point_cloud" type="rviz/PointCloud2">
+    <property name="Topic" value="/multisense/lidar_points2"/>
+  <display/>
+
+</displays>
+
+<modules>
+  
+  <module name="test">
+    <command name="test_command" type="string"/>
+  </module>
+  
+</modules>

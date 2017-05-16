@@ -55,3 +55,7 @@ target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-c
 install(DIRECTORY resources/
     DESTINATION "resources"
     FILES_MATCHING PATTERN "*.png")
+    
+install(DIRECTORY configs/
+    DESTINATION "configs"
+    FILES_MATCHING PATTERN "*.xml")

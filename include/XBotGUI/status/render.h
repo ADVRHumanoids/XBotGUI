@@ -36,11 +36,13 @@ public:
     render();
     ~render();
 
+    void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
+
 private:
     rviz::VisualizationManager* visualization_manager_=NULL;
     rviz::RenderPanel* render_panel_=NULL;
 
-    rviz::Display* model;
+    std::map<std::string,rviz::Display*> displays;
 
     QHBoxLayout main_layout;
 
