@@ -60,9 +60,9 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     }
     else if(control_mode.getName()=="IDLE")
     {
-	current.label.setText("-");
-	min.label.setText("-");
-	max.label.setText("-");
+	current.label.setText(QString::number(slider.value(),'f',2));
+	min.label.setText(QString::number(URDFjoint->limits->lower*RAD2DEG,'f',2));
+	max.label.setText(QString::number(URDFjoint->limits->upper*RAD2DEG,'f',2));
 	control_mode_label.setText("IDLE");
 	idle=true;
     }
@@ -100,7 +100,8 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
 
 void XBot::widgets::joint::set(double q_sense)
 {
-    slider.setValue(q_sense);
+    slider.setValue(q_sense*RAD2DEG);
+    current.label.setText(QString::number(slider.value(),'f',2));
 }
 
 void XBot::widgets::joint::slider_slot()
