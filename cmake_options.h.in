@@ -1,1 +1,1 @@
-#cmakedefine BUILD_ROBOT_RENDER @BUILD_ROBOT_RENDER@
+#cmakedefine USING_ROS @USING_ROS@

@@ -3,7 +3,7 @@ project(XBotGUI)
 
 add_definitions(-std=c++11)
 
-option(BUILD_ROBOT_RENDER "Compile robot render, require ROS" OFF)
+option(USING_ROS "Compile many ROS based stuff" OFF)
 configure_file( cmake_options.h.in ${CMAKE_BINARY_DIR}/generated/cmake_options.h )
 include_directories( ${CMAKE_BINARY_DIR}/generated/ )
 
@@ -31,7 +31,7 @@ file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
 qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
 qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
 
-if(BUILD_ROBOT_RENDER) #if so, required variables are filled
+if(USING_ROS) #if so, required variables are filled
   find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy)
   include_directories(${catkin_INCLUDE_DIRS})
   set(RENDER_SOURCE_FILES src/status/render.cpp)

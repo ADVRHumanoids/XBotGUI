@@ -33,7 +33,7 @@
 #include "low_level_control/robot.h"
 #include "cmake_options.h"
 
-#ifndef BUILD_ROBOT_RENDER
+#ifndef USING_ROS
 #else
 #include "status/render.h"
 #endif
@@ -61,7 +61,7 @@ private:
     QTimer sense_timer;
     std::map<std::string,XBot::JointNameMap> chains_q_sense;
 
-    #ifndef BUILD_ROBOT_RENDER
+    #ifndef USING_ROS
     #else
     widgets::render robot_render;
     #endif

@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 {
     std::cout<<std::endl<<" - Starting XBotGUI..."<<std::endl;
 
-    #ifndef BUILD_ROBOT_RENDER
+    #ifndef USING_ROS
     #else
     if(!ros::isInitialized())
     {

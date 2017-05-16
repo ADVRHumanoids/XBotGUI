@@ -131,7 +131,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     std::cout<<"    - Joints Control: " + cyan_string("ON")<<std::endl;
     
-    #ifndef BUILD_ROBOT_RENDER
+    #ifndef USING_ROS
     std::cout<<"    - Render:         " + purple_string("OFF")<<std::endl;
     #else
 
