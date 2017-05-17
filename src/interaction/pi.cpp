@@ -42,6 +42,13 @@ XBot::widgets::pi::pi(): QWidget()
 
     buttons_layout.addWidget(&frame_label);
     buttons_layout.addWidget(&frame_combo);
+    QFrame* myFrame = new QFrame();
+    QPalette palette;
+    myFrame->setFrameShape(QFrame::VLine);
+    myFrame->setLineWidth(2);
+    palette.setColor(myFrame->foregroundRole(),Qt::gray);
+    myFrame->setPalette(palette);
+    buttons_layout.addWidget(myFrame);
     buttons_layout.addWidget(&display_label);
     buttons_layout.addWidget(&display_combo);
     buttons_layout.addWidget(&display_toggle);
