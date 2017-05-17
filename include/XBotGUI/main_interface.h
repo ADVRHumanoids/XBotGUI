@@ -29,7 +29,7 @@
 #include <XBotCoreModel.h>
 #include <XBotInterface/RobotInterface.h>
 
-#include "utils.h"
+#include "print_utils.h"
 #include "low_level_control/robot.h"
 #include "cmake_options.h"
 

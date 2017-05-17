@@ -18,7 +18,7 @@
 */
 
 #include <string>
-#include "XBotGUI/utils.h"
+#include "XBotGUI/print_utils.h"
 
 std::string blue_string(std::string s)
 {

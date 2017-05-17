@@ -51,7 +51,7 @@ set(XBOT_SOURCE_FILES
   ${INTERACTION_MOC_FILES}
   ${INTERACTION_SOURCE_FILES}
   src/main_interface.cpp
-  src/utils.cpp
+  src/print_utils.cpp
 )
 
 add_executable(XBotGUI src/main.cpp ${XBOT_SOURCE_FILES})
