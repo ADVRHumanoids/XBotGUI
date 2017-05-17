@@ -66,6 +66,7 @@ private:
 
     std::map<std::string, module*> modules;
 
+    QTabWidget visualization_tabs;
     QTabWidget modules_tabs;
 
     QHBoxLayout buttons_layout;

@@ -15,6 +15,10 @@
 	<property name="Size (Pixels)" value="3.0"/>
 	<property name="Alpha" value="0.1"/>
     </display>
+    
+    <display name="camera" type="rviz/Image">
+	<property name="Image Topic" value="camera_raw"/>
+    </display>
 
 </visualization>
 

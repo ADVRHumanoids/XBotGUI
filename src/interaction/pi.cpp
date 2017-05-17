@@ -29,7 +29,9 @@ XBot::widgets::pi::pi(): QWidget()
     visualization_manager_->initialize();
     visualization_manager_->startUpdate();
 
-    view_layout.addWidget(render_panel_);
+    visualization_tabs.addTab(render_panel_,"Render");
+    
+    view_layout.addWidget(&visualization_tabs);
     view_layout.addWidget(&modules_tabs);
     view_layout.setStretch(0,2);
     view_layout.setStretch(1,1);
@@ -112,6 +114,11 @@ void XBot::widgets::pi::add_display(std::string name, std::string type, std::map
     displays_enable[name] = true;
     display_combo.addItem(QString::fromStdString(name));
 
+    if(type=="rviz/Image")
+    {
+	visualization_tabs.addTab(displays.at(name)->getAssociatedWidget(),"Camera");
+    }
+    
     for(auto property:properties)
     {
 	displays.at(name)->subProp(property.first.c_str())->setValue(property.second.c_str());
