@@ -28,16 +28,78 @@ XBot::widgets::render::render(): QWidget()
     render_panel_->initialize( visualization_manager_->getSceneManager(), visualization_manager_ );
     visualization_manager_->initialize();
     visualization_manager_->startUpdate();
-    visualization_manager_->setFixedFrame("/base_link");
     
+    frame_label.setText("Fixed Frame:");
+    display_label.setText("Display:");
+    display_toggle.setCheckable(true);
+
+    buttons_layout.addWidget(&frame_label);
+    buttons_layout.addWidget(&frame_combo);
+    buttons_layout.addWidget(&display_label);
+    buttons_layout.addWidget(&display_combo);
+    buttons_layout.addWidget(&display_toggle);
+    
+    main_layout.addLayout(&buttons_layout);
     main_layout.addWidget(render_panel_);
 
     setLayout(&main_layout);
+
+    connect(&display_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_display_combo_changed()));
+    connect(&frame_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_frame_combo_changed()));
+    connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
+}
+
+void XBot::widgets::render::on_display_toggle_clicked()
+{
+    if(display_toggle.isChecked())
+    {
+	displays.at(display_combo.currentText().toStdString())->setEnabled(true);
+	display_toggle.setText("Disable");
+	displays_enable.at(display_combo.currentText().toStdString()) = true;
+    }
+    else
+    {
+	displays.at(display_combo.currentText().toStdString())->setEnabled(false);
+	display_toggle.setText("Enable");
+	displays_enable.at(display_combo.currentText().toStdString()) = false;
+    }
+}
+
+void XBot::widgets::render::on_display_combo_changed()
+{
+    if(displays_enable.at(display_combo.currentText().toStdString()))
+    {
+	display_toggle.setChecked(true);
+	display_toggle.setText("Disable");
+    }
+    else
+    {
+	display_toggle.setChecked(false);
+	display_toggle.setText("Enable");
+    }
+}
+
+void XBot::widgets::render::on_frame_combo_changed()
+{
+    visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
+}
+
+void XBot::widgets::render::add_frames(std::vector< std::string > names)
+{
+    for(auto name:names)
+    {
+	frame_combo.addItem(QString::fromStdString(name));
+    }
+
+    frame_combo.setCurrentIndex(0);
+    visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
 }
 
 void XBot::widgets::render::add_display(std::string name, std::string type, std::map< std::string, std::string > properties)
 {
     displays[name] =  visualization_manager_->createDisplay( type.c_str(), name.c_str(), true );
+    displays_enable[name] = true;
+    display_combo.addItem(QString::fromStdString(name));
 
     for(auto property:properties)
     {

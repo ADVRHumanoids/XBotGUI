@@ -35,12 +35,14 @@ if(USING_ROS) #if so, required variables are filled
   find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy)
   include_directories(${catkin_INCLUDE_DIRS})
   set(RENDER_SOURCE_FILES src/interaction/render.cpp)
+  qt5_wrap_cpp(RENDER_MOC_FILES include/XBotGUI/interaction/render.h)
 endif()
 
 set(XBOT_SOURCE_FILES
   ${XBOT_MOC_FILES}
   ${LOW_LEVEL_CONTROL_MOC_FILES}
   ${LOW_LEVEL_CONTROL_SOURCE_FILES}
+  ${RENDER_MOC_FILES}
   ${RENDER_SOURCE_FILES}
   src/main_interface.cpp
   src/utils.cpp

@@ -25,6 +25,9 @@
 #include <rviz/render_panel.h>
 #include <rviz/display.h>
 #include <QBoxLayout>
+#include <QComboBox>
+#include <QPushButton>
+#include <QLabel>
 
 namespace XBot
 {
@@ -32,19 +35,34 @@ namespace widgets
 {
 class render: public QWidget
 {
+Q_OBJECT
 public:
     render();
     ~render();
 
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
+    void add_frames(std::vector<std::string> names);
+
+private Q_SLOTS:
+    void on_display_combo_changed();
+    void on_frame_combo_changed();
+    void on_display_toggle_clicked();
 
 private:
     rviz::VisualizationManager* visualization_manager_=NULL;
     rviz::RenderPanel* render_panel_=NULL;
 
     std::map<std::string,rviz::Display*> displays;
+    std::map<std::string,bool> displays_enable;
 
-    QHBoxLayout main_layout;
+    QLabel frame_label;
+    QComboBox frame_combo;
+    QLabel display_label;
+    QComboBox display_combo;
+    QPushButton display_toggle;
+
+    QHBoxLayout buttons_layout;
+    QVBoxLayout main_layout;
 
 };
 };

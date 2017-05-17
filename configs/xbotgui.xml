@@ -1,6 +1,12 @@
-<displays>
+<visualization>
     <!-- NOTE: the properties reflect rviz display properties, please use the correct name -->
-    
+    <frames>
+      <frame name="base_link"/> <!-- 1st is used as default fixed frame -->
+      <frame name="Waist"/>
+      <frame name="l_sole"/>
+      <frame name="r_sole"/>
+    </frames>
+
     <display name="robot" type="rviz/RobotModel"/>
 
     <display name="point_cloud" type="rviz/PointCloud2">
@@ -10,7 +16,7 @@
 	<property name="Alpha" value="0.1"/>
     </display>
 
-</displays>
+</visualization>
 
 <modules>
   

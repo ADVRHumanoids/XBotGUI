@@ -137,15 +137,15 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     std::cout<<"    - Render:         " + cyan_string("ON")<<std::endl;
 
-    TiXmlElement* displays=doc.FirstChildElement("displays");
-    if (displays==NULL || displays->Type()!=TiXmlNode::TINYXML_ELEMENT)
+    TiXmlElement* visualization=doc.FirstChildElement("visualization");
+    if (visualization==NULL || visualization->Type()!=TiXmlNode::TINYXML_ELEMENT)
     {
-        std::cout<<yellow_string("Could not find element displays into file "+filename)<<std::endl;
+        std::cout<<yellow_string("Could not find element visualization into file "+filename)<<std::endl;
     }
     else
     {
-        std::cout<<"    - - displays"<<std::endl;
-	TiXmlElement* display = displays->FirstChildElement("display");
+        std::cout<<"    - - visualization"<<std::endl;
+	TiXmlElement* display = visualization->FirstChildElement("display");
 	TiXmlElement* property;
 	std::map<std::string,std::string> properties;	
 
@@ -155,7 +155,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    std::string display_name = display->Attribute("name");
 	    std::string display_type = display->Attribute("type");
 
-	    std::cout<<"    - - > "<<display_name<<" ( "<<display_type<<" )"<<std::endl;
+	    std::cout<<"    - - > Display: "<<display_name<<" ( "<<display_type<<" )"<<std::endl;
 	    
 	    property = display->FirstChildElement("property");
 	    
@@ -172,8 +172,25 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    display = display->NextSiblingElement("display");
 	}
+
+	TiXmlElement* frames = visualization->FirstChildElement("frames");
+	TiXmlElement* frame = frames->FirstChildElement("frame");
+	std::vector<std::string> frames_str;
+
+	std::cout<<"    - - > frames"<<std::endl;
+
+	while(frame)
+	{
+	    std::cout<<"    - - |> "<<frame->Attribute("name")<<std::endl;
+
+	    frames_str.push_back(frame->Attribute("name"));
+
+	    frame = frame->NextSiblingElement("frame");
+	}
+
+	robot_render.add_frames(frames_str);
     }
-    
+
     tabs.addTab(&robot_render,"Render");
     
     #endif
