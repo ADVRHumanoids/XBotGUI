@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QTabWidget>
 #include "XBotGUI/interaction/module.h"
+#include "XBotGUI/interaction/interactive_marker_widget.h"
 
 namespace XBot
 {
@@ -69,7 +70,10 @@ private:
     QTabWidget visualization_tabs;
     QTabWidget modules_tabs;
 
+    im_widget object_im_widget;
+
     QHBoxLayout buttons_layout;
+    QVBoxLayout control_layout;
     QHBoxLayout view_layout;
     QVBoxLayout main_layout;
 

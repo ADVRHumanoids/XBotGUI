@@ -28,6 +28,10 @@ file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/low_level_control/*.cpp"
 )
 
+file(GLOB UTILS_SOURCE_FILES
+    "${CMAKE_SOURCE_DIR}/src/utils/*.cpp"
+)
+
 qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
 qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
 
@@ -50,6 +54,7 @@ set(XBOT_SOURCE_FILES
   ${LOW_LEVEL_CONTROL_SOURCE_FILES}
   ${INTERACTION_MOC_FILES}
   ${INTERACTION_SOURCE_FILES}
+  ${UTILS_SOURCE_FILES}
   src/main_interface.cpp
   src/print_utils.cpp
 )
