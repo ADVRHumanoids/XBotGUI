@@ -35,7 +35,7 @@
 
 #ifndef USING_ROS
 #else
-#include "status/render.h"
+#include "interaction/render.h"
 #endif
 
 namespace XBot
