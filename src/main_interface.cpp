@@ -168,7 +168,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		property = property->NextSiblingElement("property");
 	    }
 
-	    robot_render.add_display(display_name.c_str(),display_type.c_str(),properties);
+	    pilot_interface.add_display(display_name.c_str(),display_type.c_str(),properties);
 
 	    display = display->NextSiblingElement("display");
 	}
@@ -188,7 +188,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    frame = frame->NextSiblingElement("frame");
 	}
 
-	robot_render.add_frames(frames_str);
+	pilot_interface.add_frames(frames_str);
     }
 
     TiXmlElement* modules=doc.FirstChildElement("modules");
@@ -221,13 +221,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		command = command->NextSiblingElement("command");
 	    }
 
-	    robot_render.add_module(module_name.c_str(),commands);
+	    pilot_interface.add_module(module_name.c_str(),commands);
 
 	    module = module->NextSiblingElement("module");
 	}
     }
 
-    tabs.addTab(&robot_render,"PI");
+    tabs.addTab(&pilot_interface,"PI");
     
     #endif
     

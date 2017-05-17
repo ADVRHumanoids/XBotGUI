@@ -35,12 +35,12 @@ namespace XBot
 {
 namespace widgets
 {
-class render: public QWidget
+class pi: public QWidget
 {
 Q_OBJECT
 public:
-    render();
-    ~render();
+    pi();
+    ~pi();
 
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
     void add_frames(std::vector<std::string> names);

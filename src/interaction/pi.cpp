@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
-#include "XBotGUI/interaction/render.h"
+#include "XBotGUI/interaction/pi.h"
 
-XBot::widgets::render::render(): QWidget()
+XBot::widgets::pi::pi(): QWidget()
 {
     render_panel_ = new rviz::RenderPanel();
     render_panel_->setMinimumHeight(30);
@@ -54,13 +54,13 @@ XBot::widgets::render::render(): QWidget()
     connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
 }
 
-void XBot::widgets::render::add_module(std::string name, std::map<std::string,std::string> commands)
+void XBot::widgets::pi::add_module(std::string name, std::map<std::string,std::string> commands)
 {
     modules[name] = new module(name);
     modules_tabs.addTab(modules.at(name),name.c_str());
 }
 
-void XBot::widgets::render::on_display_toggle_clicked()
+void XBot::widgets::pi::on_display_toggle_clicked()
 {
     if(display_toggle.isChecked())
     {
@@ -76,7 +76,7 @@ void XBot::widgets::render::on_display_toggle_clicked()
     }
 }
 
-void XBot::widgets::render::on_display_combo_changed()
+void XBot::widgets::pi::on_display_combo_changed()
 {
     if(displays_enable.at(display_combo.currentText().toStdString()))
     {
@@ -90,12 +90,12 @@ void XBot::widgets::render::on_display_combo_changed()
     }
 }
 
-void XBot::widgets::render::on_frame_combo_changed()
+void XBot::widgets::pi::on_frame_combo_changed()
 {
     visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
 }
 
-void XBot::widgets::render::add_frames(std::vector< std::string > names)
+void XBot::widgets::pi::add_frames(std::vector< std::string > names)
 {
     for(auto name:names)
     {
@@ -106,7 +106,7 @@ void XBot::widgets::render::add_frames(std::vector< std::string > names)
     visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
 }
 
-void XBot::widgets::render::add_display(std::string name, std::string type, std::map< std::string, std::string > properties)
+void XBot::widgets::pi::add_display(std::string name, std::string type, std::map< std::string, std::string > properties)
 {
     displays[name] =  visualization_manager_->createDisplay( type.c_str(), name.c_str(), true );
     displays_enable[name] = true;
@@ -118,7 +118,7 @@ void XBot::widgets::render::add_display(std::string name, std::string type, std:
     }
 }
 
-XBot::widgets::render::~render()
+XBot::widgets::pi::~pi()
 {
     delete visualization_manager_;
     delete render_panel_;

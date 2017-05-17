@@ -35,7 +35,7 @@
 
 #ifndef USING_ROS
 #else
-#include "interaction/render.h"
+#include "interaction/pi.h"
 #endif
 
 namespace XBot
@@ -63,7 +63,7 @@ private:
 
     #ifndef USING_ROS
     #else
-    widgets::render robot_render;
+    widgets::pi pilot_interface;
     #endif
 
 private Q_SLOTS:
