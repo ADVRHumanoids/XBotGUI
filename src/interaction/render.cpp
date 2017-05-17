@@ -28,6 +28,11 @@ XBot::widgets::render::render(): QWidget()
     render_panel_->initialize( visualization_manager_->getSceneManager(), visualization_manager_ );
     visualization_manager_->initialize();
     visualization_manager_->startUpdate();
+
+    view_layout.addWidget(render_panel_);
+    view_layout.addWidget(&modules_tabs);
+    view_layout.setStretch(0,2);
+    view_layout.setStretch(1,1);
     
     frame_label.setText("Fixed Frame:");
     display_label.setText("Display:");
@@ -40,13 +45,19 @@ XBot::widgets::render::render(): QWidget()
     buttons_layout.addWidget(&display_toggle);
     
     main_layout.addLayout(&buttons_layout);
-    main_layout.addWidget(render_panel_);
+    main_layout.addLayout(&view_layout);
 
     setLayout(&main_layout);
 
     connect(&display_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_display_combo_changed()));
     connect(&frame_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_frame_combo_changed()));
     connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
+}
+
+void XBot::widgets::render::add_module(std::string name, std::map<std::string,std::string> commands)
+{
+    modules[name] = new module(name);
+    modules_tabs.addTab(modules.at(name),name.c_str());
 }
 
 void XBot::widgets::render::on_display_toggle_clicked()
@@ -111,4 +122,9 @@ XBot::widgets::render::~render()
 {
     delete visualization_manager_;
     delete render_panel_;
+
+    for(auto module:modules)
+    {
+	delete module.second;
+    }
 }

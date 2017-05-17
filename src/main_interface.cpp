@@ -125,17 +125,17 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     robot_widget.generateRobotWidgetFromModel(_XBotModel,_RobotInterface);
 
-    tabs.addTab(&robot_widget,"Robot");
+    tabs.addTab(&robot_widget,"Joints");
     
     std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
 
     std::cout<<"    - Joints Control: " + cyan_string("ON")<<std::endl;
     
     #ifndef USING_ROS
-    std::cout<<"    - Render:         " + purple_string("OFF")<<std::endl;
+    std::cout<<"    - PI:         " + purple_string("OFF")<<std::endl;
     #else
 
-    std::cout<<"    - Render:         " + cyan_string("ON")<<std::endl;
+    std::cout<<"    - PI:         " + cyan_string("ON")<<std::endl;
 
     TiXmlElement* visualization=doc.FirstChildElement("visualization");
     if (visualization==NULL || visualization->Type()!=TiXmlNode::TINYXML_ELEMENT)
@@ -155,7 +155,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    std::string display_name = display->Attribute("name");
 	    std::string display_type = display->Attribute("type");
 
-	    std::cout<<"    - - > Display: "<<display_name<<" ( "<<display_type<<" )"<<std::endl;
+	    std::cout<<"    - - | Display: "<<display_name<<" ( "<<display_type<<" )"<<std::endl;
 	    
 	    property = display->FirstChildElement("property");
 	    
@@ -163,7 +163,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    {
 		properties[property->Attribute("name")] = property->Attribute("value");
 
-		std::cout<<"    - - |> "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
+		std::cout<<"    - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 		
 		property = property->NextSiblingElement("property");
 	    }
@@ -177,11 +177,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	TiXmlElement* frame = frames->FirstChildElement("frame");
 	std::vector<std::string> frames_str;
 
-	std::cout<<"    - - > frames"<<std::endl;
+	std::cout<<"    - - | frames"<<std::endl;
 
 	while(frame)
 	{
-	    std::cout<<"    - - |> "<<frame->Attribute("name")<<std::endl;
+	    std::cout<<"    - - | > "<<frame->Attribute("name")<<std::endl;
 
 	    frames_str.push_back(frame->Attribute("name"));
 
@@ -191,7 +191,43 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	robot_render.add_frames(frames_str);
     }
 
-    tabs.addTab(&robot_render,"Render");
+    TiXmlElement* modules=doc.FirstChildElement("modules");
+    if (modules==NULL || modules->Type()!=TiXmlNode::TINYXML_ELEMENT)
+    {
+        std::cout<<yellow_string("Could not find element modules into file "+filename)<<std::endl;
+    }
+    else
+    {
+        std::cout<<"    - - modules"<<std::endl;
+	TiXmlElement* module = modules->FirstChildElement("module");
+	TiXmlElement* command;
+	std::map<std::string,std::string> commands;
+
+	while(module)
+	{
+	    commands.clear();
+	    std::string module_name = module->Attribute("name");
+
+	    std::cout<<"    - - | Module: "<<module_name<<std::endl;
+	    
+	    command = module->FirstChildElement("command");
+	    
+	    while(command)
+	    {
+		commands[command->Attribute("name")] = command->Attribute("type");
+
+		std::cout<<"    - - | > "<<command->Attribute("name")<<" : "<<command->Attribute("type")<<std::endl;
+		
+		command = command->NextSiblingElement("command");
+	    }
+
+	    robot_render.add_module(module_name.c_str(),commands);
+
+	    module = module->NextSiblingElement("module");
+	}
+    }
+
+    tabs.addTab(&robot_render,"PI");
     
     #endif
     

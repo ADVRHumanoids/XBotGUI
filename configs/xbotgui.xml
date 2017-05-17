@@ -20,8 +20,12 @@
 
 <modules>
   
-    <module name="test">
-	<command name="test_command" type="string"/>
+    <module name="valve">
+	<command name="valve_command" type="string"/>
+    </module>
+    
+    <module name="door">
+	<command name="door_command" type="string"/>
     </module>
 
 </modules>

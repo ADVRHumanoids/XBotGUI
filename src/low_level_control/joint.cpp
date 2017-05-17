@@ -67,11 +67,11 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
 	idle=true;
     }
     
-    current.setFixedSize(70,30);
-    min.setFixedSize(70,30);
+    current.setFixedSize(70,40);
+    min.setFixedSize(70,40);
     min.setFrameStyle(QFrame::Box);
     min.setPalette(palette);
-    max.setFixedSize(70,30);
+    max.setFixedSize(70,40);
     max.setFrameStyle(QFrame::Box);
     max.setPalette(palette);
     control_mode_label.setPalette(palette);

@@ -28,6 +28,8 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QLabel>
+#include <QTabWidget>
+#include "XBotGUI/interaction/module.h"
 
 namespace XBot
 {
@@ -42,6 +44,7 @@ public:
 
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
     void add_frames(std::vector<std::string> names);
+    void add_module(std::string name, std::map<std::string,std::string> commands);
 
 private Q_SLOTS:
     void on_display_combo_changed();
@@ -61,7 +64,12 @@ private:
     QComboBox display_combo;
     QPushButton display_toggle;
 
+    std::map<std::string, module*> modules;
+
+    QTabWidget modules_tabs;
+
     QHBoxLayout buttons_layout;
+    QHBoxLayout view_layout;
     QVBoxLayout main_layout;
 
 };
