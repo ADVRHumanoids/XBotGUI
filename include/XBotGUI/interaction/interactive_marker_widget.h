@@ -21,6 +21,7 @@
 #define XBOTGUI_IM_WIDGET_H
 
 #include <ros/ros.h>
+#include <rviz/tool_manager.h>
 #include <visualization_msgs/Marker.h>
 #include <QBoxLayout>
 #include <QPushButton>
@@ -34,19 +35,25 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(std::string name);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name, int index);
     ~im_widget();
 
 private Q_SLOTS:
     void on_publish_button_clicked();
+    void on_interactive_tool_button_clicked();
 
 private:
+    rviz::Tool* interactive_tool;
+    rviz::ToolManager* tool_manager;
     ros::NodeHandle nh;
     interactive_markers_handler im_handler;
     ros::Publisher marker_pub;
     visualization_msgs::Marker marker;
 
+    QPushButton interactive_tool_button;
     QPushButton publish_button;
+
+    QHBoxLayout buttons_layout;
     QVBoxLayout main_layout;
 
 };

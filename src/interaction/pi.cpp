@@ -18,7 +18,7 @@
 */
 #include "XBotGUI/interaction/pi.h"
 
-XBot::widgets::pi::pi(): QWidget(), object_im_widget("object")
+XBot::widgets::pi::pi(): QWidget()
 {
     render_panel_ = new rviz::RenderPanel();
     render_panel_->setMinimumHeight(30);
@@ -29,10 +29,12 @@ XBot::widgets::pi::pi(): QWidget(), object_im_widget("object")
     visualization_manager_->initialize();
     visualization_manager_->startUpdate();
 
+    tool_manager_ = visualization_manager_->getToolManager();
+
     visualization_tabs.addTab(render_panel_,"Render");
     
     control_layout.addWidget(&modules_tabs);
-    control_layout.addWidget(&object_im_widget);
+    control_layout.addWidget(&im_tabs);
     control_layout.setStretch(0,1);
     control_layout.setStretch(1,1);
 
@@ -66,10 +68,15 @@ XBot::widgets::pi::pi(): QWidget(), object_im_widget("object")
     connect(&display_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_display_combo_changed()));
     connect(&frame_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_frame_combo_changed()));
     connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
-    
+}
+
+void XBot::widgets::pi::add_interactive_marker(std::string name,int index)
+{
+    im_widgets[name] =  new im_widget(tool_manager_,name,index);
+    im_tabs.addTab(im_widgets.at(name),QString::fromStdString(name));
     std::map<std::string,std::string> properties;
-    add_display("object_im","rviz/InteractiveMarkers",properties);
-    displays.at("object_im")->setTopic("/object_server/update","visualization_msgs/InteractiveMarkerUpdate");
+    add_display(name,"rviz/InteractiveMarkers",properties);
+    displays.at(name)->setTopic(("/"+name+"_server/update").c_str(),"visualization_msgs/InteractiveMarkerUpdate");
 }
 
 void XBot::widgets::pi::add_module(std::string name, std::map<std::string,std::string> commands)

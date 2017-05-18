@@ -227,6 +227,28 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	}
     }
 
+    TiXmlElement* interactive_markers=doc.FirstChildElement("interactive_markers");
+    if (interactive_markers==NULL || interactive_markers->Type()!=TiXmlNode::TINYXML_ELEMENT)
+    {
+        std::cout<<yellow_string("Could not find element interactive_markers into file "+filename)<<std::endl;
+    }
+    else
+    {
+        std::cout<<"    - - interactive_markers"<<std::endl;
+	TiXmlElement* marker = interactive_markers->FirstChildElement("marker");
+
+	while(marker)
+	{
+	    std::string marker_name = marker->Attribute("name");
+
+	    std::cout<<"    - - | Marker: "<<marker_name<<std::endl;
+
+	    pilot_interface.add_interactive_marker(marker_name,object_count++);
+
+	    marker = marker->NextSiblingElement("marker");
+	}
+    }
+    
     tabs.addTab(&pilot_interface,"PI");
     
     #endif

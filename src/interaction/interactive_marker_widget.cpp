@@ -18,24 +18,46 @@
 */
 #include "XBotGUI/interaction/interactive_marker_widget.h"
 
-XBot::widgets::im_widget::im_widget(std::string name): QWidget(), im_handler(name+"_server",name+"_client")
+XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name, int index): QWidget(), tool_manager(tool_manager_), im_handler(name+"_server",name+"_client")
 {
-   marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
-   name = "Publish " + name;
-   publish_button.setText(QString::fromStdString(name));
+   interactive_tool = tool_manager->addTool("rviz/Interact");
 
-   marker.color.r=1;
+   marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
+   publish_button.setText("Publish Marker");
+   interactive_tool_button.setCheckable(true);
+   interactive_tool_button.setText("Enable Interaction");
+
+   marker.id = index;
+   marker.color.g=1;
    marker.color.a=1;
    marker.pose.orientation.w=1;
    marker.header.frame_id="/base_link";
    marker.type=visualization_msgs::Marker::CUBE;
    marker.scale.x = marker.scale.y = marker.scale.z = 1.0;
-   
-   main_layout.addWidget(&publish_button);
+
+   buttons_layout.addWidget(&publish_button);
+   buttons_layout.addWidget(&interactive_tool_button);
+
+   main_layout.addLayout(&buttons_layout);
    
    setLayout(&main_layout);
    
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
+   connect(&interactive_tool_button, SIGNAL(clicked(bool)), this, SLOT(on_interactive_tool_button_clicked()));
+}
+
+void XBot::widgets::im_widget::on_interactive_tool_button_clicked()
+{
+    if(interactive_tool_button.isChecked())
+    {
+	tool_manager->setCurrentTool(interactive_tool);
+	interactive_tool_button.setText("Disable Interaction");
+    }
+    else
+    {
+	tool_manager->setCurrentTool(tool_manager->getDefaultTool());
+	interactive_tool_button.setText("Enable Interaction");
+    }
 }
 
 void XBot::widgets::im_widget::on_publish_button_clicked()

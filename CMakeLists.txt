@@ -36,7 +36,7 @@ qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
 qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
 
 if(USING_ROS) #if so, required variables are filled
-  find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy)
+  find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy tf_conversions)
   include_directories(${catkin_INCLUDE_DIRS})
   file(GLOB INTERACTION_H_FILES
     "${CMAKE_SOURCE_DIR}/include/XBotGUI/interaction/*.h"

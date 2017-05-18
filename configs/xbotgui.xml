@@ -33,3 +33,9 @@
     </module>
 
 </modules>
+
+<interactive_markers>
+
+    <marker name="object"/>
+
+</interactive_markers>

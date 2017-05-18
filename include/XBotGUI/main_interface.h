@@ -65,6 +65,8 @@ private:
     #else
     widgets::pi pilot_interface;
     #endif
+    
+    int object_count=0;
 
 private Q_SLOTS:
     void sense();

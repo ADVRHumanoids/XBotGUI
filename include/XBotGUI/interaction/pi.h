@@ -24,6 +24,7 @@
 #include <rviz/visualization_manager.h>
 #include <rviz/render_panel.h>
 #include <rviz/display.h>
+#include <rviz/tool_manager.h>
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QPushButton>
@@ -46,6 +47,7 @@ public:
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
     void add_frames(std::vector<std::string> names);
     void add_module(std::string name, std::map<std::string,std::string> commands);
+    void add_interactive_marker(std::string name, int index);
 
 private Q_SLOTS:
     void on_display_combo_changed();
@@ -54,6 +56,7 @@ private Q_SLOTS:
 
 private:
     rviz::VisualizationManager* visualization_manager_=NULL;
+    rviz::ToolManager* tool_manager_=NULL;
     rviz::RenderPanel* render_panel_=NULL;
 
     std::map<std::string,rviz::Display*> displays;
@@ -66,11 +69,11 @@ private:
     QPushButton display_toggle;
 
     std::map<std::string, module*> modules;
+    std::map<std::string, im_widget*> im_widgets;
 
     QTabWidget visualization_tabs;
     QTabWidget modules_tabs;
-
-    im_widget object_im_widget;
+    QTabWidget im_tabs;
 
     QHBoxLayout buttons_layout;
     QVBoxLayout control_layout;
