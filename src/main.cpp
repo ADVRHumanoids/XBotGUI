@@ -21,6 +21,7 @@
 #include <qicon.h>
 #include <iostream>
 #include <tf/transform_broadcaster.h>
+#include <tf_conversions/tf_kdl.h>
 
 int main(int argc, char** argv)
 {
@@ -56,13 +57,17 @@ int main(int argc, char** argv)
 
     std::cout<<std::endl;
     std::cout<<green_string(" >> Started XBotGUI for robot ")<<cyan_string(gui.getRobot())<<green_string(" <<")<<std::endl<<std::endl;
-    
+
+    ros::Time start = ros::Time::now();
+
     tf::TransformBroadcaster dummy_broadcaster;
-    geometry_msgs::TransformStamped dummy_transform;
-    dummy_transform.header.frame_id = "/XBotGUI_root";
-    dummy_transform.child_frame_id = "/base_link";
-    dummy_transform.transform.rotation.w=1;
-    dummy_broadcaster.sendTransform(dummy_transform);
+    tf::Transform dummy_transform;
+    tf::transformKDLToTF(KDL::Frame::Identity(),dummy_transform);
+    
+    while(ros::Time::now()-start<ros::Duration(1.0))
+    {
+	dummy_broadcaster.sendTransform(tf::StampedTransform(dummy_transform, ros::Time::now(), "/XBotGUI_root", "/base_link"));
+    }
     
     return app.exec();
 }
