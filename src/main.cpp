@@ -58,6 +58,8 @@ int main(int argc, char** argv)
     std::cout<<std::endl;
     std::cout<<green_string(" >> Started XBotGUI for robot ")<<cyan_string(gui.getRobot())<<green_string(" <<")<<std::endl<<std::endl;
 
+    #ifndef USING_ROS
+    #else
     ros::Time start = ros::Time::now();
 
     tf::TransformBroadcaster dummy_broadcaster;
@@ -68,6 +70,7 @@ int main(int argc, char** argv)
     {
 	dummy_broadcaster.sendTransform(tf::StampedTransform(dummy_transform, ros::Time::now(), "/XBotGUI_root", "/base_link"));
     }
-    
+    #endif
+
     return app.exec();
 }

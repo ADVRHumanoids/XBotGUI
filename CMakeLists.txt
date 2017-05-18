@@ -28,12 +28,9 @@ file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/low_level_control/*.cpp"
 )
 
-file(GLOB UTILS_SOURCE_FILES
-    "${CMAKE_SOURCE_DIR}/src/utils/*.cpp"
-)
-
 qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
 qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
+qt5_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
 
 if(USING_ROS) #if so, required variables are filled
   find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy tf_conversions)
@@ -41,11 +38,17 @@ if(USING_ROS) #if so, required variables are filled
   file(GLOB INTERACTION_H_FILES
     "${CMAKE_SOURCE_DIR}/include/XBotGUI/interaction/*.h"
   )
-
   file(GLOB INTERACTION_SOURCE_FILES
       "${CMAKE_SOURCE_DIR}/src/interaction/*.cpp"
   )
   qt5_wrap_cpp(INTERACTION_MOC_FILES ${INTERACTION_H_FILES})
+  file(GLOB UTILS_H_FILES
+    "${CMAKE_SOURCE_DIR}/include/XBotGUI/utils/*.h"
+  )
+  file(GLOB UTILS_SOURCE_FILES
+      "${CMAKE_SOURCE_DIR}/src/utils/*.cpp"
+  )
+  qt5_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
 endif()
 
 set(XBOT_SOURCE_FILES
@@ -54,6 +57,7 @@ set(XBOT_SOURCE_FILES
   ${LOW_LEVEL_CONTROL_SOURCE_FILES}
   ${INTERACTION_MOC_FILES}
   ${INTERACTION_SOURCE_FILES}
+  ${UTILS_MOC_FILES}
   ${UTILS_SOURCE_FILES}
   src/main_interface.cpp
   src/print_utils.cpp

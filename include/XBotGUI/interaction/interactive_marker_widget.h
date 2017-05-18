@@ -25,7 +25,10 @@
 #include <visualization_msgs/Marker.h>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QSignalMapper>
 #include "XBotGUI/utils/interactive_markers_handler.h"
+#include "XBotGUI/utils/Label_LineEdit.h" //NOTE: mixing CamelCase and under_score because reasons
+#include <atomic>
 
 namespace XBot
 {
@@ -41,6 +44,7 @@ public:
 private Q_SLOTS:
     void on_publish_button_clicked();
     void on_interactive_tool_button_clicked();
+    void on_text_edit_changed(int id);
 
 private:
     rviz::Tool* interactive_tool;
@@ -49,10 +53,18 @@ private:
     interactive_markers_handler im_handler;
     ros::Publisher marker_pub;
     visualization_msgs::Marker marker;
+    ros::Subscriber im_sub;
+    void im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback);
+    void update_text();
+    std::atomic_bool changing_test;
 
     QPushButton interactive_tool_button;
     QPushButton publish_button;
 
+    QSignalMapper coord_mapper;
+    std::map<int, label_lineedit*> coords_widgets;
+
+    QGridLayout coords_layout;
     QHBoxLayout buttons_layout;
     QVBoxLayout main_layout;
 
