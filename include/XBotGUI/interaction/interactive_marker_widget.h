@@ -23,7 +23,9 @@
 #include <ros/ros.h>
 #include <rviz/tool_manager.h>
 #include <visualization_msgs/Marker.h>
+#include <std_msgs/String.h>
 #include <QBoxLayout>
+#include <QComboBox>
 #include <QPushButton>
 #include <QSignalMapper>
 #include "XBotGUI/utils/interactive_markers_handler.h"
@@ -32,6 +34,18 @@
 
 namespace XBot
 {
+
+class object_properties
+{
+public:
+    object_properties();
+
+    std::string name;
+    geometry_msgs::Vector3 scale;
+    visualization_msgs::Marker::Type::_type_type type;
+    std::string mesh_name;
+};
+
 namespace widgets
 {
 class im_widget: public QWidget
@@ -44,7 +58,9 @@ public:
 private Q_SLOTS:
     void on_publish_button_clicked();
     void on_interactive_tool_button_clicked();
-    void on_text_edit_changed(int id);
+    void on_coords_changed(int id);
+    void on_object_combo_changed();
+    void on_scale_changed(int id);
 
 private:
     rviz::Tool* interactive_tool;
@@ -55,8 +71,8 @@ private:
     visualization_msgs::Marker marker;
     ros::Subscriber im_sub;
     void im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback);
-    void update_text();
-    std::atomic_bool changing_test;
+    void update_coords();
+    std::atomic_bool changing_coords;
 
     QPushButton interactive_tool_button;
     QPushButton publish_button;
@@ -68,6 +84,17 @@ private:
     QHBoxLayout buttons_layout;
     QVBoxLayout main_layout;
 
+    std::map<std::string,object_properties*> objects;
+    QComboBox object_combo;
+    void generate_objects();
+    void update_scale();
+    QHBoxLayout scale_layout;
+    QLabel scale_label;
+    std::map<int, label_lineedit*> scale_widgets;
+    QSignalMapper scale_mapper;
+    void load_object_params();
+    
+    ros::Publisher debug_pub;
 };
 };
 };
