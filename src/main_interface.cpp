@@ -265,9 +265,10 @@ void XBot::GUI::sense()
 {
     _RobotInterface->sense();
 
-    for(auto chain_:chains_q_sense)
+    for(auto& chain_ : chains_q_sense)
     {
-	_RobotInterface->getJointPosition(chain_.second);
+        
+	_RobotInterface->chain(chain_.first).getJointPosition(chain_.second);
     }
 
     robot_widget.setChainsJoints(chains_q_sense);
