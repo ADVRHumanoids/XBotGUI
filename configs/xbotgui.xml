@@ -7,7 +7,9 @@
       <frame name="r_sole"/>
     </frames>
 
-    <display name="robot" type="rviz/RobotModel"/>
+    <display name="robot" type="rviz/RobotModel">
+        <property name="Robot Description" value="/xbotcore/bigman/robot_description"/> <!-- TBD param based on the robot-->
+    </display>
 
     <display name="point_cloud" type="rviz/PointCloud2">
 	<property name="Topic" value="/multisense/lidar_points2"/>
