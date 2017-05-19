@@ -48,6 +48,7 @@ public:
     void add_frames(std::vector<std::string> names);
     void add_module(std::string name, std::map<std::string,std::string> commands);
     void add_interactive_marker(std::string name, int index);
+    void set_robot_name(std::string robot_name_);
 
 private Q_SLOTS:
     void on_display_combo_changed();
@@ -55,6 +56,7 @@ private Q_SLOTS:
     void on_display_toggle_clicked();
 
 private:
+    std::string robot_name;
     rviz::VisualizationManager* visualization_manager_=NULL;
     rviz::ToolManager* tool_manager_=NULL;
     rviz::RenderPanel* render_panel_=NULL;

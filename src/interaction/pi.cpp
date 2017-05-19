@@ -70,6 +70,11 @@ XBot::widgets::pi::pi(): QWidget()
     connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
 }
 
+void XBot::widgets::pi::set_robot_name(std::string robot_name_)
+{
+    robot_name=robot_name_;
+}
+
 void XBot::widgets::pi::add_interactive_marker(std::string name,int index)
 {
     im_widgets[name] =  new im_widget(tool_manager_,name,index);
@@ -141,7 +146,12 @@ void XBot::widgets::pi::add_display(std::string name, std::string type, std::map
     {
 	visualization_tabs.addTab(displays.at(name)->getAssociatedWidget(),"Camera");
     }
-    
+
+    if(type=="rviz/RobotModel")
+    {
+	displays.at(name)->subProp("Robot Description")->setValue(("/xbotcore/" + robot_name + "/robot_description").c_str());
+    }
+
     for(auto property:properties)
     {
 	displays.at(name)->subProp(property.first.c_str())->setValue(property.second.c_str());

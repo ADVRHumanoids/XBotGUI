@@ -135,6 +135,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     std::cout<<"    - PI:         " + purple_string("OFF")<<std::endl;
     #else
 
+    pilot_interface.set_robot_name(_XBotModel.getName());
+
     std::cout<<"    - PI:         " + cyan_string("ON")<<std::endl;
 
     TiXmlElement* visualization=doc.FirstChildElement("visualization");
