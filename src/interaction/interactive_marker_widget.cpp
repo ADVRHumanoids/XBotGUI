@@ -29,10 +29,10 @@ XBot::object_properties::object_properties()
 XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name, int index): QWidget(), tool_manager(tool_manager_), im_handler(name+"_server",name+"_client")
 {
    changing_coords.store(false);
+   changing_scale.store(false);
 
    interactive_tool = tool_manager->addTool("rviz/Interact");
 
-   debug_pub = nh.advertise<std_msgs::String>("/debug",1);
    marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
    publish_button.setText("Publish Marker");
    interactive_tool_button.setCheckable(true);
@@ -159,33 +159,27 @@ void XBot::widgets::im_widget::on_coords_changed(int id)
 
 void XBot::widgets::im_widget::on_scale_changed(int id)
 {
-    objects.at(object_combo.currentText().toStdString())->scale.x = scale_widgets.at(0)->edit.text().toDouble();
-    objects.at(object_combo.currentText().toStdString())->scale.y = scale_widgets.at(1)->edit.text().toDouble();
-    objects.at(object_combo.currentText().toStdString())->scale.z = scale_widgets.at(2)->edit.text().toDouble();
-    
-    marker.scale.x = scale_widgets.at(0)->edit.text().toDouble();
-    marker.scale.y = scale_widgets.at(1)->edit.text().toDouble();
-    marker.scale.z = scale_widgets.at(2)->edit.text().toDouble();
-    
-    std_msgs::String msg;
-    msg.data=std::to_string(marker.scale.x);
-    debug_pub.publish(msg);
-    usleep(1000);
-    msg.data=std::to_string(marker.scale.y);
-    debug_pub.publish(msg);
-    usleep(1000);
-    msg.data=std::to_string(marker.scale.z);
-    debug_pub.publish(msg);
-    usleep(1000);
+    if(!changing_scale.load())
+    {
+	objects.at(object_combo.currentText().toStdString())->scale.x = scale_widgets.at(0)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString())->scale.y = scale_widgets.at(1)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString())->scale.z = scale_widgets.at(2)->edit.text().toDouble();
+	
+	marker.scale.x = scale_widgets.at(0)->edit.text().toDouble();
+	marker.scale.y = scale_widgets.at(1)->edit.text().toDouble();
+	marker.scale.z = scale_widgets.at(2)->edit.text().toDouble();
+    }
     
     on_publish_button_clicked();
 }
 
 void XBot::widgets::im_widget::update_scale()
 {
+    changing_scale.store(true);
     scale_widgets.at(0)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString())->scale.x, 'f', 3));
     scale_widgets.at(1)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString())->scale.y, 'f', 3));
     scale_widgets.at(2)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString())->scale.z, 'f', 3));
+    changing_scale.store(false);
 }
 
 void XBot::widgets::im_widget::load_object_params()
@@ -201,6 +195,7 @@ void XBot::widgets::im_widget::on_object_combo_changed()
 {
     load_object_params();
     update_scale();
+    on_scale_changed(0);
     on_publish_button_clicked();
 }
 
@@ -226,11 +221,12 @@ void XBot::widgets::im_widget::generate_objects()
 
     objects["valve"] = new object_properties();
     objects["valve"]->name = "valve";
-    objects["valve"]->scale.x = 0.5;
-    objects["valve"]->scale.y = 0.5;
-    objects["valve"]->scale.z = 0.5;
+    objects["valve"]->scale.x = 0.3;
+    objects["valve"]->scale.y = 0.3;
+    objects["valve"]->scale.z = 0.3;
     objects["valve"]->type = visualization_msgs::Marker::MESH_RESOURCE;
-    objects["valve"]->mesh_name = "resources/valve.dae";
+    std::string mesh = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/vrc_valve.dae";
+    objects["valve"]->mesh_name = mesh;
     
     for(auto object:objects)
 	object_combo.addItem(QString::fromStdString(object.first));

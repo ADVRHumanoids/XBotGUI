@@ -93,8 +93,8 @@ private:
     std::map<int, label_lineedit*> scale_widgets;
     QSignalMapper scale_mapper;
     void load_object_params();
-    
-    ros::Publisher debug_pub;
+    std::atomic_bool changing_scale;
+
 };
 };
 };
