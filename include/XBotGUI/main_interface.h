@@ -63,6 +63,7 @@ private:
 
     #ifndef USING_ROS
     #else
+    std::map<std::string, visualization_msgs::Marker::Type::_type_type> name_to_types;
     widgets::pi pilot_interface;
     #endif
     

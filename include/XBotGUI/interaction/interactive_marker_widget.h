@@ -52,7 +52,7 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(rviz::ToolManager* tool_manager_, std::string name, int index);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name, int index, std::map<std::string,object_properties> objects_);
     ~im_widget();
 
 private Q_SLOTS:
@@ -84,9 +84,9 @@ private:
     QHBoxLayout buttons_layout;
     QVBoxLayout main_layout;
 
-    std::map<std::string,object_properties*> objects;
+    std::map<std::string,object_properties> objects;
     QComboBox object_combo;
-    void generate_objects();
+    void generate_objects(std::map<std::string,object_properties> objects_);
     void update_scale();
     QHBoxLayout scale_layout;
     QLabel scale_label;

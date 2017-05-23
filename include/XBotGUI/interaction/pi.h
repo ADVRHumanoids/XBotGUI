@@ -47,7 +47,7 @@ public:
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
     void add_frames(std::vector<std::string> names);
     void add_module(std::string name, std::map<std::string,std::string> commands);
-    void add_interactive_marker(std::string name, int index);
+    void add_interactive_marker(std::string name, int index,std::map<std::string,object_properties> objects);
     void set_robot_name(std::string robot_name_);
 
 private Q_SLOTS:

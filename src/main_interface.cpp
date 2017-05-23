@@ -22,7 +22,7 @@
 #include <cstdlib>
 
 XBot::GUI::GUI(std::string config_file): QWidget()
-{
+{   
     std::string filename = "/build/external/XBotGUI/configs/xbotgui.xml";
     filename = std::getenv("ROBOTOLOGY_ROOT") + filename;
 
@@ -135,6 +135,19 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     std::cout<<"    - PI:         " + purple_string("OFF")<<std::endl;
     #else
 
+    name_to_types["visualization_msgs::Marker::ARROW"] = visualization_msgs::Marker::ARROW;
+    name_to_types["visualization_msgs::Marker::CUBE"] = visualization_msgs::Marker::CUBE;
+    name_to_types["visualization_msgs::Marker::SPHERE"] = visualization_msgs::Marker::SPHERE;
+    name_to_types["visualization_msgs::Marker::CYLINDER"] = visualization_msgs::Marker::CYLINDER;
+    name_to_types["visualization_msgs::Marker::LINE_STRIP"] = visualization_msgs::Marker::LINE_STRIP;
+    name_to_types["visualization_msgs::Marker::LINE_LIST"] = visualization_msgs::Marker::LINE_LIST;
+    name_to_types["visualization_msgs::Marker::CUBE_LIST"] = visualization_msgs::Marker::CUBE_LIST;
+    name_to_types["visualization_msgs::Marker::SPHERE_LIST"] = visualization_msgs::Marker::SPHERE_LIST;
+    name_to_types["visualization_msgs::Marker::POINTS"] = visualization_msgs::Marker::POINTS;
+    name_to_types["visualization_msgs::Marker::TEXT_VIEW_FACING"] = visualization_msgs::Marker::TEXT_VIEW_FACING;
+    name_to_types["visualization_msgs::Marker::MESH_RESOURCE"] = visualization_msgs::Marker::MESH_RESOURCE;
+    name_to_types["visualization_msgs::Marker::TRIANGLE_LIST"] = visualization_msgs::Marker::TRIANGLE_LIST;
+
     pilot_interface.set_robot_name(_XBotModel.getName());
 
     std::cout<<"    - PI:         " + cyan_string("ON")<<std::endl;
@@ -237,20 +250,57 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     else
     {
         std::cout<<"    - - interactive_markers"<<std::endl;
-	TiXmlElement* marker = interactive_markers->FirstChildElement("marker");
+	TiXmlElement* interactive_marker = interactive_markers->FirstChildElement("interactive_marker");
 
-	while(marker)
+	while(interactive_marker)
 	{
-	    std::string marker_name = marker->Attribute("name");
+	    std::string interactive_marker_name = interactive_marker->Attribute("name");
 
-	    std::cout<<"    - - | Marker: "<<marker_name<<std::endl;
+	    std::cout<<"    - - | Interactive Marker: "<<interactive_marker_name<<std::endl;
 
-	    pilot_interface.add_interactive_marker(marker_name,object_count++);
+	    std::map<std::string,object_properties> objects;
 
-	    marker = marker->NextSiblingElement("marker");
+	    TiXmlElement* object = interactive_marker->FirstChildElement("object");
+	    
+	    while(object)
+	    {
+		std::string object_name = object->Attribute("name");
+
+		TiXmlElement* property = object->FirstChildElement("property");
+
+		objects[object_name];
+
+		std::cout<<"    - - - | Object: "<<object_name<<std::endl;
+
+		while(property)
+		{
+		    if(std::string(property->Attribute("name"))=="scale_x")
+			objects.at(object_name).scale.x = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="scale_y")
+			objects.at(object_name).scale.y = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="scale_z")
+			objects.at(object_name).scale.z = std::atof(property->Attribute("value"));
+
+		    if(std::string(property->Attribute("name"))=="type")
+			objects.at(object_name).type = name_to_types.at(std::string(property->Attribute("value")));
+
+		    if(std::string(property->Attribute("name"))=="mesh")
+			objects.at(object_name).mesh_name = std::string(property->Attribute("value"));
+
+		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
+
+		    property = property->NextSiblingElement("property");
+		}
+
+		object = object->NextSiblingElement("object");
+	    }
+	    
+	    pilot_interface.add_interactive_marker(interactive_marker_name,object_count++,objects);
+
+	    interactive_marker = interactive_marker->NextSiblingElement("interactive_marker");
 	}
     }
-    
+
     tabs.addTab(&pilot_interface,"PI");
     
     #endif

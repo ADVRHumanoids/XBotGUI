@@ -25,8 +25,8 @@ XBot::object_properties::object_properties()
     scale.y=1.0;
     scale.z=1.0;
 }
-
-XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name, int index): QWidget(), tool_manager(tool_manager_), im_handler(name+"_server",name+"_client")
+XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name, int index, std::map< std::string, XBot::object_properties > objects_)
+: QWidget(), tool_manager(tool_manager_), im_handler(name+"_server",name+"_client")
 {
    changing_coords.store(false);
    changing_scale.store(false);
@@ -83,7 +83,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
    connect(&interactive_tool_button, SIGNAL(clicked(bool)), this, SLOT(on_interactive_tool_button_clicked()));
 
-   generate_objects();
+   generate_objects(objects_);
    connect(&object_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_object_combo_changed()));
    
    marker.id = index;
@@ -161,9 +161,9 @@ void XBot::widgets::im_widget::on_scale_changed(int id)
 {
     if(!changing_scale.load())
     {
-	objects.at(object_combo.currentText().toStdString())->scale.x = scale_widgets.at(0)->edit.text().toDouble();
-	objects.at(object_combo.currentText().toStdString())->scale.y = scale_widgets.at(1)->edit.text().toDouble();
-	objects.at(object_combo.currentText().toStdString())->scale.z = scale_widgets.at(2)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString()).scale.x = scale_widgets.at(0)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString()).scale.y = scale_widgets.at(1)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString()).scale.z = scale_widgets.at(2)->edit.text().toDouble();
 	
 	marker.scale.x = scale_widgets.at(0)->edit.text().toDouble();
 	marker.scale.y = scale_widgets.at(1)->edit.text().toDouble();
@@ -176,19 +176,19 @@ void XBot::widgets::im_widget::on_scale_changed(int id)
 void XBot::widgets::im_widget::update_scale()
 {
     changing_scale.store(true);
-    scale_widgets.at(0)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString())->scale.x, 'f', 3));
-    scale_widgets.at(1)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString())->scale.y, 'f', 3));
-    scale_widgets.at(2)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString())->scale.z, 'f', 3));
+    scale_widgets.at(0)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString()).scale.x, 'f', 3));
+    scale_widgets.at(1)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString()).scale.y, 'f', 3));
+    scale_widgets.at(2)->edit.setText(QString::number(objects.at(object_combo.currentText().toStdString()).scale.z, 'f', 3));
     changing_scale.store(false);
 }
 
 void XBot::widgets::im_widget::load_object_params()
 {
-    marker.type = objects.at(object_combo.currentText().toStdString())->type;
-    marker.mesh_resource = objects.at(object_combo.currentText().toStdString())->mesh_name;
-    marker.scale.x = objects.at(object_combo.currentText().toStdString())->scale.x;
-    marker.scale.y = objects.at(object_combo.currentText().toStdString())->scale.y;
-    marker.scale.z = objects.at(object_combo.currentText().toStdString())->scale.z;
+    marker.type = objects.at(object_combo.currentText().toStdString()).type;
+    marker.mesh_resource = objects.at(object_combo.currentText().toStdString()).mesh_name;
+    marker.scale.x = objects.at(object_combo.currentText().toStdString()).scale.x;
+    marker.scale.y = objects.at(object_combo.currentText().toStdString()).scale.y;
+    marker.scale.z = objects.at(object_combo.currentText().toStdString()).scale.z;
 }
 
 void XBot::widgets::im_widget::on_object_combo_changed()
@@ -201,33 +201,25 @@ void XBot::widgets::im_widget::on_object_combo_changed()
 
 XBot::widgets::im_widget::~im_widget()
 {
-    for(auto object:objects)
-	delete object.second;
     for(auto coord:coords_widgets)
 	delete coord.second;
     for(auto scale:scale_widgets)
 	delete scale.second;
 }
 
-void XBot::widgets::im_widget::generate_objects()
+void XBot::widgets::im_widget::generate_objects(std::map<std::string,object_properties> objects_)
 {
-    objects["box"] = new object_properties();
-    objects["box"]->name = "box";
-    objects["box"]->scale.x = 0.5;
-    objects["box"]->scale.y = 0.5;
-    objects["box"]->scale.z = 0.5;
-    objects["box"]->type = visualization_msgs::Marker::CUBE;
-    objects["box"]->mesh_name = "";
-
-    objects["valve"] = new object_properties();
-    objects["valve"]->name = "valve";
-    objects["valve"]->scale.x = 0.3;
-    objects["valve"]->scale.y = 0.3;
-    objects["valve"]->scale.z = 0.3;
-    objects["valve"]->type = visualization_msgs::Marker::MESH_RESOURCE;
-    std::string mesh = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/vrc_valve.dae";
-    objects["valve"]->mesh_name = mesh;
-    
-    for(auto object:objects)
+    for(auto object:objects_)
+    {
 	object_combo.addItem(QString::fromStdString(object.first));
+
+	objects[object.first].name = object.first;
+	objects[object.first].scale.x = object.second.scale.x;
+	objects[object.first].scale.y = object.second.scale.y;
+	objects[object.first].scale.z = object.second.scale.z;
+	objects[object.first].type = object.second.type;
+	objects[object.first].mesh_name = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/" + object.second.mesh_name;
+    }
+    
+    object_combo.setCurrentIndex(0);
 }
