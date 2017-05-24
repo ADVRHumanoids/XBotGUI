@@ -21,6 +21,7 @@
 #define XBOTGUI_MODULE_H
 
 #include <ros/ros.h>
+#include <std_srvs/SetBool.h>
 #include <QBoxLayout>
 #include <QPushButton>
 
@@ -32,12 +33,23 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name);
+    module(std::string name_);
     ~module();
 
 private Q_SLOTS:
+    void on_switch_button_clicked();
 
 private:
+    void start_info(bool error);
+    void stop_info(bool error);
+
+    std::string name;
+    ros::NodeHandle nh;
+    ros::ServiceClient switch_client;
+    std_srvs::SetBool switch_service;
+
+    QPushButton switch_button;
+
     QVBoxLayout main_layout;
 
 };

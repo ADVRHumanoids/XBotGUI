@@ -17,10 +17,81 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 #include "XBotGUI/interaction/module.h"
+#include "XBotGUI/print_utils.h"
 
-XBot::widgets::module::module(std::string name): QWidget()
+void XBot::widgets::module::start_info(bool error)
 {
-   setLayout(&main_layout);
+    if(!error)
+    {
+	std::cout<<green_string("[ MODULE " + name +" ") + yellow_string("STARTED") + green_string(" ]")<<std::endl;
+    }
+    else
+    {
+	std::cout<<red_string("[ ERROR STARTING MODULE " + name +" ]")<<std::endl;
+    }
+}
+
+void XBot::widgets::module::stop_info(bool error)
+{
+    if(!error)
+    {
+	std::cout<<green_string("[ MODULE " + name +" ") + yellow_string("STOPPED") + green_string(" ]")<<std::endl;
+    }
+    else
+    {
+	std::cout<<red_string("[ ERROR STOPPING MODULE " + name +" ]")<<std::endl;
+    }
+}
+
+XBot::widgets::module::module(std::string name_): QWidget(), name(name_)
+{
+    switch_client = nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str());
+
+    switch_button.setCheckable(true);
+    switch_button.setText("Start");
+
+    main_layout.addWidget(&switch_button);
+
+    connect(&switch_button,SIGNAL(clicked()),this,SLOT(on_switch_button_clicked()));
+
+    setLayout(&main_layout);
+}
+
+void XBot::widgets::module::on_switch_button_clicked()
+{
+    if(switch_button.isChecked())
+    {
+	switch_button.setText("Stop");
+	switch_service.request.data = true;
+	if(switch_client.call(switch_service))
+	{
+	    if(switch_service.response.success)
+		start_info(false);
+	    else
+		start_info(true);
+	}
+	else
+	{
+	    start_info(true);
+	}
+    }
+    else
+    {
+	switch_button.setText("Start");
+
+	switch_service.request.data = false;
+	if(switch_client.call(switch_service))
+	{
+	    if(switch_service.response.success)
+		stop_info(false);
+	    else
+		stop_info(true);
+	}
+	else
+	{
+	    stop_info(true);
+	}
+    }
 }
 
 XBot::widgets::module::~module()

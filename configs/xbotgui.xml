@@ -24,8 +24,8 @@
 
 <modules>
   
-    <module name="valve">
-	<command name="valve_command" type="string"/>
+    <module name="HomingExample">
+	<command name="homing_command" type="string"/>
     </module>
     
     <module name="door">
