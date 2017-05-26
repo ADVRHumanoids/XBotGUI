@@ -46,6 +46,7 @@ public:
 
     void generateRobotWidgetFromModel(XBotCoreModel& model, RobotInterface::Ptr robot_interface);
     void setChainsJoints(std::map<std::string,XBot::JointNameMap> chains_q_sense);
+    void getChainsJoints(std::map<std::string,XBot::JointNameMap>& chains_q_move);
 
 private:
     QTabWidget tabs;

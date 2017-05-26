@@ -49,6 +49,14 @@ void XBot::widgets::chain::setJoints(XBot::JointNameMap joints_q_sense)
     }
 }
 
+void XBot::widgets::chain::getJoints(XBot::JointNameMap& joints_q_move)
+{
+    for(auto& joint_:joints)
+    {
+        joints.at(joint_.first)->get(joints_q_move[joint_.first]);
+    }
+}
+
 XBot::widgets::chain::~chain()
 {
     for(auto j:joints)

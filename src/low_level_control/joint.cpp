@@ -96,12 +96,19 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     setFixedSize(240,210);
 
     connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(slider_slot()));
+    
+    //TODO disable joint update while moving it
 }
 
 void XBot::widgets::joint::set(double q_sense)
 {
     slider.setValue(q_sense*RAD2DEG);
     current.label.setText(QString::number(slider.value(),'f',2));
+}
+
+void XBot::widgets::joint::get(double& q_move)
+{
+    q_move = slider.value()*DEG2RAD;
 }
 
 void XBot::widgets::joint::slider_slot()

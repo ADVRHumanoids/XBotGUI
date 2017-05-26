@@ -53,6 +53,14 @@ void XBot::widgets::robot::setChainsJoints(std::map< std::string, XBot::JointNam
     }
 }
 
+void XBot::widgets::robot::getChainsJoints(std::map< std::string, XBot::JointNameMap >& chains_q_move)
+{
+    for(auto& chain_:chains)
+    {
+        chains.at(chain_.first)->getJoints(chains_q_move[chain_.first]);
+    }
+}
+
 XBot::widgets::robot::~robot()
 {
     for(auto c:chains)

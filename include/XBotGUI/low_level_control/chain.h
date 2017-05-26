@@ -41,6 +41,7 @@ public:
     chain(std::string name_,std::vector<std::string> joint_names, boost::shared_ptr<urdf::ModelInterface const> urdf, std::map<std::string,XBot::ControlMode> control_map);
     ~chain();
     void setJoints(XBot::JointNameMap joints_q_sense);
+    void getJoints(XBot::JointNameMap& joints_q_move);
 
 private:
     std::map<std::string,joint*> joints;

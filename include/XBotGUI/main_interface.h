@@ -60,6 +60,8 @@ private:
 
     QTimer sense_timer;
     std::map<std::string,XBot::JointNameMap> chains_q_sense;
+    QTimer move_timer;
+    std::map<std::string,XBot::JointNameMap> chains_q_move;
 
     #ifndef USING_ROS
     #else
@@ -71,6 +73,7 @@ private:
 
 private Q_SLOTS:
     void sense();
+    void move();
 
 };
 }

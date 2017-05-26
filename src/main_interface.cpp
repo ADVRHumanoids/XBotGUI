@@ -309,6 +309,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     connect(&sense_timer, SIGNAL(timeout()), this, SLOT(sense()));
     sense_timer.start(10);
+    connect(&move_timer, SIGNAL(timeout()), this, SLOT(move()));
+    move_timer.start(5);
 
     setLayout(&main_layout);
 }
@@ -319,11 +321,22 @@ void XBot::GUI::sense()
 
     for(auto& chain_ : chains_q_sense)
     {
-        
 	_RobotInterface->chain(chain_.first).getJointPosition(chain_.second);
     }
 
     robot_widget.setChainsJoints(chains_q_sense);
+}
+
+void XBot::GUI::move()
+{
+    robot_widget.getChainsJoints(chains_q_move);
+    
+    for(auto& chain_ : chains_q_move)
+    {
+	_RobotInterface->chain(chain_.first).setPositionReference(chain_.second);
+    }
+
+    _RobotInterface->move();
 }
 
 std::string XBot::GUI::getRobot()
