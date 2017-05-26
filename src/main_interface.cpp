@@ -308,7 +308,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     main_layout.addWidget(&tabs);
 
     connect(&sense_timer, SIGNAL(timeout()), this, SLOT(sense()));
-    sense_timer.start(10);
+//     sense_timer.start(20);
     connect(&move_timer, SIGNAL(timeout()), this, SLOT(move()));
     move_timer.start(5);
 
