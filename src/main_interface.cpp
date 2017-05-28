@@ -103,6 +103,14 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     _XBotModel.generate_robot();
 
     _RobotInterface = XBot::RobotInterface::getRobot(config_file);
+    
+    // get the first position read
+    _RobotInterface->sense();
+    
+    // initialize second order filter
+    Eigen::VectorXd current_q;
+    _RobotInterface->getMotorPosition(current_q);
+    _q_ref_filtered.reset(current_q);
 
     for(auto chain_:_XBotModel.get_robot())
     {
