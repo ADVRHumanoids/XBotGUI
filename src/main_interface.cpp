@@ -311,6 +311,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 //     sense_timer.start(20);
     connect(&move_timer, SIGNAL(timeout()), this, SLOT(move()));
     move_timer.start(5);
+    
+    // initialize second order filter TBD take it from config file
+    _q_ref_filtered.setDamping(1.0);
+    _q_ref_filtered.setOmega(10);    // TBD to tune
+    _q_ref_filtered.setTimeStep(5);  // NOTE equal to the move calling frequency   
 
     setLayout(&main_layout);
 }
@@ -336,6 +341,12 @@ void XBot::GUI::move()
 	_RobotInterface->chain(chain_.first).setPositionReference(chain_.second);
     }
 
+    // NOTE one filter for the whole robot
+    Eigen::VectorXd current_q_ref;
+    _RobotInterface->getPositionReference(current_q_ref);
+    _RobotInterface->setPositionReference(_q_ref_filtered.process(current_q_ref));
+    
+    // actual move
     _RobotInterface->move();
 }
 
