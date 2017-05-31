@@ -36,6 +36,8 @@ public:
     module(std::string name_);
     ~module();
 
+    QPushButton* get_switch_button();
+
 private Q_SLOTS:
     void on_switch_button_clicked();
 

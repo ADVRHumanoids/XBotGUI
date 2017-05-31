@@ -57,6 +57,8 @@ public:
     void set(double q_sense);
     void get(double& q_sense);
 
+    void enable(bool enable_);
+
 private Q_SLOTS:
     void slider_slot();
     void slider_action();

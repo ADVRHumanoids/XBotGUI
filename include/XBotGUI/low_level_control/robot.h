@@ -30,6 +30,7 @@
 #include <XBotCoreModel.h>
 #include <XBotInterface/RobotInterface.h>
 #include <XBotInterface/TypedefAndEnums.h>
+#include <XBotGUI/interaction/module.h>
 
 #include "chain.h"
 
@@ -48,12 +49,18 @@ public:
     void setChainsJoints(std::map<std::string,XBot::JointNameMap> chains_q_sense);
     void getChainsJoints(std::map<std::string,XBot::JointNameMap>& chains_q_move);
 
+    void enableChainsJoints(bool enable_);
+
+private Q_SLOTS:
+    void on_xbot_communication_plugin_started_toggled();
+
 private:
     QTabWidget tabs;
-    QHBoxLayout main_layout;
+    QVBoxLayout main_layout;
 
     std::map<std::string,chain*> chains;
 
+    module xbot_communication_plugin;
 };
 };
 };

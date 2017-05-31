@@ -104,6 +104,11 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     disable_sense.store(false);
 }
 
+void XBot::widgets::joint::enable(bool enable_)
+{
+    slider.setEnabled(enable_);
+}
+
 void XBot::widgets::joint::timer_slot()
 {
     disable_sense.store(false);

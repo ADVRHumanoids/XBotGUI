@@ -19,9 +19,22 @@
 
 #include "XBotGUI/low_level_control/robot.h"
 
-XBot::widgets::robot::robot(): QWidget()
+XBot::widgets::robot::robot(): QWidget(), xbot_communication_plugin("XBotCommunicationPlugin")
 {
 
+}
+
+void XBot::widgets::robot::enableChainsJoints(bool enable_)
+{
+    for(auto& chain_:chains)
+    {
+        chains.at(chain_.first)->enableJoints(enable_);
+    }
+}
+
+void XBot::widgets::robot::on_xbot_communication_plugin_started_toggled()
+{
+    enableChainsJoints(xbot_communication_plugin.get_switch_button()->isChecked());
 }
 
 void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, RobotInterface::Ptr robot_interface)
@@ -41,8 +54,13 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, Ro
 	tabs.addTab(c,QString::fromStdString(chain_.first));
     }
     
+    main_layout.addWidget(&xbot_communication_plugin);
     main_layout.addWidget(&tabs);
     setLayout(&main_layout);
+
+    connect((xbot_communication_plugin.get_switch_button()),SIGNAL(clicked()),this,SLOT(on_xbot_communication_plugin_started_toggled()));
+
+    enableChainsJoints(false);
 }
 
 void XBot::widgets::robot::setChainsJoints(std::map< std::string, XBot::JointNameMap > chains_q_sense)

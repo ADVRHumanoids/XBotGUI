@@ -57,6 +57,11 @@ XBot::widgets::module::module(std::string name_): QWidget(), name(name_)
     setLayout(&main_layout);
 }
 
+QPushButton* XBot::widgets::module::get_switch_button()
+{
+    return &switch_button;
+}
+
 void XBot::widgets::module::on_switch_button_clicked()
 {
     if(switch_button.isChecked())

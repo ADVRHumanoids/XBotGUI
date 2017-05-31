@@ -43,6 +43,8 @@ public:
     void setJoints(XBot::JointNameMap joints_q_sense);
     void getJoints(XBot::JointNameMap& joints_q_move);
 
+    void enableJoints(bool enable_);
+
 private:
     std::map<std::string,joint*> joints;
     QGridLayout main_layout;

@@ -41,6 +41,14 @@ XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_
     setLayout(&main_layout);
 }
 
+void XBot::widgets::chain::enableJoints(bool enable_)
+{
+    for(auto joint_:joints)
+    {
+	joint_.second->enable(enable_);
+    }
+}
+
 void XBot::widgets::chain::setJoints(XBot::JointNameMap joints_q_sense)
 {
     for(auto joint_:joints_q_sense)
