@@ -96,19 +96,47 @@ XBot::widgets::joint::joint(std::string name_, boost::shared_ptr <const urdf::Jo
     setFixedSize(240,210);
 
     connect(&slider, SIGNAL(valueChanged(int)), this, SLOT(slider_slot()));
+    connect(&slider, SIGNAL(actionTriggered(int)), this, SLOT(slider_action()));
     
-    //TODO disable joint update while moving it
+    sense_timer.setSingleShot(true);
+    connect(&sense_timer, SIGNAL(timeout()), this, SLOT(timer_slot()));
+    
+    disable_sense.store(false);
+}
+
+void XBot::widgets::joint::timer_slot()
+{
+    disable_sense.store(false);
 }
 
 void XBot::widgets::joint::set(double q_sense)
 {
+    if(disable_sense.load()) return;
+
     slider.setValue(q_sense*RAD2DEG);
     current.label.setText(QString::number(slider.value(),'f',2));
+
+    if(!initialized)
+    {
+        slider_action();
+	initialized = true;
+    }
 }
 
 void XBot::widgets::joint::get(double& q_move)
 {
-    q_move = slider.value()*DEG2RAD;
+    q_move = desired_q.load()*DEG2RAD;
+}
+
+void XBot::widgets::joint::slider_action()
+{
+    desired_q.store(slider.value());
+
+    if(!sense_timer.isActive())
+    {
+        disable_sense.store(true);
+	sense_timer.start(2000);
+    }
 }
 
 void XBot::widgets::joint::slider_slot()

@@ -26,8 +26,10 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFrame>
+#include <QTimer>
 #include <urdf_parser/urdf_parser.h>
 #include <XBotInterface/RobotInterface.h>
+#include <atomic>
 
 #define RAD2DEG 180.0/3.1415
 #define DEG2RAD 3.1415/180.0
@@ -57,6 +59,8 @@ public:
 
 private Q_SLOTS:
     void slider_slot();
+    void slider_action();
+    void timer_slot();
 
 private:
     QLabel title;
@@ -71,6 +75,11 @@ private:
     std::string name;
     XBot::ControlMode control_mode;
     boost::shared_ptr <const urdf::Joint > URDFjoint;
+
+    bool initialized = false;
+    std::atomic_int desired_q;
+    std::atomic_bool disable_sense;
+    QTimer sense_timer;
 };
 };
 };

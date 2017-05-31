@@ -307,8 +307,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     
     main_layout.addWidget(&tabs);
 
+    // first sense and move to activate and let the robot where it is
+    sense();
+    usleep(10000);
+    move();
+
     connect(&sense_timer, SIGNAL(timeout()), this, SLOT(sense()));
-//     sense_timer.start(20);
+    sense_timer.start(20);
     connect(&move_timer, SIGNAL(timeout()), this, SLOT(move()));
     move_timer.start(5);
 
