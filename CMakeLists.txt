@@ -69,6 +69,10 @@ qt5_use_modules(XBotGUI Widgets Gui)
 
 target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES})
 
+install(TARGETS XBotGUI
+	EXPORT  XBotGUI
+	RUNTIME DESTINATION bin)
+
 install(DIRECTORY resources/
     DESTINATION "resources"
     FILES_MATCHING PATTERN "*.png")
