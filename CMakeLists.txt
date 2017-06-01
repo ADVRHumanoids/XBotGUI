@@ -7,7 +7,7 @@ option(USING_ROS "Compile many ROS based stuff" ON)
 configure_file( cmake_options.h.in ${CMAKE_BINARY_DIR}/generated/cmake_options.h )
 include_directories( ${CMAKE_BINARY_DIR}/generated/ )
 
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR})
+#set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR})
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -70,8 +70,8 @@ qt5_use_modules(XBotGUI Widgets Gui)
 target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES})
 
 install(TARGETS XBotGUI
-	EXPORT  XBotGUI
-	RUNTIME DESTINATION bin)
+        EXPORT  XBotGUI
+        RUNTIME DESTINATION bin)
 
 install(DIRECTORY resources/
     DESTINATION "resources"
