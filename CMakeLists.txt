@@ -3,7 +3,7 @@ project(XBotGUI)
 
 add_definitions(-std=c++11)
 
-option(USING_ROS "Compile many ROS based stuff" OFF)
+option(USING_ROS "Compile many ROS based stuff" ON)
 configure_file( cmake_options.h.in ${CMAKE_BINARY_DIR}/generated/cmake_options.h )
 include_directories( ${CMAKE_BINARY_DIR}/generated/ )
 
