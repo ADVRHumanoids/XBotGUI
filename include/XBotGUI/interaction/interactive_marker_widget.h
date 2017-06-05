@@ -22,7 +22,9 @@
 
 #include <ros/ros.h>
 #include <rviz/tool_manager.h>
+#include <rviz/properties/property.h>
 #include <visualization_msgs/Marker.h>
+#include <geometry_msgs/PointStamped.h>
 #include <std_msgs/String.h>
 #include <QBoxLayout>
 #include <QComboBox>
@@ -58,6 +60,7 @@ public:
 private Q_SLOTS:
     void on_publish_button_clicked();
     void on_interactive_tool_button_clicked();
+    void on_position_by_click_button_clicked();
     void on_coords_changed(int id);
     void on_object_combo_changed();
     void on_scale_changed(int id);
@@ -76,6 +79,11 @@ private:
 
     QPushButton interactive_tool_button;
     QPushButton publish_button;
+
+    QPushButton position_by_click_button;
+    void position_by_click_callback(const geometry_msgs::PointStamped& point);
+    ros::Subscriber position_by_click_sub;
+    rviz::Tool* click_tool;
 
     QSignalMapper coord_mapper;
     std::map<int, label_lineedit*> coords_widgets;

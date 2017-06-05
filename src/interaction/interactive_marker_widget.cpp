@@ -39,6 +39,12 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    interactive_tool_button.setText("Enable Interaction");
    im_sub = nh.subscribe(("/"+name+"_server/feedback").c_str(),1,&im_widget::im_callback,this);
 
+   position_by_click_button.setCheckable(true);
+   position_by_click_button.setText("Position by Click");
+   click_tool = tool_manager->addTool("rviz/PublishPoint");
+   click_tool->getPropertyContainer()->subProp("Topic")->setValue(("/" +name+ "_clicked_point").c_str());
+   position_by_click_sub = nh.subscribe("/" +name+ "_clicked_point",1,&im_widget::position_by_click_callback,this);
+
    coords_widgets[0] = new label_lineedit("x:");
    coords_widgets[1] = new label_lineedit("y:");
    coords_widgets[2] = new label_lineedit("z:");
@@ -60,6 +66,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
 
    buttons_layout.addWidget(&publish_button);
    buttons_layout.addWidget(&interactive_tool_button);
+   buttons_layout.addWidget(&position_by_click_button);
 
    coords_layout.addWidget(coords_widgets.at(0),0,0);
    coords_layout.addWidget(coords_widgets.at(1),0,1);
@@ -82,6 +89,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
    connect(&interactive_tool_button, SIGNAL(clicked(bool)), this, SLOT(on_interactive_tool_button_clicked()));
+   connect(&position_by_click_button, SIGNAL(clicked(bool)), this, SLOT(on_position_by_click_button_clicked()));
 
    generate_objects(objects_);
    connect(&object_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_object_combo_changed()));
@@ -100,6 +108,38 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
       scale_mapper.setMapping(&(scale_widgets.at(i)->edit), i);
    }
    connect(&scale_mapper, SIGNAL(mapped(int)), this, SLOT(on_scale_changed(int))) ;
+}
+
+void XBot::widgets::im_widget::position_by_click_callback(const geometry_msgs::PointStamped& point)
+{
+    //resetting button
+    position_by_click_button.setChecked(false);
+    position_by_click_button.setText("Position by Click");
+
+    //saving data
+    marker.pose.position.x = point.point.x;
+    marker.pose.position.y = point.point.y;
+    marker.pose.position.z = point.point.z;
+
+    changing_coords.store(true);
+    update_coords();
+    changing_coords.store(false);
+
+    on_publish_button_clicked();
+}
+
+void XBot::widgets::im_widget::on_position_by_click_button_clicked()
+{
+    if(position_by_click_button.isChecked())
+    {
+	tool_manager->setCurrentTool(click_tool);
+	position_by_click_button.setText("ABORT Positioning");
+    }
+    else
+    {
+	tool_manager->setCurrentTool(tool_manager->getDefaultTool());
+	position_by_click_button.setText("Position by Click");
+    }
 }
 
 void XBot::widgets::im_widget::on_interactive_tool_button_clicked()
