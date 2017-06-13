@@ -22,8 +22,10 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QPushButton>
 #include <QBoxLayout>
 #include <QGridLayout>
+#include <QProcess>
 #include <map>
 #include <urdf_parser/urdf_parser.h>
 #include <XBotInterface/RobotInterface.h>
@@ -38,16 +40,23 @@ class chain: public QWidget
 {
 Q_OBJECT
 public:
-    chain(std::string name_,std::vector<std::string> joint_names, boost::shared_ptr<urdf::ModelInterface const> urdf, std::map<std::string,XBot::ControlMode> control_map);
+    chain(std::string name_,std::vector<std::string> joint_names, std::map<std::string,int> joint_names_id, boost::shared_ptr<urdf::ModelInterface const> urdf, std::map<std::string,XBot::ControlMode> control_map);
     ~chain();
     void setJoints(XBot::JointNameMap joints_q_sense);
     void getJoints(XBot::JointNameMap& joints_q_move);
 
     void enableJoints(bool enable_);
 
+private Q_SLOTS:
+    void on_plot_button_clicked();
+
 private:
     std::map<std::string,joint*> joints;
     QGridLayout main_layout;
+
+    QPushButton plot_button;
+    QProcess plot_process;
+    QString plot_process_string;
 
     std::string name;
 };

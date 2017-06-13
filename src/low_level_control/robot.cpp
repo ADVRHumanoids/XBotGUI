@@ -42,18 +42,25 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, Ro
     std::map<std::string,XBot::ControlMode> control_map ;
     robot_interface->getControlMode(control_map);
    
+    std::vector<std::string> enabled_joint_names = robot_interface->getEnabledJointNames();
+    std::map<std::string,int> joint_names_id;
+    for(int i=0;i<enabled_joint_names.size();i++)
+    {
+	joint_names_id[enabled_joint_names.at(i)] = i;
+    }
+
     for(auto chain_:model.get_robot())
     {
-        std::vector<std::string> joint_names;
+	std::vector<std::string> joint_names;
 	for(auto j:chain_.second)
 	{
 	    joint_names.push_back(model.rid2Joint(j));
 	}
-        chain* c = new chain(chain_.first,joint_names,model.get_urdf_model(), control_map);
+        chain* c = new chain(chain_.first,joint_names,joint_names_id,model.get_urdf_model(), control_map);
 	chains[chain_.first] = c;
 	tabs.addTab(c,QString::fromStdString(chain_.first));
     }
-    
+
     main_layout.addWidget(&xbot_communication_plugin);
     main_layout.addWidget(&tabs);
     setLayout(&main_layout);
