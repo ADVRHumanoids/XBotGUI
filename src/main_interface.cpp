@@ -23,7 +23,7 @@
 
 XBot::GUI::GUI(std::string config_file): QWidget()
 {   
-    std::string filename = "/build/external/XBotGUI/configs/xbotgui.xml";
+    std::string filename = "/external/XBotGUI/configs/xbotgui.xml";
     filename = std::getenv("ROBOTOLOGY_ROOT") + filename;
 
     TiXmlDocument doc(filename);
