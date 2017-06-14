@@ -27,6 +27,7 @@
 
 #include <yaml-cpp/yaml.h>
 #include <XBotCoreModel.h>
+#include <XBotInterface/Utils.h>
 #include <XBotInterface/RobotInterface.h>
 
 #include "print_utils.h"
@@ -70,6 +71,8 @@ private:
     #endif
     
     int object_count=0;
+    
+    XBot::Utils::SecondOrderFilter<Eigen::VectorXd> _q_ref_filtered;
 
 private Q_SLOTS:
     void sense();
