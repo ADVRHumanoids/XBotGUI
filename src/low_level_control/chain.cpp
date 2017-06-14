@@ -48,7 +48,7 @@ XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_
 
     for(auto name:joint_names)
     {
-	plot_process_string = plot_process_string + "/xbotcore/centauro/joint_states/link_position[" + QString::number(joint_names_id.at(name)) + "] ";
+	plot_process_string = plot_process_string + "/xbotcore/" + QString::fromStdString(urdf->name_)  + "/joint_states/link_position[" + QString::number(joint_names_id.at(name)) + "] ";
     }
 
     setLayout(&main_layout);
