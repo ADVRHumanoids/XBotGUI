@@ -12,9 +12,6 @@ include_directories( ${CMAKE_BINARY_DIR}/generated/ )
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui REQUIRED)
-
 find_package(XBotCoreModel REQUIRED)
 find_package(XBotInterface REQUIRED)
 
@@ -28,28 +25,76 @@ file(GLOB LOW_LEVEL_CONTROL_SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/low_level_control/*.cpp"
 )
 
-qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
-qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
-qt5_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
+if($ENV{ROS_DISTRO} STRLESS "indigo" OR $ENV{ROS_DISTRO} STREQUAL "indigo")
+    find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+    include(${QT_USE_FILE})
+    # wrap using Qt
+        
+    qt4_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
+    qt4_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
+    qt4_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
+    
+    if(USING_ROS) #if so, required variables are filled
+        find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy tf_conversions)
+        include_directories(${catkin_INCLUDE_DIRS})
+        file(GLOB INTERACTION_H_FILES
+                "${CMAKE_SOURCE_DIR}/include/XBotGUI/interaction/*.h"
+        )
+        file(GLOB INTERACTION_SOURCE_FILES
+                "${CMAKE_SOURCE_DIR}/src/interaction/*.cpp"
+        )
+        qt4_wrap_cpp(INTERACTION_MOC_FILES ${INTERACTION_H_FILES})
+        file(GLOB UTILS_H_FILES
+            "${CMAKE_SOURCE_DIR}/include/XBotGUI/utils/*.h"
+        )
+        file(GLOB UTILS_SOURCE_FILES
+            "${CMAKE_SOURCE_DIR}/src/utils/*.cpp"
+        )
+        qt4_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
+    endif()
 
-if(USING_ROS) #if so, required variables are filled
-  find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy tf_conversions)
-  include_directories(${catkin_INCLUDE_DIRS})
-  file(GLOB INTERACTION_H_FILES
-    "${CMAKE_SOURCE_DIR}/include/XBotGUI/interaction/*.h"
-  )
-  file(GLOB INTERACTION_SOURCE_FILES
-      "${CMAKE_SOURCE_DIR}/src/interaction/*.cpp"
-  )
-  qt5_wrap_cpp(INTERACTION_MOC_FILES ${INTERACTION_H_FILES})
-  file(GLOB UTILS_H_FILES
-    "${CMAKE_SOURCE_DIR}/include/XBotGUI/utils/*.h"
-  )
-  file(GLOB UTILS_SOURCE_FILES
-      "${CMAKE_SOURCE_DIR}/src/utils/*.cpp"
-  )
-  qt5_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
+
+elseif($ENV{ROS_DISTRO} STRGREATER "indigo")
+    find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
+    include_directories(${Qt5Core_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
+    add_definitions(-DQT_NO_KEYWORDS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+    
+    # wrap using Qt
+    
+    qt5_wrap_cpp(XBOT_MOC_FILES include/XBotGUI/main_interface.h)
+    qt5_wrap_cpp(LOW_LEVEL_CONTROL_MOC_FILES ${LOW_LEVEL_CONTROL_H_FILES})
+    qt5_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
+
+    if(USING_ROS) #if so, required variables are filled
+        find_package(catkin REQUIRED COMPONENTS rviz roscpp roslib rospy tf_conversions)
+        include_directories(${catkin_INCLUDE_DIRS})
+        file(GLOB INTERACTION_H_FILES
+                "${CMAKE_SOURCE_DIR}/include/XBotGUI/interaction/*.h"
+        )
+        file(GLOB INTERACTION_SOURCE_FILES
+                "${CMAKE_SOURCE_DIR}/src/interaction/*.cpp"
+        )
+        qt5_wrap_cpp(INTERACTION_MOC_FILES ${INTERACTION_H_FILES})
+        file(GLOB UTILS_H_FILES
+            "${CMAKE_SOURCE_DIR}/include/XBotGUI/utils/*.h"
+        )
+        file(GLOB UTILS_SOURCE_FILES
+            "${CMAKE_SOURCE_DIR}/src/utils/*.cpp"
+        )
+        qt5_wrap_cpp(UTILS_MOC_FILES ${UTILS_H_FILES})
+    endif()
+
+
+    SET(QT_LIBRARIES
+        ${Qt5Core_LIBRARIES}
+        ${Qt5Widgets_LIBRARIES}
+        ${Qt5Gui_LIBRARIES}
+    )
 endif()
+
+
+
 
 set(XBOT_SOURCE_FILES
   ${XBOT_MOC_FILES}
@@ -65,9 +110,13 @@ set(XBOT_SOURCE_FILES
 
 add_executable(XBotGUI src/main.cpp ${XBOT_SOURCE_FILES})
 
-qt5_use_modules(XBotGUI Widgets Gui)
+if($ENV{ROS_DISTRO} STRLESS "indigo" OR $ENV{ROS_DISTRO} STREQUAL "indigo")
+#     qt4_use_modules(XBotGUI )
+elseif($ENV{ROS_DISTRO} STRGREATER "indigo")
+    qt5_use_modules(XBotGUI Widgets Gui)
+endif()
 
-target_link_libraries(XBotGUI ${Qt5Widgets_LIBRARIES} ${Qt5Gui_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(XBotGUI ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES})
 
 install(TARGETS XBotGUI
         EXPORT  XBotGUI
