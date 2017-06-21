@@ -22,14 +22,10 @@
 
 </visualization>
 
-<modules>
+<modules> <!-- here are defined additional commands for plugins defined in yaml config files can be defined, pay attention to plugin names! -->
   
-    <module name="HomingExample">
-	<command name="homing_command" type="string"/>
-    </module>
-    
-    <module name="door">
-	<command name="door_command" type="string"/>
+    <module name="Valve">
+	<command name="valve_pose" type="object_pose"/>
     </module>
 
 </modules>

@@ -74,6 +74,8 @@ private:
     
     XBot::Utils::SecondOrderFilter<Eigen::VectorXd> _q_ref_filtered;
 
+    std::vector<std::string> plugin_names;
+
 private Q_SLOTS:
     void sense();
     void move();

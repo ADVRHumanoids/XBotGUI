@@ -87,6 +87,25 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    std::cout<<red_string("ERROR: XBotInterface field is not in the configuration file")<<std::endl; 
 	    abort();
 	}
+
+	if(!config["XBotRTPlugins"].IsNull())
+	{
+	    if(!config["XBotRTPlugins"]["plugins"].IsNull())
+	    {
+	        std::vector<std::string> plugins = config["XBotRTPlugins"]["plugins"].as<std::vector<std::string>>();
+	        
+		for(auto plugin_name:plugins)
+		{
+		    plugin_names.push_back(plugin_name);
+		}
+	    }
+
+	    if(plugin_names.size()==0) std::cout<<yellow_string("WARN: no plugins found")<<std::endl; 
+	}
+	else
+	{
+	    std::cout<<yellow_string("WARN: XBotRTPlugins field is not in the configuration file")<<std::endl; 
+	}
     }
     else
     {
@@ -137,6 +156,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     
     std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
 
+    std::cout<<"    - Active Plugins:"<<std::endl;
+
+    for(auto plugin_name:plugin_names)
+    {
+	std::cout<<"    - - "<<plugin_name<<std::endl;
+    }
+    
     std::cout<<"    - Joints Control: " + cyan_string("ON")<<std::endl;
     
     #ifndef USING_ROS
@@ -221,7 +247,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     else
     {
-        std::cout<<"    - - modules"<<std::endl;
+        std::cout<<"    - - modules additional commands"<<std::endl;
 	TiXmlElement* module = modules->FirstChildElement("module");
 	TiXmlElement* command;
 	std::map<std::string,std::string> commands;
@@ -231,7 +257,16 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    commands.clear();
 	    std::string module_name = module->Attribute("name");
 
-	    std::cout<<"    - - | Module: "<<module_name<<std::endl;
+	    std::cout<<"    - - | Module: "<<module_name;
+
+	    if(std::find(plugin_names.begin(),plugin_names.end(),module_name)==plugin_names.end())
+	    {
+		std::cout<<" (not in Active Plugins, ignoring)"<<std::endl;
+		module = module->NextSiblingElement("module");
+		continue;
+	    }
+
+	    std::cout<<std::endl;
 	    
 	    command = module->FirstChildElement("command");
 	    
@@ -247,6 +282,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    pilot_interface.add_module(module_name.c_str(),commands);
 
 	    module = module->NextSiblingElement("module");
+	}
+
+	commands.clear();
+
+	for(auto plugin:plugin_names)
+	{
+	    pilot_interface.add_module(plugin,commands);
 	}
     }
 

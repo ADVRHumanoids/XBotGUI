@@ -86,7 +86,9 @@ void XBot::widgets::pi::add_interactive_marker(std::string name,int index,std::m
 
 void XBot::widgets::pi::add_module(std::string name, std::map<std::string,std::string> commands)
 {
-    modules[name] = new module(name);
+    if(modules.count(name)) return;
+
+    modules[name] = new module(name,commands);
     modules_tabs.addTab(modules.at(name),name.c_str());
 }
 

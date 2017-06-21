@@ -43,7 +43,7 @@ void XBot::widgets::module::stop_info(bool error)
     }
 }
 
-XBot::widgets::module::module(std::string name_): QWidget(), name(name_)
+XBot::widgets::module::module(std::string name_, std::map<std::string,std::string> commands_): QWidget(), name(name_)
 {
     switch_client = nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str());
 
@@ -51,6 +51,16 @@ XBot::widgets::module::module(std::string name_): QWidget(), name(name_)
     switch_button.setText("Start");
 
     main_layout.addWidget(&switch_button);
+
+    for(auto command:commands_)
+    {
+	if(command.second=="object_pose")
+	{
+	    command_widgets.push_back(new pose_command_widget(command.first,command.second));
+	}
+
+	main_layout.addWidget(command_widgets.back());
+    }
 
     connect(&switch_button,SIGNAL(clicked()),this,SLOT(on_switch_button_clicked()));
 
@@ -101,5 +111,8 @@ void XBot::widgets::module::on_switch_button_clicked()
 
 XBot::widgets::module::~module()
 {
-
+    for(auto cw:command_widgets)
+    {
+	delete cw;
+    }
 }

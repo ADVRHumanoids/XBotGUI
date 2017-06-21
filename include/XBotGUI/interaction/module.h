@@ -24,6 +24,8 @@
 #include <std_srvs/SetBool.h>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QWidget>
+#include "XBotGUI/utils/pose_command_widget.h"
 
 namespace XBot
 {
@@ -33,7 +35,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_);
+    module(std::string name_, std::map<std::string,std::string> commands_);
     ~module();
 
     QPushButton* get_switch_button();
@@ -51,6 +53,8 @@ private:
     std_srvs::SetBool switch_service;
 
     QPushButton switch_button;
+
+    std::vector<QWidget*> command_widgets;
 
     QVBoxLayout main_layout;
 
