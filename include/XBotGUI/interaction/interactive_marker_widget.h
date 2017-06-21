@@ -21,6 +21,8 @@
 #define XBOTGUI_IM_WIDGET_H
 
 #include <ros/ros.h>
+#include <ros/service.h>
+#include <ADVR_ROS/im_pose.h>
 #include <rviz/tool_manager.h>
 #include <rviz/properties/property.h>
 #include <visualization_msgs/Marker.h>
@@ -70,6 +72,8 @@ private:
     rviz::ToolManager* tool_manager;
     ros::NodeHandle nh;
     interactive_markers_handler im_handler;
+    ros::ServiceServer pose_service;
+    bool pose_service_callback(ADVR_ROS::im_pose::Request &req, ADVR_ROS::im_pose::Response &res);
     ros::Publisher marker_pub;
     visualization_msgs::Marker marker;
     ros::Subscriber im_sub;

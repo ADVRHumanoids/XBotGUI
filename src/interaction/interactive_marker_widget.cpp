@@ -33,6 +33,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
 
    interactive_tool = tool_manager->addTool("rviz/Interact");
 
+   pose_service = nh.advertiseService(name+"_pose",&im_widget::pose_service_callback,this);
    marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
    publish_button.setText("Publish Marker");
    interactive_tool_button.setCheckable(true);
@@ -109,6 +110,15 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    }
    connect(&scale_mapper, SIGNAL(mapped(int)), this, SLOT(on_scale_changed(int))) ;
 }
+
+bool XBot::widgets::im_widget::pose_service_callback(ADVR_ROS::im_pose::Request& req, ADVR_ROS::im_pose::Response& res)
+{
+    res.pose_stamped.header = marker.header;
+    res.pose_stamped.pose = marker.pose;
+
+    return true;
+}
+
 
 void XBot::widgets::im_widget::position_by_click_callback(const geometry_msgs::PointStamped& point)
 {
