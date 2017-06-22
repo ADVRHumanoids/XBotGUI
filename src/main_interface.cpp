@@ -328,7 +328,6 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    std::cout<<"    - - | Interactive Marker: "<<interactive_marker_name<<std::endl;
 
 	    std::map<std::string,object_properties> objects;
-	    object_count=0;
 
 	    TiXmlElement* object = interactive_marker->FirstChildElement("object");
 	    
@@ -357,6 +356,9 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		    if(std::string(property->Attribute("name"))=="mesh")
 			objects.at(object_name).mesh_name = std::string(property->Attribute("value"));
 
+		    if(std::string(property->Attribute("name"))=="id")
+			objects.at(object_name).id = std::atoi(property->Attribute("value"));
+
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
 		    property = property->NextSiblingElement("property");
@@ -364,8 +366,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 		object = object->NextSiblingElement("object");
 	    }
-	    
-	    pilot_interface.add_interactive_marker(interactive_marker_name,object_count++,objects);
+
+	    pilot_interface.add_interactive_marker(interactive_marker_name,objects);
 
 	    interactive_marker = interactive_marker->NextSiblingElement("interactive_marker");
 	}

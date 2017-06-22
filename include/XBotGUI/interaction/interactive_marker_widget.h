@@ -45,7 +45,9 @@ public:
     object_properties();
 
     std::string name;
+    int id;
     geometry_msgs::Vector3 scale;
+    geometry_msgs::Pose pose;
     visualization_msgs::Marker::Type::_type_type type;
     std::string mesh_name;
 };
@@ -56,7 +58,7 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(rviz::ToolManager* tool_manager_, std::string name, int index, std::map<std::string,object_properties> objects_);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_);
     ~im_widget();
 
 private Q_SLOTS:
@@ -70,8 +72,10 @@ private Q_SLOTS:
 private:
     rviz::Tool* interactive_tool;
     rviz::ToolManager* tool_manager;
+    std::string name;
     ros::NodeHandle nh;
-    interactive_markers_handler im_handler;
+    interactive_markers_handler* im_handler;
+    std::map<int,int> combo_ids;
     ros::ServiceServer pose_service;
     bool pose_service_callback(ADVR_ROS::im_pose::Request &req, ADVR_ROS::im_pose::Response &res);
     ros::Publisher marker_pub;

@@ -24,9 +24,10 @@ XBot::object_properties::object_properties()
     scale.x=1.0;
     scale.y=1.0;
     scale.z=1.0;
+    pose.orientation.w=1;
 }
-XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name, int index, std::map< std::string, XBot::object_properties > objects_)
-: QWidget(), tool_manager(tool_manager_), im_handler(name+"_server",name+"_client")
+XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< std::string, XBot::object_properties > objects_)
+: QWidget(), tool_manager(tool_manager_), name(name_)
 {
    changing_coords.store(false);
    changing_scale.store(false);
@@ -95,7 +96,6 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    generate_objects(objects_);
    connect(&object_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_object_combo_changed()));
    
-   marker.id = index;
    marker.color.g=1;
    marker.color.a=1;
    marker.pose.orientation.w=1;
@@ -173,15 +173,21 @@ void XBot::widgets::im_widget::on_publish_button_clicked()
 
 void XBot::widgets::im_widget::im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback)
 {
-    marker.pose = feedback.pose;
+    int id = std::stoi(feedback.marker_name);
+    if(id!=marker.id)
+        if(combo_ids.count(id))
+	    object_combo.setCurrentIndex(combo_ids.at(id));
 
-    changing_coords.store(true);
+    marker.pose = feedback.pose;
+    objects.at(object_combo.currentText().toStdString()).pose = feedback.pose;
+
     update_coords();
-    changing_coords.store(false);
 }
 
 void XBot::widgets::im_widget::update_coords()
 {
+    changing_coords.store(true);
+
     coords_widgets.at(0)->edit.setText(QString::number(marker.pose.position.x, 'f', 3));
     coords_widgets.at(1)->edit.setText(QString::number(marker.pose.position.y, 'f', 3));
     coords_widgets.at(2)->edit.setText(QString::number(marker.pose.position.z, 'f', 3));
@@ -192,12 +198,19 @@ void XBot::widgets::im_widget::update_coords()
     coords_widgets.at(3)->edit.setText(QString::number(ro, 'f', 3));
     coords_widgets.at(4)->edit.setText(QString::number(pi, 'f', 3));
     coords_widgets.at(5)->edit.setText(QString::number(ya, 'f', 3));
+
+    changing_coords.store(false);
 }
 
 void XBot::widgets::im_widget::on_coords_changed(int id)
 {
     if(!changing_coords.load())
     {
+        objects.at(object_combo.currentText().toStdString()).pose.position.x = coords_widgets.at(0)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString()).pose.position.y = coords_widgets.at(1)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString()).pose.position.z = coords_widgets.at(2)->edit.text().toDouble();
+	objects.at(object_combo.currentText().toStdString()).pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(coords_widgets.at(3)->edit.text().toDouble(),coords_widgets.at(4)->edit.text().toDouble(),coords_widgets.at(5)->edit.text().toDouble());
+
 	marker.pose.position.x = coords_widgets.at(0)->edit.text().toDouble();
 	marker.pose.position.y = coords_widgets.at(1)->edit.text().toDouble();
 	marker.pose.position.z = coords_widgets.at(2)->edit.text().toDouble();
@@ -234,16 +247,26 @@ void XBot::widgets::im_widget::update_scale()
 
 void XBot::widgets::im_widget::load_object_params()
 {
+    marker.id = objects.at(object_combo.currentText().toStdString()).id;
     marker.type = objects.at(object_combo.currentText().toStdString()).type;
     marker.mesh_resource = objects.at(object_combo.currentText().toStdString()).mesh_name;
     marker.scale.x = objects.at(object_combo.currentText().toStdString()).scale.x;
     marker.scale.y = objects.at(object_combo.currentText().toStdString()).scale.y;
     marker.scale.z = objects.at(object_combo.currentText().toStdString()).scale.z;
+    marker.pose.position.x = objects.at(object_combo.currentText().toStdString()).pose.position.x;
+    marker.pose.position.y = objects.at(object_combo.currentText().toStdString()).pose.position.y;
+    marker.pose.position.z = objects.at(object_combo.currentText().toStdString()).pose.position.z;
+    marker.pose.orientation.x = objects.at(object_combo.currentText().toStdString()).pose.orientation.x;
+    marker.pose.orientation.y = objects.at(object_combo.currentText().toStdString()).pose.orientation.y;
+    marker.pose.orientation.z = objects.at(object_combo.currentText().toStdString()).pose.orientation.z;
+    marker.pose.orientation.w = objects.at(object_combo.currentText().toStdString()).pose.orientation.w;
 }
 
 void XBot::widgets::im_widget::on_object_combo_changed()
 {
     load_object_params();
+    update_coords();
+    on_coords_changed(0);
     update_scale();
     on_scale_changed(0);
     on_publish_button_clicked();
@@ -255,10 +278,13 @@ XBot::widgets::im_widget::~im_widget()
 	delete coord.second;
     for(auto scale:scale_widgets)
 	delete scale.second;
+    delete im_handler;
 }
 
 void XBot::widgets::im_widget::generate_objects(std::map<std::string,object_properties> objects_)
 {
+    std::map<int,bool> ids;
+    int i=0;
     for(auto object:objects_)
     {
 	object_combo.addItem(QString::fromStdString(object.first));
@@ -267,9 +293,15 @@ void XBot::widgets::im_widget::generate_objects(std::map<std::string,object_prop
 	objects[object.first].scale.x = object.second.scale.x;
 	objects[object.first].scale.y = object.second.scale.y;
 	objects[object.first].scale.z = object.second.scale.z;
+	objects[object.first].id = object.second.id;
+	ids[object.second.id] = true;
+	combo_ids[object.second.id]=i;
+	i++;
 	objects[object.first].type = object.second.type;
 	objects[object.first].mesh_name = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/" + object.second.mesh_name;
     }
     
+    im_handler = new interactive_markers_handler(name+"_server",name+"_client",1.0,ids.size());
+
     object_combo.setCurrentIndex(0);
 }

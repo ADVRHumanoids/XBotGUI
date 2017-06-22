@@ -37,6 +37,7 @@
 	    <property name="scale_x" value="0,5"/>
 	    <property name="scale_y" value="0,5"/>
 	    <property name="scale_z" value="0,5"/>
+	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
 	</object>
@@ -44,6 +45,7 @@
 	    <property name="scale_x" value="0,3"/>
 	    <property name="scale_y" value="0,3"/>
 	    <property name="scale_z" value="0,3"/>
+	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="vrc_valve.dae"/>
 	</object>
@@ -54,6 +56,7 @@
 	    <property name="scale_x" value="0,001"/>
 	    <property name="scale_y" value="0,001"/>
 	    <property name="scale_z" value="0,001"/>
+	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_right_softhand.dae"/>
 	</object>
@@ -61,6 +64,7 @@
 	    <property name="scale_x" value="0,001"/>
 	    <property name="scale_y" value="0,001"/>
 	    <property name="scale_z" value="0,001"/>
+	    <property name="id" value="1"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_left_softhand.dae"/>
 	</object>

@@ -70,8 +70,6 @@ private:
     widgets::pi pilot_interface;
     #endif
     
-    int object_count=0;
-    
     XBot::Utils::SecondOrderFilter<Eigen::VectorXd> _q_ref_filtered;
 
     std::vector<std::string> plugin_names;
