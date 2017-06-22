@@ -100,12 +100,31 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		}
 	    }
 
-	    if(plugin_names.size()==0) std::cout<<yellow_string("WARN: no plugins found")<<std::endl; 
+	    if(plugin_names.size()==0) std::cout<<yellow_string("WARN: no XBotRTPlugins plugins found")<<std::endl; 
 	}
 	else
 	{
 	    std::cout<<yellow_string("WARN: XBotRTPlugins field is not in the configuration file")<<std::endl; 
 	}
+	
+	if(!config["NRTPlugins"].IsNull())
+        {
+            if(!config["NRTPlugins"]["plugins"].IsNull())
+            {
+                std::vector<std::string> plugins = config["NRTPlugins"]["plugins"].as<std::vector<std::string>>();
+                
+                for(auto plugin_name:plugins)
+                {
+                    plugin_names.push_back(plugin_name);
+                }
+            }
+
+            if(plugin_names.size()==0) std::cout<<yellow_string("WARN: no NRTPlugins plugins found")<<std::endl; 
+        }
+        else
+        {
+            std::cout<<yellow_string("WARN: NRTPlugins field is not in the configuration file")<<std::endl; 
+        }
     }
     else
     {
