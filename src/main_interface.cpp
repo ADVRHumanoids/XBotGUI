@@ -328,6 +328,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    std::cout<<"    - - | Interactive Marker: "<<interactive_marker_name<<std::endl;
 
 	    std::map<std::string,object_properties> objects;
+	    object_count=0;
 
 	    TiXmlElement* object = interactive_marker->FirstChildElement("object");
 	    
