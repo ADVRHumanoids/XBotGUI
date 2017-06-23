@@ -45,9 +45,9 @@
     
     <interactive_marker name="valve">
 	<object name="valve">
-	    <property name="scale_x" value="0,3"/>
+	    <property name="scale_x" value="0,01"/>
 	    <property name="scale_y" value="0,01"/>
-	    <property name="scale_z" value="0,01"/>
+	    <property name="scale_z" value="0,3"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
 	    <property name="mesh" value=""/>
@@ -102,11 +102,11 @@
 	    <property name="mesh" value=""/>
 	</object>
 	<object name="hose_end">
-	    <property name="scale_x" value="0,2"/>
+	    <property name="scale_x" value="0,03"/>
 	    <property name="scale_y" value="0,03"/>
-	    <property name="scale_z" value="0,03"/>
+	    <property name="scale_z" value="0,2"/>
 	    <property name="id" value="1"/>
-	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
 	    <property name="mesh" value=""/>
 	</object>
     </interactive_marker>
