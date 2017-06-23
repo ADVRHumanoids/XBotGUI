@@ -35,7 +35,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::map<std::string,std::string> commands_);
+    module(std::string name_, std::vector<std::map<std::string,std::string>> commands_);
     ~module();
 
     QPushButton* get_switch_button();

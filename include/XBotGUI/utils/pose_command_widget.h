@@ -33,7 +33,7 @@ class pose_command_widget: public QWidget
 {
 Q_OBJECT
 public:
-	pose_command_widget(std::string name, std::string type);
+	pose_command_widget(std::string topic_name_, std::string service_name_);
 
 private Q_SLOTS:
 	void on_pose_button_clicked();
@@ -48,8 +48,8 @@ private:
         QPushButton pose_button;
 	QVBoxLayout main_layout;
 
-	std::string name;
-	std::string type;
+	std::string topic_name;
+	std::string service_name;
 };
 
 #endif

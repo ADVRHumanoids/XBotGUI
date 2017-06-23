@@ -269,7 +269,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
         std::cout<<"    - - modules additional commands"<<std::endl;
 	TiXmlElement* module = modules->FirstChildElement("module");
 	TiXmlElement* command;
-	std::map<std::string,std::string> commands;
+	std::vector<std::map<std::string,std::string>> commands;
 
 	while(module)
 	{
@@ -291,9 +291,24 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    
 	    while(command)
 	    {
-		commands[command->Attribute("name")] = command->Attribute("type");
+	        std::map<std::string,std::string> command_attributes;
+		
+		command_attributes["type"] = std::string(command->Attribute("type"));
+		
+		std::cout<<"    - - | > "<<command_attributes.at("type");
 
-		std::cout<<"    - - | > "<<command->Attribute("name")<<" : "<<command->Attribute("type")<<std::endl;
+		if(command_attributes.at("type")=="object_pose")
+		{
+		    command_attributes["topic"] = std::string(command->Attribute("topic"));
+		    command_attributes["interactive_marker"] = std::string(command->Attribute("interactive_marker"));
+
+		    std::cout<<std::endl<<"    - - - | > topic: "<<command_attributes.at("topic");
+		    std::cout<<std::endl<<"    - - - | > interactive_marker: "<<command_attributes.at("interactive_marker");
+		}
+		
+		std::cout<<std::endl;
+		
+		commands.push_back(command_attributes);
 		
 		command = command->NextSiblingElement("command");
 	    }

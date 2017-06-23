@@ -43,7 +43,7 @@ void XBot::widgets::module::stop_info(bool error)
     }
 }
 
-XBot::widgets::module::module(std::string name_, std::map<std::string,std::string> commands_): QWidget(), name(name_)
+XBot::widgets::module::module(std::string name_, std::vector<std::map<std::string,std::string>> commands_): QWidget(), name(name_)
 {
     switch_client = nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str());
 
@@ -54,9 +54,9 @@ XBot::widgets::module::module(std::string name_, std::map<std::string,std::strin
 
     for(auto command:commands_)
     {
-	if(command.second=="object_pose")
+	if(command.at("type")=="object_pose")
 	{
-	    command_widgets.push_back(new pose_command_widget(command.first,command.second));
+	    command_widgets.push_back(new pose_command_widget(command.at("topic"),command.at("interactive_marker")));
 	}
 
 	main_layout.addWidget(command_widgets.back());

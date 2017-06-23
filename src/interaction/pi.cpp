@@ -84,7 +84,7 @@ void XBot::widgets::pi::add_interactive_marker(std::string name,std::map<std::st
     displays.at(name)->setTopic(("/"+name+"_server/update").c_str(),"visualization_msgs/InteractiveMarkerUpdate");
 }
 
-void XBot::widgets::pi::add_module(std::string name, std::map<std::string,std::string> commands)
+void XBot::widgets::pi::add_module(std::string name, std::vector<std::map<std::string,std::string>> commands)
 {
     if(modules.count(name)) return;
 

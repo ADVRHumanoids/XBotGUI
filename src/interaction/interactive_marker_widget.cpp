@@ -301,7 +301,7 @@ void XBot::widgets::im_widget::generate_objects(std::map<std::string,object_prop
 	objects[object.first].mesh_name = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/" + object.second.mesh_name;
     }
     
-    im_handler = new interactive_markers_handler(name+"_server",name+"_client",1.0,ids.size());
+    im_handler = new interactive_markers_handler(name+"_server",name+"_client",0.5,ids.size());
 
     object_combo.setCurrentIndex(0);
 }

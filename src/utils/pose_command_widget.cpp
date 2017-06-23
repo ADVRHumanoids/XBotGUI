@@ -19,12 +19,12 @@
 
 #include <XBotGUI/utils/pose_command_widget.h>
 
-pose_command_widget::pose_command_widget(std::string name_, std::string type_): QWidget(), name(name_), type(type_)
+pose_command_widget::pose_command_widget(std::string topic_name_, std::string service_name_): QWidget(), topic_name(topic_name_), service_name(service_name_)
 {
-    pose_client = nh.serviceClient<ADVR_ROS::im_pose>(type.c_str());
-    pub = nh.advertise<geometry_msgs::PoseStamped>(name.c_str(),1);
+    pose_client = nh.serviceClient<ADVR_ROS::im_pose>((service_name+"_pose").c_str());
+    pub = nh.advertise<geometry_msgs::PoseStamped>(topic_name.c_str(),1);
 
-    pose_button.setText(QString::fromStdString(name));
+    pose_button.setText(QString::fromStdString("Send Object Pose"));
     
     main_layout.addWidget(&pose_button);
 
@@ -38,14 +38,14 @@ pose_command_widget::pose_command_widget(std::string name_, std::string type_): 
 void pose_command_widget::service_thread_body()
 {
     ADVR_ROS::im_pose srv;
-    srv.request.name = name;
+    srv.request.name = topic_name;
     if(pose_client.call(srv))
     {
         pub.publish(srv.response.pose_stamped);
     }
     else
     {
-	ROS_ERROR_STREAM("Error calling "<<type<<" service");
+	ROS_ERROR_STREAM("Error calling "<<service_name<<" service");
     }
     thread_waiting.store(false);
 }

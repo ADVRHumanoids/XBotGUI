@@ -24,8 +24,8 @@
 
 <modules> <!-- here are defined additional commands for plugins defined in yaml config files can be defined, pay attention to plugin names! -->
   
-    <module name="Valve">
-	<command name="valve_pose" type="object_pose" interactive_marker="valve"/>
+    <module name="ManipulationPlugin">
+	<command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
     </module>
 
 </modules>
