@@ -182,6 +182,7 @@ void XBot::widgets::im_widget::im_callback(const visualization_msgs::Interactive
     objects.at(object_combo.currentText().toStdString()).pose = feedback.pose;
 
     update_coords();
+    on_publish_button_clicked();
 }
 
 void XBot::widgets::im_widget::update_coords()
