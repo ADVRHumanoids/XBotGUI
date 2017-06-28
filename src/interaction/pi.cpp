@@ -30,6 +30,7 @@ XBot::widgets::pi::pi(): QWidget()
     visualization_manager_->startUpdate();
 
     tool_manager_ = visualization_manager_->getToolManager();
+    interactive_tool = tool_manager_->addTool("rviz/Interact");
 
     visualization_tabs.addTab(render_panel_,"Render");
     
@@ -46,6 +47,8 @@ XBot::widgets::pi::pi(): QWidget()
     frame_label.setText("Fixed Frame:");
     display_label.setText("Display:");
     display_toggle.setCheckable(true);
+    interactive_tool_button.setCheckable(true);
+    interactive_tool_button.setText("Enable Interaction");
 
     buttons_layout.addWidget(&frame_label);
     buttons_layout.addWidget(&frame_combo);
@@ -59,6 +62,8 @@ XBot::widgets::pi::pi(): QWidget()
     buttons_layout.addWidget(&display_label);
     buttons_layout.addWidget(&display_combo);
     buttons_layout.addWidget(&display_toggle);
+    buttons_layout.addWidget(&interactive_tool_button);
+
     
     main_layout.addLayout(&buttons_layout);
     main_layout.addLayout(&view_layout);
@@ -68,6 +73,7 @@ XBot::widgets::pi::pi(): QWidget()
     connect(&display_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_display_combo_changed()));
     connect(&frame_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_frame_combo_changed()));
     connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
+    connect(&interactive_tool_button, SIGNAL(clicked(bool)), this, SLOT(on_interactive_tool_button_clicked()));
 }
 
 void XBot::widgets::pi::set_robot_name(std::string robot_name_)
@@ -105,6 +111,20 @@ void XBot::widgets::pi::on_display_toggle_clicked()
 	displays.at(display_combo.currentText().toStdString())->setEnabled(false);
 	display_toggle.setText("Enable");
 	displays_enable.at(display_combo.currentText().toStdString()) = false;
+    }
+}
+
+void XBot::widgets::pi::on_interactive_tool_button_clicked()
+{
+    if(interactive_tool_button.isChecked())
+    {
+	tool_manager_->setCurrentTool(interactive_tool);
+	interactive_tool_button.setText("Disable Interaction");
+    }
+    else
+    {
+	tool_manager_->setCurrentTool(tool_manager_->getDefaultTool());
+	interactive_tool_button.setText("Enable Interaction");
     }
 }
 

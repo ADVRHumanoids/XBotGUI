@@ -32,13 +32,9 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    changing_coords.store(false);
    changing_scale.store(false);
 
-   interactive_tool = tool_manager->addTool("rviz/Interact");
-
    pose_service = nh.advertiseService(name+"_pose",&im_widget::pose_service_callback,this);
    marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
    publish_button.setText("Publish Marker");
-   interactive_tool_button.setCheckable(true);
-   interactive_tool_button.setText("Enable Interaction");
    im_sub = nh.subscribe(("/"+name+"_server/feedback").c_str(),1,&im_widget::im_callback,this);
 
    position_by_click_button.setCheckable(true);
@@ -67,7 +63,6 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    scale_widgets[2] = new label_lineedit("z:");
 
    buttons_layout.addWidget(&publish_button);
-   buttons_layout.addWidget(&interactive_tool_button);
    buttons_layout.addWidget(&position_by_click_button);
 
    coords_layout.addWidget(coords_widgets.at(0),0,0);
@@ -90,7 +85,6 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    setLayout(&main_layout);
    
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
-   connect(&interactive_tool_button, SIGNAL(clicked(bool)), this, SLOT(on_interactive_tool_button_clicked()));
    connect(&position_by_click_button, SIGNAL(clicked(bool)), this, SLOT(on_position_by_click_button_clicked()));
 
    generate_objects(objects_);
@@ -149,20 +143,6 @@ void XBot::widgets::im_widget::on_position_by_click_button_clicked()
     {
 	tool_manager->setCurrentTool(tool_manager->getDefaultTool());
 	position_by_click_button.setText("Position by Click");
-    }
-}
-
-void XBot::widgets::im_widget::on_interactive_tool_button_clicked()
-{
-    if(interactive_tool_button.isChecked())
-    {
-	tool_manager->setCurrentTool(interactive_tool);
-	interactive_tool_button.setText("Disable Interaction");
-    }
-    else
-    {
-	tool_manager->setCurrentTool(tool_manager->getDefaultTool());
-	interactive_tool_button.setText("Enable Interaction");
     }
 }
 

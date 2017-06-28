@@ -63,14 +63,12 @@ public:
 
 private Q_SLOTS:
     void on_publish_button_clicked();
-    void on_interactive_tool_button_clicked();
     void on_position_by_click_button_clicked();
     void on_coords_changed(int id);
     void on_object_combo_changed();
     void on_scale_changed(int id);
 
 private:
-    rviz::Tool* interactive_tool;
     rviz::ToolManager* tool_manager;
     std::string name;
     ros::NodeHandle nh;
@@ -85,7 +83,6 @@ private:
     void update_coords();
     std::atomic_bool changing_coords;
 
-    QPushButton interactive_tool_button;
     QPushButton publish_button;
 
     QPushButton position_by_click_button;

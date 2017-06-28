@@ -54,11 +54,13 @@ private Q_SLOTS:
     void on_display_combo_changed();
     void on_frame_combo_changed();
     void on_display_toggle_clicked();
+    void on_interactive_tool_button_clicked();
 
 private:
     std::string robot_name;
     rviz::VisualizationManager* visualization_manager_=NULL;
     rviz::ToolManager* tool_manager_=NULL;
+    rviz::Tool* interactive_tool;
     rviz::RenderPanel* render_panel_=NULL;
 
     std::map<std::string,rviz::Display*> displays;
@@ -69,6 +71,7 @@ private:
     QLabel display_label;
     QComboBox display_combo;
     QPushButton display_toggle;
+    QPushButton interactive_tool_button;
 
     std::map<std::string, module*> modules;
     std::map<std::string, im_widget*> im_widgets;
