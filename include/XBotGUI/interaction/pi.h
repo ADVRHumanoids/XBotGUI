@@ -32,6 +32,7 @@
 #include <QTabWidget>
 #include "XBotGUI/interaction/module.h"
 #include "XBotGUI/interaction/interactive_marker_widget.h"
+#include "XBotGUI/utils/object_properties.h"
 
 namespace XBot
 {

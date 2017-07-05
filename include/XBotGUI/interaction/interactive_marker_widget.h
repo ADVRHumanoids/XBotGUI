@@ -33,25 +33,12 @@
 #include <QPushButton>
 #include <QSignalMapper>
 #include "XBotGUI/utils/interactive_markers_handler.h"
+#include "XBotGUI/utils/object_properties.h"
 #include "XBotGUI/utils/Label_LineEdit.h" //NOTE: mixing CamelCase and under_score because reasons
 #include <atomic>
 
 namespace XBot
 {
-
-class object_properties
-{
-public:
-    object_properties();
-
-    std::string name;
-    int id;
-    geometry_msgs::Vector3 scale;
-    geometry_msgs::Pose pose;
-    visualization_msgs::Marker::Type::_type_type type;
-    std::string mesh_name;
-};
-
 namespace widgets
 {
 class im_widget: public QWidget

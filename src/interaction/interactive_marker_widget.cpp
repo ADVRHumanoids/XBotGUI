@@ -19,13 +19,6 @@
 #include "XBotGUI/interaction/interactive_marker_widget.h"
 #include <tf/transform_datatypes.h>
 
-XBot::object_properties::object_properties()
-{
-    scale.x=1.0;
-    scale.y=1.0;
-    scale.z=1.0;
-    pose.orientation.w=1;
-}
 XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< std::string, XBot::object_properties > objects_)
 : QWidget(), tool_manager(tool_manager_), name(name_)
 {
@@ -57,7 +50,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    }
    connect(&coord_mapper, SIGNAL(mapped(int)), this, SLOT(on_coords_changed(int))) ;
 
-   scale_label.setText("Scale - ");
+   scale_label.setText("Scale   ");
    scale_widgets[0] = new label_lineedit("x:");
    scale_widgets[1] = new label_lineedit("y:");
    scale_widgets[2] = new label_lineedit("z:");
