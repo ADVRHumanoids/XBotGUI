@@ -144,21 +144,12 @@ void XBot::widgets::im_widget::on_publish_button_clicked()
 
 void XBot::widgets::im_widget::im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback)
 {
-    std::cout<<"OH"<<std::endl;
-
     int id = std::stoi(feedback.marker_name);
     if(id!=marker.id)
         if(combo_ids.count(id))
 	    object_combo.setCurrentIndex(combo_ids.at(id));
 
     marker.pose = feedback.pose;
-    
-    std::cout<<"OH"<<std::endl;
-    for(auto object:objects)
-    {
-	std::cout<<object.first<<std::endl;
-    }
-    std::cout<<" - "<<object_combo.currentText().toStdString()<<std::endl;
     
     objects.at(object_combo.currentText().toStdString()).pose = feedback.pose;
 
