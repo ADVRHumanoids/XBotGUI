@@ -19,9 +19,14 @@
 #include "XBotGUI/interaction/interactive_marker_widget.h"
 #include <tf/transform_datatypes.h>
 
-XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< std::string, XBot::object_properties > objects_)
-: QWidget(), tool_manager(tool_manager_), name(name_)
+XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< std::string, XBot::object_properties > objects_, QComboBox& object_combo_)
+: QWidget(), tool_manager(tool_manager_), name(name_), object_combo(object_combo_)
 {
+   for(auto object_:objects_)
+   {
+      objects[object_.first] = object_.second;
+   }
+
    changing_coords.store(false);
    changing_scale.store(false);
 
@@ -70,7 +75,6 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    scale_layout.addWidget(scale_widgets.at(1));
    scale_layout.addWidget(scale_widgets.at(2));
    
-   main_layout.addWidget(&object_combo);
    main_layout.addLayout(&coords_layout);
    main_layout.addLayout(&scale_layout);
    main_layout.addLayout(&buttons_layout);
@@ -79,16 +83,11 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
    connect(&position_by_click_button, SIGNAL(clicked(bool)), this, SLOT(on_position_by_click_button_clicked()));
-
-   generate_objects(objects_);
-   connect(&object_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_object_combo_changed()));
    
    marker.color.g=1;
    marker.color.a=1;
    marker.pose.orientation.w=1;
    marker.header.frame_id="/base_link";
-   load_object_params();
-   update_scale();
    
    for(int i=0;i<3;i++)
    {
@@ -105,7 +104,6 @@ bool XBot::widgets::im_widget::pose_service_callback(ADVR_ROS::im_pose::Request&
 
     return true;
 }
-
 
 void XBot::widgets::im_widget::position_by_click_callback(const geometry_msgs::PointStamped& point)
 {
@@ -146,12 +144,22 @@ void XBot::widgets::im_widget::on_publish_button_clicked()
 
 void XBot::widgets::im_widget::im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback)
 {
+    std::cout<<"OH"<<std::endl;
+
     int id = std::stoi(feedback.marker_name);
     if(id!=marker.id)
         if(combo_ids.count(id))
 	    object_combo.setCurrentIndex(combo_ids.at(id));
 
     marker.pose = feedback.pose;
+    
+    std::cout<<"OH"<<std::endl;
+    for(auto object:objects)
+    {
+	std::cout<<object.first<<std::endl;
+    }
+    std::cout<<" - "<<object_combo.currentText().toStdString()<<std::endl;
+    
     objects.at(object_combo.currentText().toStdString()).pose = feedback.pose;
 
     update_coords();
@@ -236,7 +244,7 @@ void XBot::widgets::im_widget::load_object_params()
     marker.pose.orientation.w = objects.at(object_combo.currentText().toStdString()).pose.orientation.w;
 }
 
-void XBot::widgets::im_widget::on_object_combo_changed()
+void XBot::widgets::im_widget::object_combo_changed()
 {
     load_object_params();
     update_coords();
@@ -246,36 +254,29 @@ void XBot::widgets::im_widget::on_object_combo_changed()
     on_publish_button_clicked();
 }
 
+void XBot::widgets::im_widget::generate_objects()
+{
+    std::map<int,bool> ids;
+    int i=0;
+    for(auto object:objects)
+    {
+	object_combo.addItem(QString::fromStdString(object.first));
+
+	ids[object.second.id] = true;
+	combo_ids[object.second.id]=i;
+	i++;
+	object.second.mesh_name = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/" + object.second.mesh_name;
+    }
+
+    object_combo.setCurrentIndex(0);
+    load_object_params();
+    update_scale();
+}
+
 XBot::widgets::im_widget::~im_widget()
 {
     for(auto coord:coords_widgets)
 	delete coord.second;
     for(auto scale:scale_widgets)
 	delete scale.second;
-    delete im_handler;
-}
-
-void XBot::widgets::im_widget::generate_objects(std::map<std::string,object_properties> objects_)
-{
-    std::map<int,bool> ids;
-    int i=0;
-    for(auto object:objects_)
-    {
-	object_combo.addItem(QString::fromStdString(object.first));
-
-	objects[object.first].name = object.first;
-	objects[object.first].scale.x = object.second.scale.x;
-	objects[object.first].scale.y = object.second.scale.y;
-	objects[object.first].scale.z = object.second.scale.z;
-	objects[object.first].id = object.second.id;
-	ids[object.second.id] = true;
-	combo_ids[object.second.id]=i;
-	i++;
-	objects[object.first].type = object.second.type;
-	objects[object.first].mesh_name = "file://"+ std::string(getenv("ROBOTOLOGY_ROOT")) +"/external/XBotGUI/resources/" + object.second.mesh_name;
-    }
-    
-    im_handler = new interactive_markers_handler(name+"_server",name+"_client",0.5,ids.size());
-
-    object_combo.setCurrentIndex(0);
 }

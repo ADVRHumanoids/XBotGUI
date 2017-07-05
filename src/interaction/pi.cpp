@@ -83,7 +83,7 @@ void XBot::widgets::pi::set_robot_name(std::string robot_name_)
 
 void XBot::widgets::pi::add_interactive_marker(std::string name,std::map<std::string,object_properties> objects)
 {
-    im_widgets[name] =  new im_widget(tool_manager_,name,objects);
+    im_widgets[name] =  new im_single_widget(tool_manager_,name,objects);
     im_tabs.addTab(im_widgets.at(name),QString::fromStdString(name));
     std::map<std::string,std::string> properties;
     add_display(name,"rviz/InteractiveMarkers",properties);

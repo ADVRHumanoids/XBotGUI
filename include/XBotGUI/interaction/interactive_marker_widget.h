@@ -25,14 +25,13 @@
 #include <ADVR_ROS/im_pose.h>
 #include <rviz/tool_manager.h>
 #include <rviz/properties/property.h>
-#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/InteractiveMarkerFeedback.h>
 #include <geometry_msgs/PointStamped.h>
 #include <std_msgs/String.h>
 #include <QBoxLayout>
-#include <QComboBox>
 #include <QPushButton>
 #include <QSignalMapper>
-#include "XBotGUI/utils/interactive_markers_handler.h"
+#include <QComboBox>
 #include "XBotGUI/utils/object_properties.h"
 #include "XBotGUI/utils/Label_LineEdit.h" //NOTE: mixing CamelCase and under_score because reasons
 #include <atomic>
@@ -45,24 +44,26 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_, QComboBox& object_combo_);
     ~im_widget();
+
+    void add_object(object_properties object_);
+    void delete_last_object();
+    void delete_all();
+    void generate_objects();
+    void object_combo_changed();
 
 private Q_SLOTS:
     void on_publish_button_clicked();
     void on_position_by_click_button_clicked();
     void on_coords_changed(int id);
-    void on_object_combo_changed();
     void on_scale_changed(int id);
 
 private:
     rviz::ToolManager* tool_manager;
     std::string name;
     ros::NodeHandle nh;
-    interactive_markers_handler* im_handler;
     std::map<int,int> combo_ids;
-    ros::ServiceServer pose_service;
-    bool pose_service_callback(ADVR_ROS::im_pose::Request &req, ADVR_ROS::im_pose::Response &res);
     ros::Publisher marker_pub;
     visualization_msgs::Marker marker;
     ros::Subscriber im_sub;
@@ -85,8 +86,7 @@ private:
     QVBoxLayout main_layout;
 
     std::map<std::string,object_properties> objects;
-    QComboBox object_combo;
-    void generate_objects(std::map<std::string,object_properties> objects_);
+    QComboBox& object_combo;
     void update_scale();
     QHBoxLayout scale_layout;
     QLabel scale_label;
@@ -94,6 +94,9 @@ private:
     QSignalMapper scale_mapper;
     void load_object_params();
     std::atomic_bool changing_scale;
+
+    ros::ServiceServer pose_service;
+    bool pose_service_callback(ADVR_ROS::im_pose::Request &req, ADVR_ROS::im_pose::Response &res);
 
 };
 };

@@ -31,7 +31,7 @@
 #include <QLabel>
 #include <QTabWidget>
 #include "XBotGUI/interaction/module.h"
-#include "XBotGUI/interaction/interactive_marker_widget.h"
+#include "XBotGUI/interaction/im_single_widget.h"
 #include "XBotGUI/utils/object_properties.h"
 
 namespace XBot
@@ -75,7 +75,7 @@ private:
     QPushButton interactive_tool_button;
 
     std::map<std::string, module*> modules;
-    std::map<std::string, im_widget*> im_widgets;
+    std::map<std::string, im_single_widget*> im_widgets;
 
     QTabWidget visualization_tabs;
     QTabWidget modules_tabs;
