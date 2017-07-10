@@ -32,6 +32,7 @@
 #include <QTabWidget>
 #include "XBotGUI/interaction/module.h"
 #include "XBotGUI/interaction/im_single_widget.h"
+#include "XBotGUI/interaction/im_sequence_widget.h"
 #include "XBotGUI/utils/object_properties.h"
 
 namespace XBot
@@ -49,6 +50,7 @@ public:
     void add_frames(std::vector<std::string> names);
     void add_module(std::string name, std::vector<std::map<std::string,std::string>> commands);
     void add_interactive_marker(std::string name, std::map<std::string,object_properties> objects);
+    void add_interactive_marker_sequence(std::string name, std::map<std::string,object_properties> objects);
     void set_robot_name(std::string robot_name_);
 
 private Q_SLOTS:
@@ -76,6 +78,7 @@ private:
 
     std::map<std::string, module*> modules;
     std::map<std::string, im_single_widget*> im_widgets;
+    std::map<std::string, im_sequence_widget*> im_sequence_widgets;
 
     QTabWidget visualization_tabs;
     QTabWidget modules_tabs;

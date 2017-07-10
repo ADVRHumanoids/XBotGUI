@@ -387,6 +387,68 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    interactive_marker = interactive_marker->NextSiblingElement("interactive_marker");
 	}
     }
+    
+    TiXmlElement* interactive_markers_sequence=doc.FirstChildElement("interactive_markers_sequence");
+    if (interactive_markers_sequence==NULL || interactive_markers_sequence->Type()!=TiXmlNode::TINYXML_ELEMENT)
+    {
+        std::cout<<yellow_string("Could not find element interactive_markers_sequence into file "+filename)<<std::endl;
+    }
+    else
+    {
+        std::cout<<"    - - interactive_markers_sequence"<<std::endl;
+	TiXmlElement* interactive_marker = interactive_markers_sequence->FirstChildElement("interactive_marker");
+
+	while(interactive_marker)
+	{
+	    std::string interactive_marker_name = interactive_marker->Attribute("name");
+
+	    std::cout<<"    - - | Interactive Marker: "<<interactive_marker_name<<std::endl;
+
+	    std::map<std::string,object_properties> objects;
+
+	    TiXmlElement* object = interactive_marker->FirstChildElement("object");
+	    
+	    while(object)
+	    {
+		std::string object_name = object->Attribute("name");
+
+		TiXmlElement* property = object->FirstChildElement("property");
+
+		objects[object_name];
+
+		std::cout<<"    - - - | Object: "<<object_name<<std::endl;
+
+		while(property)
+		{
+		    if(std::string(property->Attribute("name"))=="scale_x")
+			objects.at(object_name).scale.x = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="scale_y")
+			objects.at(object_name).scale.y = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="scale_z")
+			objects.at(object_name).scale.z = std::atof(property->Attribute("value"));
+
+		    if(std::string(property->Attribute("name"))=="type")
+			objects.at(object_name).type = name_to_types.at(std::string(property->Attribute("value")));
+
+		    if(std::string(property->Attribute("name"))=="mesh")
+			objects.at(object_name).mesh_name = std::string(property->Attribute("value"));
+
+		    if(std::string(property->Attribute("name"))=="id")
+			objects.at(object_name).id = std::atoi(property->Attribute("value"));
+
+		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
+
+		    property = property->NextSiblingElement("property");
+		}
+
+		object = object->NextSiblingElement("object");
+	    }
+
+	    pilot_interface.add_interactive_marker_sequence(interactive_marker_name,objects);
+
+	    interactive_marker = interactive_marker->NextSiblingElement("interactive_marker");
+	}
+    }
 
     tabs.addTab(&pilot_interface,"PI");
     

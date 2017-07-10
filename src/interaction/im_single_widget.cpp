@@ -20,9 +20,9 @@
 #include <tf/transform_datatypes.h>
 
 XBot::widgets::im_single_widget::im_single_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< std::string, XBot::object_properties > objects_)
-: QWidget(), name(name_), interactive_marker_widget(tool_manager_,name_,objects_,object_combo)
+: QWidget(), name(name_), interactive_marker_widget(tool_manager_,name_,object_combo)
 {
-   interactive_marker_widget.generate_objects(); //also fills object_combo
+   interactive_marker_widget.generate_objects(objects_); //also fills object_combo
 
    main_layout.addWidget(&object_combo);
    main_layout.addWidget(&interactive_marker_widget);

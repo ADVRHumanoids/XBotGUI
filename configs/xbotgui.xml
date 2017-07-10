@@ -152,3 +152,24 @@
     </interactive_marker>-->
     
 </interactive_markers>
+
+<interactive_markers_sequence>
+    <interactive_marker name="feet">
+	<object name="right_foot">
+	    <property name="scale_x" value="0,001"/>
+	    <property name="scale_y" value="0,001"/>
+	    <property name="scale_z" value="0,001"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
+	    <property name="mesh" value="walkman_right_foot.dae"/>
+	</object>
+	<object name="left_foot">
+	    <property name="scale_x" value="0,001"/>
+	    <property name="scale_y" value="0,001"/>
+	    <property name="scale_z" value="0,001"/>
+	    <property name="id" value="1"/>
+	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
+	    <property name="mesh" value="walkman_left_foot.dae"/>
+	</object>
+    </interactive_marker>
+</interactive_markers_sequence>

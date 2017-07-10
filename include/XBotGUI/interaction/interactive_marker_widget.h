@@ -23,6 +23,7 @@
 #include <ros/ros.h>
 #include <ros/service.h>
 #include <ADVR_ROS/im_pose.h>
+#include <ADVR_ROS/im_pose_array.h>
 #include <rviz/tool_manager.h>
 #include <rviz/properties/property.h>
 #include <visualization_msgs/InteractiveMarkerFeedback.h>
@@ -44,13 +45,12 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_, QComboBox& object_combo_);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_);
     ~im_widget();
 
     void add_object(object_properties object_);
     void delete_last_object();
-    void delete_all();
-    void generate_objects();
+    void generate_objects(std::map< std::string, XBot::object_properties > objects_);
     void object_combo_changed();
 
 private Q_SLOTS:
@@ -77,6 +77,7 @@ private:
     void position_by_click_callback(const geometry_msgs::PointStamped& point);
     ros::Subscriber position_by_click_sub;
     rviz::Tool* click_tool;
+    rviz::Tool* last_tool;
 
     QSignalMapper coord_mapper;
     std::map<int, label_lineedit*> coords_widgets;
@@ -98,6 +99,8 @@ private:
     ros::ServiceServer pose_service;
     bool pose_service_callback(ADVR_ROS::im_pose::Request &req, ADVR_ROS::im_pose::Response &res);
 
+    ros::ServiceServer pose_array_service;
+    bool pose_array_service_callback(ADVR_ROS::im_pose_array::Request &req, ADVR_ROS::im_pose_array::Response &res);
 };
 };
 };
