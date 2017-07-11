@@ -51,6 +51,7 @@
 
     <module name="chengxu_walking">
 	<command type="goal" topic="chengxu_walking_goal"/>
+	<command type="object_sequence" topic="chengxu_walking_sequence" interactive_markers_sequence="feet"/>
     </module>
 </modules>
 

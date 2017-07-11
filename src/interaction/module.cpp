@@ -64,6 +64,11 @@ XBot::widgets::module::module(std::string name_, std::vector<std::map<std::strin
 	    command_widgets.push_back(new goal_command_widget(tool_manager_,command.at("topic")));
 	}
 
+	if(command.at("type")=="object_sequence")
+	{
+	    command_widgets.push_back(new sequence_command_widget(command.at("topic"),command.at("interactive_markers_sequence")));
+	}
+
 	main_layout.addWidget(command_widgets.back());
     }
 

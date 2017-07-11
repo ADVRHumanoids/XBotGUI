@@ -16,53 +16,41 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
+#ifndef XBOTGUI_SEQUENCE_COMMAND_WIDGET_H
+#define XBOTGUI_SEQUENCE_COMMAND_WIDGET_H
 
-#ifndef XBOTGUI_MODULE_H
-#define XBOTGUI_MODULE_H
-
-#include <ros/ros.h>
-#include <std_srvs/SetBool.h>
-#include <QBoxLayout>
-#include <QPushButton>
 #include <QWidget>
-#include "XBotGUI/utils/pose_command_widget.h"
-#include "XBotGUI/utils/goal_command_widget.h"
-#include "XBotGUI/utils/sequence_command_widget.h"
-#include <rviz/tool_manager.h>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <string>
+#include <thread>
+#include <atomic>
+#include <ros/ros.h>
+#include <ros/service.h>
+#include <ADVR_ROS/im_pose_array.h>
+#include <geometry_msgs/PoseArray.h>
 
-namespace XBot
-{
-namespace widgets
-{
-class module: public QWidget
+class sequence_command_widget: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::map<std::string,std::string>> commands_, rviz::ToolManager* tool_manager_=NULL);
-    ~module();
-
-    QPushButton* get_switch_button();
+	sequence_command_widget(std::string topic_name_, std::string service_name_);
 
 private Q_SLOTS:
-    void on_switch_button_clicked();
+	void on_sequence_button_clicked();
 
 private:
-    void start_info(bool error);
-    void stop_info(bool error);
+	ros::NodeHandle nh;
+	ros::Publisher pub;
+	ros::ServiceClient sequence_client;
+	void service_thread_body();
+	std::atomic_bool thread_waiting;
 
-    std::string name;
-    ros::NodeHandle nh;
-    ros::ServiceClient switch_client;
-    std_srvs::SetBool switch_service;
+        QPushButton sequence_button;
+	QVBoxLayout main_layout;
 
-    QPushButton switch_button;
-
-    std::vector<QWidget*> command_widgets;
-
-    QVBoxLayout main_layout;
-
-};
-};
+	std::string topic_name;
+	std::string service_name;
 };
 
 #endif

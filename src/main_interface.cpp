@@ -314,6 +314,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		    properties["Marker Topic"] = command_attributes.at("topic")+"_goal_marker";
 		    pilot_interface.add_display(module_name,"rviz/Marker",properties);
 		}
+		else if(command_attributes.at("type")=="object_sequence")
+		{
+		    command_attributes["topic"] = std::string(command->Attribute("topic"));
+		    command_attributes["interactive_markers_sequence"] = std::string(command->Attribute("interactive_markers_sequence"));
+		    std::cout<<std::endl<<"    - - - | > topic: "<<command_attributes.at("topic");
+		    std::cout<<std::endl<<"    - - - | > interactive_markers_sequence: "<<command_attributes.at("interactive_markers_sequence");
+		}
 		else
 		{
 		    std::cout<<" ( "<<yellow_string("Undefined command type")<<" ) "<<std::endl;
