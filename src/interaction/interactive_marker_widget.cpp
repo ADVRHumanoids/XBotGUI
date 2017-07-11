@@ -44,7 +44,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    coords_widgets[4] = new label_lineedit("P:");
    coords_widgets[5] = new label_lineedit("Y:");
 
-   for(int i=0;i<6;i++)
+   for(int i=0;i<coords_widgets.size();i++)
    {
       connect(&(coords_widgets.at(i)->edit), SIGNAL(textChanged(QString)),&coord_mapper, SLOT(map()));
       coord_mapper.setMapping(&(coords_widgets.at(i)->edit), i);
