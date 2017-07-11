@@ -26,6 +26,8 @@
 #include <QPushButton>
 #include <QWidget>
 #include "XBotGUI/utils/pose_command_widget.h"
+#include "XBotGUI/utils/goal_command_widget.h"
+#include <rviz/tool_manager.h>
 
 namespace XBot
 {
@@ -35,7 +37,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::map<std::string,std::string>> commands_);
+    module(std::string name_, std::vector<std::map<std::string,std::string>> commands_, rviz::ToolManager* tool_manager_=NULL);
     ~module();
 
     QPushButton* get_switch_button();

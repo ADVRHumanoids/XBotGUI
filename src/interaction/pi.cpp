@@ -105,7 +105,7 @@ void XBot::widgets::pi::add_module(std::string name, std::vector<std::map<std::s
 {
     if(modules.count(name)) return;
 
-    modules[name] = new module(name,commands);
+    modules[name] = new module(name,commands,tool_manager_);
     modules_tabs.addTab(modules.at(name),name.c_str());
 }
 
