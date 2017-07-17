@@ -90,7 +90,7 @@ void XBot::widgets::pi::add_interactive_marker(std::string name,std::map<std::st
     displays.at(name)->setTopic(("/"+name+"_server/update").c_str(),"visualization_msgs/InteractiveMarkerUpdate");
 }
 
-void XBot::widgets::pi::add_interactive_marker_sequence(std::__cxx11::string name, std::map< std::string, object_properties > objects)
+void XBot::widgets::pi::add_interactive_marker_sequence(std::string name, std::map< std::string, object_properties > objects)
 {
     im_sequence_widgets[name] =  new im_sequence_widget(tool_manager_,name,objects);
     im_tabs.addTab(im_sequence_widgets.at(name),QString::fromStdString(name));
