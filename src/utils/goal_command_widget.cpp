@@ -19,8 +19,8 @@
 
 #include <XBotGUI/utils/goal_command_widget.h>
 
-goal_command_widget::goal_command_widget(rviz::ToolManager* tool_manager_, std::string topic_name_):
-QWidget(), tool_manager(tool_manager_), topic_name(topic_name_)
+XBot::widgets::goal_command_widget::goal_command_widget(rviz::ToolManager* tool_manager_, std::string topic_name_):
+tool_manager(tool_manager_), topic_name(topic_name_)
 {
     pub = nh.advertise<geometry_msgs::PoseStamped>(topic_name.c_str(),1);
 
@@ -32,6 +32,7 @@ QWidget(), tool_manager(tool_manager_), topic_name(topic_name_)
 
     select_goal_button.setCheckable(true);
     select_goal_button.setText("Select Goal");
+    show_goal_button.setText("Show Goal");
     send_goal_button.setText("Send Goal");
 
     coords_widgets[0] = new label_lineedit("x:");
@@ -46,11 +47,14 @@ QWidget(), tool_manager(tool_manager_), topic_name(topic_name_)
     }
     connect(&coord_mapper, SIGNAL(mapped(int)), this, SLOT(on_coords_changed(int))) ;
 
-    main_layout.addWidget(&select_goal_button);
+    c_layout.addWidget(&select_goal_button);
+    c_layout.addWidget(&show_goal_button);
+    main_layout.addLayout(&c_layout);
     main_layout.addLayout(&coords_layout);
     main_layout.addWidget(&send_goal_button);
 
     connect(&select_goal_button,SIGNAL(clicked()),this,SLOT(on_select_goal_button_clicked()));
+    connect(&show_goal_button,SIGNAL(clicked()),this,SLOT(on_show_goal_button_clicked()));
     connect(&send_goal_button,SIGNAL(clicked()),this,SLOT(on_send_goal_button_clicked()));
 
     last_pose.pose.orientation.w=1;
@@ -69,19 +73,56 @@ QWidget(), tool_manager(tool_manager_), topic_name(topic_name_)
     marker_pub = nh.advertise<visualization_msgs::Marker>(topic_name_+"_goal_marker",1);
 }
 
-void goal_command_widget::update_marker()
+void XBot::widgets::goal_command_widget::set_fixed_frame(std::string frame)
+{
+    std::string err_msg;
+    if(tf_.waitForTransform(marker.header.frame_id,frame,ros::Time::now(), ros::Duration(1.0), ros::Duration(0.01), &err_msg))
+    {
+        geometry_msgs::PoseStamped input;
+	input.header.frame_id = marker.header.frame_id;
+	input.pose = marker.pose;
+	geometry_msgs::PoseStamped output;
+	tf_.transformPose(frame,input,output);
+	marker.pose = output.pose;
+	marker.header.frame_id=frame;
+	last_pose.pose = output.pose;
+	last_pose.header.frame_id=frame;
+	
+	update_coords(output.pose);
+	update_marker();
+    }
+    else
+    {
+	std::cout<<red_string("ERROR: TF not found between " + marker.header.frame_id + " and " + frame)<<std::endl;
+    }
+}
+
+void XBot::widgets::goal_command_widget::update_coords(const geometry_msgs::Pose& pose)
+{
+    changing_coords.store(true);
+    coords_widgets.at(0)->edit.setText(QString::number(pose.position.x, 'f', 3));
+    coords_widgets.at(1)->edit.setText(QString::number(pose.position.y, 'f', 3));
+    double ro,pi,ya;
+    tf::Quaternion q;
+    tf::quaternionMsgToTF(pose.orientation,q);
+    tf::Matrix3x3(q).getRPY(ro, pi, ya);
+    coords_widgets.at(2)->edit.setText(QString::number(ya, 'f', 3));
+    changing_coords.store(false);
+}
+
+void XBot::widgets::goal_command_widget::update_marker()
 {
     marker.pose.position.x = coords_widgets.at(0)->edit.text().toDouble();
     marker.pose.position.y = coords_widgets.at(1)->edit.text().toDouble();
     marker.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,coords_widgets.at(2)->edit.text().toDouble());
 }
 
-void goal_command_widget::publish_marker()
+void XBot::widgets::goal_command_widget::publish_marker()
 {
     marker_pub.publish(marker);
 }
 
-void goal_command_widget::on_coords_changed(int id)
+void XBot::widgets::goal_command_widget::on_coords_changed(int id)
 {
     if(!changing_coords.load())
     {
@@ -95,19 +136,11 @@ void goal_command_widget::on_coords_changed(int id)
     }
 }
 
-void goal_command_widget::goal_callback(const geometry_msgs::PoseStamped& pose)
+void XBot::widgets::goal_command_widget::goal_callback(const geometry_msgs::PoseStamped& pose)
 {
     last_pose = pose;
 
-    changing_coords.store(true);
-    coords_widgets.at(0)->edit.setText(QString::number(last_pose.pose.position.x, 'f', 3));
-    coords_widgets.at(1)->edit.setText(QString::number(last_pose.pose.position.y, 'f', 3));
-    double ro,pi,ya;
-    tf::Quaternion q;
-    tf::quaternionMsgToTF(last_pose.pose.orientation,q);
-    tf::Matrix3x3(q).getRPY(ro, pi, ya);
-    coords_widgets.at(2)->edit.setText(QString::number(ya, 'f', 3));
-    changing_coords.store(false);
+    update_coords(last_pose.pose);
 
     update_marker();
     publish_marker();
@@ -117,7 +150,7 @@ void goal_command_widget::goal_callback(const geometry_msgs::PoseStamped& pose)
     select_goal_button.setChecked(false);
 }
 
-void goal_command_widget::on_select_goal_button_clicked()
+void XBot::widgets::goal_command_widget::on_select_goal_button_clicked()
 {
     if(select_goal_button.isChecked())
     {
@@ -132,7 +165,12 @@ void goal_command_widget::on_select_goal_button_clicked()
     }
 }
 
-void goal_command_widget::on_send_goal_button_clicked()
+void XBot::widgets::goal_command_widget::on_show_goal_button_clicked()
+{
+    publish_marker();
+}
+
+void XBot::widgets::goal_command_widget::on_send_goal_button_clicked()
 {
     pub.publish(last_pose);
 }

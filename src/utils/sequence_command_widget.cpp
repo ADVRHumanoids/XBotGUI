@@ -19,7 +19,7 @@
 
 #include <XBotGUI/utils/sequence_command_widget.h>
 
-sequence_command_widget::sequence_command_widget(std::string topic_name_, std::string service_name_): QWidget(), topic_name(topic_name_), service_name(service_name_)
+XBot::widgets::sequence_command_widget::sequence_command_widget(std::string topic_name_, std::string service_name_): topic_name(topic_name_), service_name(service_name_)
 {
     sequence_client = nh.serviceClient<ADVR_ROS::im_pose_array>((service_name+"_pose_array").c_str());
     pub = nh.advertise<geometry_msgs::PoseArray>(topic_name.c_str(),1);
@@ -35,7 +35,7 @@ sequence_command_widget::sequence_command_widget(std::string topic_name_, std::s
     thread_waiting.store(false);
 }
 
-void sequence_command_widget::service_thread_body()
+void XBot::widgets::sequence_command_widget::service_thread_body()
 {
     ADVR_ROS::im_pose_array srv;
     srv.request.name = topic_name;
@@ -56,7 +56,7 @@ void sequence_command_widget::service_thread_body()
     thread_waiting.store(false);
 }
 
-void sequence_command_widget::on_sequence_button_clicked()
+void XBot::widgets::sequence_command_widget::on_sequence_button_clicked()
 {
     std::thread service_thread(&sequence_command_widget::service_thread_body,this);
     thread_waiting.store(true);

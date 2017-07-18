@@ -40,6 +40,8 @@ public:
     im_single_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_);
     ~im_single_widget();
 
+    void set_fixed_frame(std::string frame);
+
 private Q_SLOTS:
     void on_object_combo_changed();
 

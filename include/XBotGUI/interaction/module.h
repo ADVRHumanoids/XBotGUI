@@ -25,6 +25,7 @@
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QWidget>
+#include "XBotGUI/utils/command_widget.h"
 #include "XBotGUI/utils/pose_command_widget.h"
 #include "XBotGUI/utils/goal_command_widget.h"
 #include "XBotGUI/utils/sequence_command_widget.h"
@@ -42,6 +43,7 @@ public:
     ~module();
 
     QPushButton* get_switch_button();
+    void set_fixed_frame(std::string frame);
 
 private Q_SLOTS:
     void on_switch_button_clicked();
@@ -57,7 +59,7 @@ private:
 
     QPushButton switch_button;
 
-    std::vector<QWidget*> command_widgets;
+    std::vector<command_widget*> command_widgets;
 
     QVBoxLayout main_layout;
 

@@ -33,21 +33,31 @@
 #include <rviz/properties/property.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/tf.h>
+#include <tf/transform_listener.h>
 #include <visualization_msgs/Marker.h>
+#include "XBotGUI/utils/command_widget.h"
+#include "XBotGUI/print_utils.h"
 
-class goal_command_widget: public QWidget
+namespace XBot
+{
+namespace widgets
+{
+class goal_command_widget: public command_widget
 {
 Q_OBJECT
 public:
 	goal_command_widget(rviz::ToolManager* tool_manager_, std::string topic_name_);
+	void set_fixed_frame(std::string frame);
 
 private Q_SLOTS:
 	void on_select_goal_button_clicked();
+	void on_show_goal_button_clicked();
 	void on_send_goal_button_clicked();
 	void on_coords_changed(int id);
 
 private:
 	ros::NodeHandle nh;
+	tf::TransformListener tf_;
 	ros::Publisher pub;
 	ros::Subscriber sub;
 	rviz::ToolManager* tool_manager;
@@ -57,12 +67,14 @@ private:
 	geometry_msgs::PoseStamped last_pose;
 
 	QPushButton select_goal_button;
+	QPushButton show_goal_button;
 	QPushButton send_goal_button;
 	std::map<int, label_lineedit*> coords_widgets;
 	QSignalMapper coord_mapper;
 	QGridLayout coords_layout;
 	std::atomic_bool changing_coords;
 	QVBoxLayout main_layout;
+	QHBoxLayout c_layout;
 
 	std::string topic_name;
 
@@ -70,6 +82,9 @@ private:
 	visualization_msgs::Marker marker;
 	void update_marker();
 	void publish_marker();
+	void update_coords(const geometry_msgs::Pose& pose);
 };
+}
+}
 
 #endif

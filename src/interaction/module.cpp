@@ -82,6 +82,14 @@ QPushButton* XBot::widgets::module::get_switch_button()
     return &switch_button;
 }
 
+void XBot::widgets::module::set_fixed_frame(std::string frame)
+{
+    for(auto cmd_w:command_widgets)
+    {
+	cmd_w->set_fixed_frame(frame);
+    }
+}
+
 void XBot::widgets::module::on_switch_button_clicked()
 {
     if(switch_button.isChecked())

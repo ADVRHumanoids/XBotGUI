@@ -305,6 +305,27 @@ void XBot::widgets::im_widget::delete_last_object()
     }
 }
 
+void XBot::widgets::im_widget::set_fixed_frame(std::string frame)
+{
+    std::string err_msg;
+    if(tf_.waitForTransform(marker.header.frame_id,frame,ros::Time::now(), ros::Duration(1.0), ros::Duration(0.01), &err_msg))
+    {
+        geometry_msgs::PoseStamped input;
+	input.header.frame_id = marker.header.frame_id;
+	input.pose = marker.pose;
+	geometry_msgs::PoseStamped output;
+	tf_.transformPose(frame,input,output);
+	marker.pose = output.pose;
+	marker.header.frame_id=frame;
+
+	update_coords();
+    }
+    else
+    {
+	std::cout<<red_string("ERROR: TF not found between " + marker.header.frame_id + " and " + frame)<<std::endl;
+    }
+}
+
 XBot::widgets::im_widget::~im_widget()
 {
     for(auto coord:coords_widgets)
