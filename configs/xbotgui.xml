@@ -138,6 +138,14 @@
 	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
 	    <property name="mesh" value=""/>
 	</object>
+	<object name="fire">
+	    <property name="scale_x" value="0,1"/>
+	    <property name="scale_y" value="0,1"/>
+	    <property name="scale_z" value="0,1"/>
+	    <property name="id" value="2"/>
+	    <property name="type" value="visualization_msgs::Marker::SPHERE"/>
+	    <property name="mesh" value=""/>
+	</object>
     </interactive_marker>
 
 <!--    <interactive_marker name="hands">

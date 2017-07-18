@@ -29,8 +29,13 @@
 #include <ros/service.h>
 #include <ADVR_ROS/im_pose_array.h>
 #include <geometry_msgs/PoseArray.h>
+#include "XBotGUI/utils/command_widget.h"
 
-class sequence_command_widget: public QWidget
+namespace XBot
+{
+namespace widgets
+{
+class sequence_command_widget: public command_widget
 {
 Q_OBJECT
 public:
@@ -52,5 +57,7 @@ private:
 	std::string topic_name;
 	std::string service_name;
 };
+}
+}
 
 #endif

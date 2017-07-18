@@ -34,6 +34,12 @@ XBot::widgets::im_single_widget::im_single_widget(rviz::ToolManager* tool_manage
    im_handler = new interactive_markers_handler(name+"_server",name+"_client",0.5,object_combo.count());
 }
 
+void XBot::widgets::im_single_widget::set_fixed_frame(std::string frame)
+{
+   im_handler->set_fixed_frame(frame);  
+   interactive_marker_widget.set_fixed_frame(frame); 
+}
+
 void XBot::widgets::im_single_widget::on_object_combo_changed()
 {
     interactive_marker_widget.object_combo_changed();

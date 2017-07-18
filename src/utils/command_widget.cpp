@@ -17,31 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-#ifndef XBOTGUI_INTERACTIVE_MARKERS_HANDLER
-#define XBOTGUI_INTERACTIVE_MARKERS_HANDLER
+#include <XBotGUI/utils/command_widget.h>
 
-#include "ros/ros.h"
-#include <interactive_markers/interactive_marker_server.h>
-#include "XBotGUI/print_utils.h"
-#include <tf/transform_listener.h>
-#include <geometry_msgs/PoseStamped.h>
-
-class interactive_markers_handler
+void XBot::widgets::command_widget::set_fixed_frame(std::string frame)
 {
-public:
-  interactive_markers_handler(std::string server_topic ,std::string client_topic, double scale=1.0, int objects_count_=1);
-  void set_fixed_frame(std::string fixed_frame);
-  ~interactive_markers_handler();
 
-private:
-  ros::NodeHandle node;
-  tf::TransformListener tf_;
-  ros::Subscriber sub;
-  interactive_markers::InteractiveMarkerServer* server;
-  std::vector<visualization_msgs::InteractiveMarker*> interactive_markers;
-  int objects_count;
-  
-  void update_position(const visualization_msgs::Marker &marker_);
-};
-
-#endif
+}

@@ -37,7 +37,31 @@ void interactive_markers_handler::set_fixed_frame(std::string fixed_frame)
 {
     for(int i=0;i<objects_count;i++)
     {
-	interactive_markers.at(i)->header.frame_id=fixed_frame;
+	std::string err_msg;
+	if(tf_.waitForTransform(interactive_markers.at(i)->header.frame_id,fixed_frame,ros::Time::now(), ros::Duration(1.0), ros::Duration(0.01), &err_msg))
+	{
+	    if(interactive_markers.at(i)->controls.size()==0)
+	    {
+	        interactive_markers.at(i)->header.frame_id=fixed_frame;
+		continue;
+	    }
+
+	    geometry_msgs::PoseStamped input;
+	    input.header.frame_id = interactive_markers.at(i)->header.frame_id;
+	    input.pose = interactive_markers.at(i)->pose;
+	    geometry_msgs::PoseStamped output;
+	    tf_.transformPose(fixed_frame,input,output);
+	    interactive_markers.at(i)->header.frame_id=fixed_frame;
+
+	    visualization_msgs::Marker dummy_marker = interactive_markers.at(i)->controls.at(0).markers.at(0);
+	    dummy_marker.header.frame_id=fixed_frame;
+	    dummy_marker.pose = output.pose;
+	    update_position(dummy_marker);
+	}
+	else
+	{
+	    std::cout<<red_string("ERROR: TF not found between " + interactive_markers.at(i)->header.frame_id + " and " + fixed_frame)<<std::endl;
+	}
     }
 }
 

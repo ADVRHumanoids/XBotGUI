@@ -19,7 +19,7 @@
 
 #include <XBotGUI/utils/pose_command_widget.h>
 
-pose_command_widget::pose_command_widget(std::string topic_name_, std::string service_name_): QWidget(), topic_name(topic_name_), service_name(service_name_)
+XBot::widgets::pose_command_widget::pose_command_widget(std::string topic_name_, std::string service_name_): topic_name(topic_name_), service_name(service_name_)
 {
     pose_client = nh.serviceClient<ADVR_ROS::im_pose>((service_name+"_pose").c_str());
     pub = nh.advertise<geometry_msgs::PoseStamped>(topic_name.c_str(),1);
@@ -35,7 +35,7 @@ pose_command_widget::pose_command_widget(std::string topic_name_, std::string se
     thread_waiting.store(false);
 }
 
-void pose_command_widget::service_thread_body()
+void XBot::widgets::pose_command_widget::service_thread_body()
 {
     ADVR_ROS::im_pose srv;
     srv.request.name = topic_name;
@@ -50,7 +50,7 @@ void pose_command_widget::service_thread_body()
     thread_waiting.store(false);
 }
 
-void pose_command_widget::on_pose_button_clicked()
+void XBot::widgets::pose_command_widget::on_pose_button_clicked()
 {
     std::thread service_thread(&pose_command_widget::service_thread_body,this);
     thread_waiting.store(true);

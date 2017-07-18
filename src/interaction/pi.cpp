@@ -156,6 +156,15 @@ void XBot::widgets::pi::on_display_combo_changed()
 void XBot::widgets::pi::on_frame_combo_changed()
 {
     visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
+    
+    for(auto module:modules)
+	module.second->set_fixed_frame(frame_combo.currentText().toStdString());
+
+    for(auto im_w:im_widgets)
+	im_w.second->set_fixed_frame(frame_combo.currentText().toStdString());
+
+    for(auto im_s_w:im_sequence_widgets)
+	im_s_w.second->set_fixed_frame(frame_combo.currentText().toStdString());
 }
 
 void XBot::widgets::pi::add_frames(std::vector< std::string > names)

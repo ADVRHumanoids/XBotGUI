@@ -41,6 +41,8 @@ public:
     im_sequence_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_);
     ~im_sequence_widget();
 
+    void set_fixed_frame(std::string frame);
+
 private Q_SLOTS:
     void on_object_combo_changed();
     void on_add_button_clicked();

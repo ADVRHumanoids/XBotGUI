@@ -35,6 +35,8 @@
 #include <QComboBox>
 #include "XBotGUI/utils/object_properties.h"
 #include "XBotGUI/utils/Label_LineEdit.h" //NOTE: mixing CamelCase and under_score because reasons
+#include "XBotGUI/print_utils.h"
+#include <tf/transform_listener.h>
 #include <atomic>
 
 namespace XBot
@@ -52,6 +54,7 @@ public:
     void delete_last_object();
     void generate_objects(std::map< std::string, XBot::object_properties > objects_);
     void object_combo_changed();
+    void set_fixed_frame(std::string frame);
 
 private Q_SLOTS:
     void on_publish_button_clicked();
@@ -61,6 +64,7 @@ private Q_SLOTS:
 
 private:
     rviz::ToolManager* tool_manager;
+    tf::TransformListener tf_;
     std::string name;
     ros::NodeHandle nh;
     std::map<int,int> combo_ids;
