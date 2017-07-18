@@ -49,6 +49,10 @@
 	<command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
     </module>
 
+    <module name="Hose_Task">
+        <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
+    </module>
+
     <module name="chengxu_walking">
 	<command type="goal" topic="chengxu_walking_goal"/>
 	<command type="object_sequence" topic="chengxu_walking_sequence" interactive_markers_sequence="feet"/>
