@@ -49,6 +49,10 @@
 	<command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
     </module>
 
+    <module name="Hose_Task">
+        <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
+    </module>
+
     <module name="chengxu_walking">
 	<command type="goal" topic="chengxu_walking_goal"/>
 	<command type="object_sequence" topic="chengxu_walking_sequence" interactive_markers_sequence="feet"/>
@@ -119,11 +123,11 @@
     
     <interactive_marker name="extinguisher">
 	<object name="handle">
-	    <property name="scale_x" value="0,02"/>
-	    <property name="scale_y" value="0,02"/>
-	    <property name="scale_z" value="0,11"/>
+	    <property name="scale_x" value="0,1"/>
+	    <property name="scale_y" value="0,01"/>
+	    <property name="scale_z" value="0,01"/>
 	    <property name="id" value="0"/>
-	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="type" value="visualization_msgs::Marker::ARROW"/>
 	    <property name="mesh" value=""/>
 	</object>
 	<object name="hose_end">
