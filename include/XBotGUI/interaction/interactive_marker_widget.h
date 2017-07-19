@@ -47,7 +47,7 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_, bool sequence_=false);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_, bool sequence_);
     ~im_widget();
 
     void add_object(object_properties object_);

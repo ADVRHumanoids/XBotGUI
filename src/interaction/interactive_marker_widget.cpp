@@ -107,9 +107,9 @@ bool XBot::widgets::im_widget::pose_array_service_callback(ADVR_ROS::im_pose_arr
     for(auto object:objects)
     {
         ADVR_ROS::im_pose_msg IM;
-	if(object_combo.currentText().toStdString()=="feet")
+	if(name=="feet")
 	{
-	    IM.name = (object_combo.currentIndex()%2==0)?"right":"left";
+	    IM.name = (std::stoi(object.first)%2==0)?"right":"left";
 	}
 	IM.pose_stamped.header = marker.header;
 	IM.pose_stamped.pose.position.x = object.second.pose.position.x;
@@ -320,6 +320,7 @@ void XBot::widgets::im_widget::publish_all()
     
     for(auto object:objects)
     {
+        temp_marker.header = marker.header;
 	temp_marker.id = object.second.id;
 	temp_marker.type = object.second.type;
 	temp_marker.mesh_resource = object.second.mesh_name;
