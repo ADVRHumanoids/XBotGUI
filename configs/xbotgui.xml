@@ -53,6 +53,25 @@
         <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
     </module>
 
+    <module name="DebrisRemovalTask">
+      <command type="cmd_service" name="homing_success"/>
+      <command type="cmd_service" name="homing_fail"/>
+      <command type="cmd_service" name="reached_success"/>
+      <command type="cmd_service" name="reached_fail"/>
+      <command type="cmd_service" name="grasped_success"/>
+      <command type="cmd_service" name="grasped_fail"/>
+      <command type="cmd_service" name="move_away_after_ho"/>
+      <command type="cmd_service" name="picked_success"/>
+      <command type="cmd_service" name="picked_fail"/>
+      <command type="cmd_service" name="pick_second_hand"/>
+      <command type="cmd_service" name="pick_second_hand_success"/>
+      <command type="cmd_service" name="pick_second_hand_fail"/>
+      <command type="cmd_service" name="movedaway_success"/>
+      <command type="cmd_service" name="movedaway_fail"/>
+      <command type="cmd_service" name="ungrasped_success"/>
+      <command type="cmd_service" name="ungrasped_fail"/>
+    </module>
+
     <module name="chengxu_walking">
 	<command type="goal" topic="chengxu_walking_goal"/>
 	<command type="object_sequence" topic="chengxu_walking_sequence" interactive_markers_sequence="feet"/>

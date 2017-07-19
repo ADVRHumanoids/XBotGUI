@@ -69,6 +69,11 @@ XBot::widgets::module::module(std::string name_, std::vector<std::map<std::strin
 	    command_widgets.push_back(new sequence_command_widget(command.at("topic"),command.at("interactive_markers_sequence")));
 	}
 
+	if(command.at("type")=="cmd_service")
+	{
+	    command_widgets.push_back(new string_command_widget(name,command.at("name")));
+	}
+
 	main_layout.addWidget(command_widgets.back());
     }
 
