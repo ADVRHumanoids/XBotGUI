@@ -26,3 +26,18 @@ XBot::object_properties::object_properties()
     scale.z=1.0;
     pose.orientation.w=1;
 }
+
+void XBot::object_properties::print()
+{
+    std::cout<<"Name: "<<name<<std::endl;
+    
+    std::cout<<"ID: "<<id<<std::endl;
+    
+    std::cout<<"Scale: "<<scale.x<<" | "<<scale.y<<" | "<<scale.z<<std::endl;
+
+    std::cout<<"Position: "<<pose.position.x<<" | "<<pose.position.y<<" | "<<pose.position.z<<std::endl;
+    std::cout<<"Orientation: "<<pose.orientation.x<<" | "<<pose.orientation.y<<" | "<<pose.orientation.z<<" | "<<pose.orientation.w<<std::endl;
+
+    std::cout<<"Marker Type: "<<type<<std::endl;
+    std::cout<<"Mesh Name: "<<mesh_name<<std::endl;
+}

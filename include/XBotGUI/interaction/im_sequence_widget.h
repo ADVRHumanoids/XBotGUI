@@ -38,7 +38,7 @@ class im_sequence_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_sequence_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<std::string,object_properties> objects_);
+    im_sequence_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map<int,object_properties> objects_);
     ~im_sequence_widget();
 
     void set_fixed_frame(std::string frame);
@@ -64,8 +64,7 @@ private:
 
     int active_markers=0;
     int next_marker_index=0;
-    std::map<int,std::string> objects_names;
-    std::map<std::string,object_properties> objects;
+    std::map<int,object_properties> objects;
 };
 };
 };

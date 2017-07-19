@@ -39,6 +39,8 @@ public:
     geometry_msgs::Pose pose;
     visualization_msgs::Marker::Type::_type_type type;
     std::string mesh_name;
+    
+    void print();
 };
 
 }

@@ -431,37 +431,35 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    std::cout<<"    - - | Interactive Marker: "<<interactive_marker_name<<std::endl;
 
-	    std::map<std::string,object_properties> objects;
+	    std::map<int,object_properties> objects;
 
 	    TiXmlElement* object = interactive_marker->FirstChildElement("object");
 	    
 	    while(object)
 	    {
 		std::string object_name = object->Attribute("name");
+                int object_id = std::atoi(object->Attribute("id"));
 
 		TiXmlElement* property = object->FirstChildElement("property");
 
-		objects[object_name];
+		objects[object_id];
 
-		std::cout<<"    - - - | Object: "<<object_name<<std::endl;
+		std::cout<<"    - - - | Object: "<<object_name<<" ID: "<<object_id<<std::endl;
 
 		while(property)
 		{
 		    if(std::string(property->Attribute("name"))=="scale_x")
-			objects.at(object_name).scale.x = std::atof(property->Attribute("value"));
+			objects.at(object_id).scale.x = std::atof(property->Attribute("value"));
 		    if(std::string(property->Attribute("name"))=="scale_y")
-			objects.at(object_name).scale.y = std::atof(property->Attribute("value"));
+			objects.at(object_id).scale.y = std::atof(property->Attribute("value"));
 		    if(std::string(property->Attribute("name"))=="scale_z")
-			objects.at(object_name).scale.z = std::atof(property->Attribute("value"));
+			objects.at(object_id).scale.z = std::atof(property->Attribute("value"));
 
 		    if(std::string(property->Attribute("name"))=="type")
-			objects.at(object_name).type = name_to_types.at(std::string(property->Attribute("value")));
+			objects.at(object_id).type = name_to_types.at(std::string(property->Attribute("value")));
 
 		    if(std::string(property->Attribute("name"))=="mesh")
-			objects.at(object_name).mesh_name = std::string(property->Attribute("value"));
-
-		    if(std::string(property->Attribute("name"))=="id")
-			objects.at(object_name).id = std::atoi(property->Attribute("value"));
+			objects.at(object_id).mesh_name = std::string(property->Attribute("value"));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 

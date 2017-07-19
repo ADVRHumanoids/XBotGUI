@@ -321,6 +321,8 @@ void XBot::widgets::im_widget::publish_all()
     for(auto object:objects)
     {
         temp_marker.header = marker.header;
+        temp_marker.color.g=1;
+        temp_marker.color.a=1;
 	temp_marker.id = object.second.id;
 	temp_marker.type = object.second.type;
 	temp_marker.mesh_resource = object.second.mesh_name;

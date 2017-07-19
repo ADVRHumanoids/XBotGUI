@@ -20,13 +20,12 @@
 #include "XBotGUI/print_utils.h"
 #include <tf/transform_datatypes.h>
 
-XBot::widgets::im_sequence_widget::im_sequence_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< std::string, XBot::object_properties > objects_)
+XBot::widgets::im_sequence_widget::im_sequence_widget(rviz::ToolManager* tool_manager_, std::string name_, std::map< int, XBot::object_properties > objects_)
 : QWidget(), name(name_), interactive_marker_widget(tool_manager_,name_,object_combo,true)
 {
    for(auto object_:objects_)
    {
       objects[object_.first] = object_.second;
-      objects_names[next_marker_index] = object_.first;
       next_marker_index++;
    }
    next_marker_index=0;
@@ -66,8 +65,8 @@ void XBot::widgets::im_sequence_widget::on_object_combo_changed()
 
 void XBot::widgets::im_sequence_widget::on_add_button_clicked()
 {
-    objects.at(objects_names.at(next_marker_index)).id=active_markers;
-    interactive_marker_widget.add_object(objects.at(objects_names.at(next_marker_index)));
+    objects.at(next_marker_index).id=active_markers;
+    interactive_marker_widget.add_object(objects.at(next_marker_index));
     QString number;
     number.setNum(active_markers);
     object_combo.addItem(number);
