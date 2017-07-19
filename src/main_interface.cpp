@@ -321,6 +321,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		    std::cout<<std::endl<<"    - - - | > topic: "<<command_attributes.at("topic");
 		    std::cout<<std::endl<<"    - - - | > interactive_markers_sequence: "<<command_attributes.at("interactive_markers_sequence");
 		}
+		else if(command_attributes.at("type")=="cmd_service")
+		{
+		    command_attributes["name"] = std::string(command->Attribute("name"));
+		    std::cout<<std::endl<<"    - - - | > name: "<<command_attributes.at("name");
+		}
 		else
 		{
 		    std::cout<<" ( "<<yellow_string("Undefined command type")<<" ) "<<std::endl;
