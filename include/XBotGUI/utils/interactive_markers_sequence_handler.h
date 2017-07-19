@@ -22,6 +22,9 @@
 
 #include "ros/ros.h"
 #include <interactive_markers/interactive_marker_server.h>
+#include "XBotGUI/print_utils.h"
+#include <tf/transform_listener.h>
+#include <geometry_msgs/PoseStamped.h>
 
 class interactive_markers_sequence_handler
 {
@@ -33,6 +36,7 @@ public:
 
 private:
   ros::NodeHandle node;
+  tf::TransformListener tf_;
   ros::Subscriber sub;
   interactive_markers::InteractiveMarkerServer* server;
   visualization_msgs::InteractiveMarker interactive_marker;
