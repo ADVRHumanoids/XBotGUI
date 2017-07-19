@@ -144,6 +144,8 @@ void XBot::widgets::im_widget::position_by_click_callback(const geometry_msgs::P
     changing_coords.store(false);
 
     on_publish_button_clicked();
+
+    on_coords_changed();
 }
 
 void XBot::widgets::im_widget::on_position_by_click_button_clicked()
