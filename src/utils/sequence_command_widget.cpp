@@ -22,7 +22,7 @@
 XBot::widgets::sequence_command_widget::sequence_command_widget(std::string topic_name_, std::string service_name_): topic_name(topic_name_), service_name(service_name_)
 {
     sequence_client = nh.serviceClient<ADVR_ROS::im_pose_array>((service_name+"_pose_array").c_str());
-    pub = nh.advertise<geometry_msgs::PoseArray>(topic_name.c_str(),1);
+    pub = nh.advertise<ADVR_ROS::im_pose_array_msg>(topic_name.c_str(),1);
 
     sequence_button.setText(QString::fromStdString("Send Object Sequence"));
     
@@ -41,10 +41,11 @@ void XBot::widgets::sequence_command_widget::service_thread_body()
     srv.request.name = topic_name;
     if(sequence_client.call(srv))
     {
-        geometry_msgs::PoseArray poses;
-	for(auto ps:srv.response.poses_stamped)
+        ADVR_ROS::im_pose_array_msg poses;
+	poses.name = topic_name;
+	for(auto ps:srv.response.im_poses_array.im_poses)
 	{
-	    poses.poses.push_back(ps.pose);
+	    poses.im_poses.push_back(ps);
 	}
 
         pub.publish(poses);

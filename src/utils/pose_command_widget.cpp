@@ -22,7 +22,7 @@
 XBot::widgets::pose_command_widget::pose_command_widget(std::string topic_name_, std::string service_name_): topic_name(topic_name_), service_name(service_name_)
 {
     pose_client = nh.serviceClient<ADVR_ROS::im_pose>((service_name+"_pose").c_str());
-    pub = nh.advertise<geometry_msgs::PoseStamped>(topic_name.c_str(),1);
+    pub = nh.advertise<ADVR_ROS::im_pose_msg>(topic_name.c_str(),1);
 
     pose_button.setText(QString::fromStdString("Send Object Pose"));
     
@@ -41,7 +41,7 @@ void XBot::widgets::pose_command_widget::service_thread_body()
     srv.request.name = topic_name;
     if(pose_client.call(srv))
     {
-        pub.publish(srv.response.pose_stamped);
+        pub.publish(srv.response.im_pose);
     }
     else
     {

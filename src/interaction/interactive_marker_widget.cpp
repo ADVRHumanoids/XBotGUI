@@ -95,8 +95,9 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
 
 bool XBot::widgets::im_widget::pose_service_callback(ADVR_ROS::im_pose::Request& req, ADVR_ROS::im_pose::Response& res)
 {
-    res.pose_stamped.header = marker.header;
-    res.pose_stamped.pose = marker.pose;
+    res.im_pose.pose_stamped.header = marker.header;
+    res.im_pose.pose_stamped.pose = marker.pose;
+    res.im_pose.name = object_combo.currentText().toStdString();
 
     return true;
 }
@@ -105,17 +106,23 @@ bool XBot::widgets::im_widget::pose_array_service_callback(ADVR_ROS::im_pose_arr
 {
     for(auto object:objects)
     {
-	geometry_msgs::PoseStamped pose_stamped;
-	pose_stamped.header = marker.header;
-	pose_stamped.pose.position.x = object.second.pose.position.x;
-	pose_stamped.pose.position.y = object.second.pose.position.y;
-	pose_stamped.pose.position.z = object.second.pose.position.z;
-	pose_stamped.pose.orientation.x = object.second.pose.orientation.x;
-	pose_stamped.pose.orientation.y = object.second.pose.orientation.y;
-	pose_stamped.pose.orientation.z = object.second.pose.orientation.z;
-	pose_stamped.pose.orientation.w = object.second.pose.orientation.w;
-	res.poses_stamped.push_back(pose_stamped);
+        ADVR_ROS::im_pose_msg IM;
+	if(object_combo.currentText().toStdString()=="feet")
+	{
+	    IM.name = (object_combo.currentIndex()%2==0)?"right":"left";
+	}
+	IM.pose_stamped.header = marker.header;
+	IM.pose_stamped.pose.position.x = object.second.pose.position.x;
+	IM.pose_stamped.pose.position.y = object.second.pose.position.y;
+	IM.pose_stamped.pose.position.z = object.second.pose.position.z;
+	IM.pose_stamped.pose.orientation.x = object.second.pose.orientation.x;
+	IM.pose_stamped.pose.orientation.y = object.second.pose.orientation.y;
+	IM.pose_stamped.pose.orientation.z = object.second.pose.orientation.z;
+	IM.pose_stamped.pose.orientation.w = object.second.pose.orientation.w;
+	res.im_poses_array.im_poses.push_back(IM);
     }
+
+    res.im_poses_array.name = object_combo.currentText().toStdString();
 
     return true;
 }

@@ -28,6 +28,7 @@
 #include <ros/ros.h>
 #include <ros/service.h>
 #include <ADVR_ROS/im_pose.h>
+#include <ADVR_ROS/im_pose_msg.h>
 #include <XBotGUI/utils/command_widget.h>
 
 namespace XBot

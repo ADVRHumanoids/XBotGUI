@@ -27,6 +27,7 @@
 #include <atomic>
 #include <ros/ros.h>
 #include <ros/service.h>
+#include <ADVR_ROS/im_pose_array_msg.h>
 #include <ADVR_ROS/im_pose_array.h>
 #include <geometry_msgs/PoseArray.h>
 #include "XBotGUI/utils/command_widget.h"
