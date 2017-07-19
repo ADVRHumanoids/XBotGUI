@@ -280,7 +280,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    if(std::find(plugin_names.begin(),plugin_names.end(),module_name)==plugin_names.end())
 	    {
-		std::cout<<" (not in Active Plugins, ignoring)"<<std::endl;
+		std::cout<<" ("<<yellow_string("not in Active Plugins, ignoring")<<")"<<std::endl;
 		module = module->NextSiblingElement("module");
 		continue;
 	    }

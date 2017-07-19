@@ -47,7 +47,7 @@ class im_widget: public QWidget
 {
 Q_OBJECT
 public:
-    im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_);
+    im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_, bool sequence_=false);
     ~im_widget();
 
     void add_object(object_properties object_);
@@ -55,6 +55,7 @@ public:
     void generate_objects(std::map< std::string, XBot::object_properties > objects_);
     void object_combo_changed();
     void set_fixed_frame(std::string frame);
+    void publish_all();
 
 private Q_SLOTS:
     void on_publish_button_clicked();
@@ -73,6 +74,7 @@ private:
     ros::Subscriber im_sub;
     void im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback);
     void update_coords();
+    void update_poses(std::string old_frame, std::string frame);
     std::atomic_bool changing_coords;
 
     QPushButton publish_button;
@@ -105,6 +107,8 @@ private:
 
     ros::ServiceServer pose_array_service;
     bool pose_array_service_callback(ADVR_ROS::im_pose_array::Request &req, ADVR_ROS::im_pose_array::Response &res);
+
+    bool sequence=false;
 };
 };
 };

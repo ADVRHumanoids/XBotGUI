@@ -19,8 +19,8 @@
 #include "XBotGUI/interaction/interactive_marker_widget.h"
 #include <tf/transform_datatypes.h>
 
-XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_)
-: QWidget(), tool_manager(tool_manager_), name(name_), object_combo(object_combo_)
+XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::string name_, QComboBox& object_combo_, bool sequence_)
+: QWidget(), tool_manager(tool_manager_), name(name_), object_combo(object_combo_), sequence(sequence_)
 {
    changing_coords.store(false);
    changing_scale.store(false);
@@ -312,6 +312,45 @@ void XBot::widgets::im_widget::delete_last_object()
     }
 }
 
+void XBot::widgets::im_widget::publish_all()
+{
+    visualization_msgs::Marker temp_marker;
+    
+    for(auto object:objects)
+    {
+	temp_marker.id = object.second.id;
+	temp_marker.type = object.second.type;
+	temp_marker.mesh_resource = object.second.mesh_name;
+	temp_marker.scale.x = object.second.scale.x;
+	temp_marker.scale.y = object.second.scale.y;
+	temp_marker.scale.z = object.second.scale.z;
+	temp_marker.pose.position.x = object.second.pose.position.x;
+	temp_marker.pose.position.y = object.second.pose.position.y;
+	temp_marker.pose.position.z = object.second.pose.position.z;
+	temp_marker.pose.orientation.x = object.second.pose.orientation.x;
+	temp_marker.pose.orientation.y = object.second.pose.orientation.y;
+	temp_marker.pose.orientation.z = object.second.pose.orientation.z;
+	temp_marker.pose.orientation.w = object.second.pose.orientation.w;
+
+	marker_pub.publish(temp_marker);
+	usleep(10);
+    }
+}
+
+void XBot::widgets::im_widget::update_poses(std::string old_frame, std::string frame)
+{
+    for(auto& object:objects)
+    {
+        geometry_msgs::PoseStamped input;
+	input.header.frame_id = old_frame;
+	input.pose = object.second.pose;
+	geometry_msgs::PoseStamped output;
+	tf_.transformPose(frame,input,output);
+
+	object.second.pose = output.pose;
+    }
+}
+
 void XBot::widgets::im_widget::set_fixed_frame(std::string frame)
 {
     std::string err_msg;
@@ -326,6 +365,13 @@ void XBot::widgets::im_widget::set_fixed_frame(std::string frame)
 	marker.header.frame_id=frame;
 
 	update_coords();
+
+	update_poses(input.header.frame_id,frame);
+
+	if(sequence)
+	{
+	    publish_all();
+	}
     }
     else
     {
