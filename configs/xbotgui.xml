@@ -23,22 +23,22 @@
 
     <!--   trajectory_utils   -->
     <display name="left_path" type="rviz/Path">
-	<property name="Topic" value="/LSoftHandLink_trj_viz"/>
+	<property name="Topic" value="/LSoftHand_trj_viz"/>
     </display>
     <display name="left_marker" type="rviz/InteractiveMarkers">
-	<property name="Update Topic" value="/LSoftHandLink_trajectory_marker_server/update"/>
+	<property name="Update Topic" value="/LSoftHand_trajectory_marker_server/update"/>
     </display>
     <display name="left_traj" type="rviz/MarkerArray">
-	<property name="Marker Topic" value="/trj_visual_markers_Waist_to_LSoftHandLink"/>
+	<property name="Marker Topic" value="/trj_visual_markers_Waist_to_LSoftHand"/>
     </display>
     <display name="right_path" type="rviz/Path">
-	<property name="Topic" value="/RSoftHandLink_trj_viz"/>
+	<property name="Topic" value="/RSoftHand_trj_viz"/>
     </display>
     <display name="right_marker" type="rviz/InteractiveMarkers">
-	<property name="Update Topic" value="/RSoftHandLink_trajectory_marker_server/update"/>
+	<property name="Update Topic" value="/RSoftHand_trajectory_marker_server/update"/>
     </display>
     <display name="right_traj" type="rviz/MarkerArray">
-	<property name="Marker Topic" value="/trj_visual_markers_Waist_to_RSoftHandLink"/>
+	<property name="Marker Topic" value="/trj_visual_markers_Waist_to_RSoftHand"/>
     </display>
     
 </visualization>
