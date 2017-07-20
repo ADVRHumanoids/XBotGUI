@@ -43,7 +43,7 @@ void XBot::widgets::module::stop_info(bool error)
     }
 }
 
-XBot::widgets::module::module(std::string name_, std::vector<std::map<std::string,std::string>> commands_, rviz::ToolManager* tool_manager_): QWidget(), name(name_)
+XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, rviz::ToolManager* tool_manager_): QWidget(), name(name_)
 {
     switch_client = nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str());
 
@@ -52,29 +52,38 @@ XBot::widgets::module::module(std::string name_, std::vector<std::map<std::strin
 
     main_layout.addWidget(&switch_button);
 
-    for(auto command:commands_)
+    for(auto command_block:command_blocks_)
     {
-	if(command.at("type")=="object_pose")
+        QHBoxLayout* l = new QHBoxLayout();
+
+	for(auto command:command_block)
 	{
-	    command_widgets.push_back(new pose_command_widget(command.at("topic"),command.at("interactive_marker")));
+	    if(command.at("type")=="object_pose")
+	    {
+		command_widgets.push_back(new pose_command_widget(command.at("topic"),command.at("interactive_marker")));
+	    }
+	    else if(command.at("type")=="goal")
+	    {
+		command_widgets.push_back(new goal_command_widget(tool_manager_,command.at("topic")));
+	    }
+	    else if(command.at("type")=="object_sequence")
+	    {
+		command_widgets.push_back(new sequence_command_widget(command.at("topic"),command.at("interactive_markers_sequence")));
+	    }
+	    else if(command.at("type")=="cmd_service")
+	    {
+		command_widgets.push_back(new string_command_widget(name,command.at("name")));
+	    }
+	    else continue;
+	    l->addWidget(command_widgets.back());
 	}
 
-	if(command.at("type")=="goal")
-	{
-	    command_widgets.push_back(new goal_command_widget(tool_manager_,command.at("topic")));
-	}
+	h_layout.push_back(l);
+    }
 
-	if(command.at("type")=="object_sequence")
-	{
-	    command_widgets.push_back(new sequence_command_widget(command.at("topic"),command.at("interactive_markers_sequence")));
-	}
-
-	if(command.at("type")=="cmd_service")
-	{
-	    command_widgets.push_back(new string_command_widget(name,command.at("name")));
-	}
-
-	main_layout.addWidget(command_widgets.back());
+    for(auto l:h_layout)
+    {
+	main_layout.addLayout(l);
     }
 
     connect(&switch_button,SIGNAL(clicked()),this,SLOT(on_switch_button_clicked()));
@@ -137,5 +146,9 @@ XBot::widgets::module::~module()
     for(auto cw:command_widgets)
     {
 	delete cw;
+    }
+    for(auto l:h_layout)
+    {
+	delete l;
     }
 }

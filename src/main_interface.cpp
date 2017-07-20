@@ -268,12 +268,12 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     {
         std::cout<<"    - - modules additional commands"<<std::endl;
 	TiXmlElement* module = modules->FirstChildElement("module");
-	TiXmlElement* command;
-	std::vector<std::map<std::string,std::string>> commands;
+	std::vector<std::vector<std::map<std::string,std::string>>> command_blocks;
 
 	while(module)
 	{
-	    commands.clear();
+	    command_blocks.clear();
+
 	    std::string module_name = module->Attribute("name");
 
 	    std::cout<<"    - - | Module: "<<module_name;
@@ -286,70 +286,85 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    }
 
 	    std::cout<<std::endl;
+
+	    TiXmlElement* command_block = module->FirstChildElement("command_block");
 	    
-	    command = module->FirstChildElement("command");
-	    
-	    while(command)
+	    while(command_block)
 	    {
-	        std::map<std::string,std::string> command_attributes;
-		
-		command_attributes["type"] = std::string(command->Attribute("type"));
-		
-		std::cout<<"    - - | > "<<command_attributes.at("type");
 
-		if(command_attributes.at("type")=="object_pose")
-		{
-		    command_attributes["topic"] = std::string(command->Attribute("topic"));
-		    command_attributes["interactive_marker"] = std::string(command->Attribute("interactive_marker"));
+	        std::vector<std::map<std::string,std::string>> commands;
+		TiXmlElement* command;
 
-		    std::cout<<std::endl<<"    - - - | > topic: "<<command_attributes.at("topic");
-		    std::cout<<std::endl<<"    - - - | > interactive_marker: "<<command_attributes.at("interactive_marker");
-		}
-		else if(command_attributes.at("type")=="goal")
-		{
-		    command_attributes["topic"] = std::string(command->Attribute("topic"));
-		    std::cout<<std::endl<<"    - - - | > topic: "<<command_attributes.at("topic");
+		command = command_block->FirstChildElement("command");
 
-		    std::map<std::string,std::string> properties;
-		    properties["Marker Topic"] = command_attributes.at("topic")+"_goal_marker";
-		    pilot_interface.add_display(module_name,"rviz/Marker",properties);
-		}
-		else if(command_attributes.at("type")=="object_sequence")
+		std::cout<<"    - - | > "<<"command group:"<<std::endl;
+
+		while(command)
 		{
-		    command_attributes["topic"] = std::string(command->Attribute("topic"));
-		    command_attributes["interactive_markers_sequence"] = std::string(command->Attribute("interactive_markers_sequence"));
-		    std::cout<<std::endl<<"    - - - | > topic: "<<command_attributes.at("topic");
-		    std::cout<<std::endl<<"    - - - | > interactive_markers_sequence: "<<command_attributes.at("interactive_markers_sequence");
-		}
-		else if(command_attributes.at("type")=="cmd_service")
-		{
-		    command_attributes["name"] = std::string(command->Attribute("name"));
-		    std::cout<<std::endl<<"    - - - | > name: "<<command_attributes.at("name");
-		}
-		else
-		{
-		    std::cout<<" ( "<<yellow_string("Undefined command type")<<" ) "<<std::endl;
+		    std::map<std::string,std::string> command_attributes;
+		    
+		    command_attributes["type"] = std::string(command->Attribute("type"));
+		    
+		    std::cout<<"    - - - | > "<<command_attributes.at("type");
+
+		    if(command_attributes.at("type")=="object_pose")
+		    {
+			command_attributes["topic"] = std::string(command->Attribute("topic"));
+			command_attributes["interactive_marker"] = std::string(command->Attribute("interactive_marker"));
+
+			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
+			std::cout<<std::endl<<"    - - - - | > interactive_marker: "<<command_attributes.at("interactive_marker");
+		    }
+		    else if(command_attributes.at("type")=="goal")
+		    {
+			command_attributes["topic"] = std::string(command->Attribute("topic"));
+			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
+
+			std::map<std::string,std::string> properties;
+			properties["Marker Topic"] = command_attributes.at("topic")+"_goal_marker";
+			pilot_interface.add_display(module_name,"rviz/Marker",properties);
+		    }
+		    else if(command_attributes.at("type")=="object_sequence")
+		    {
+			command_attributes["topic"] = std::string(command->Attribute("topic"));
+			command_attributes["interactive_markers_sequence"] = std::string(command->Attribute("interactive_markers_sequence"));
+			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
+			std::cout<<std::endl<<"    - - - - | > interactive_markers_sequence: "<<command_attributes.at("interactive_markers_sequence");
+		    }
+		    else if(command_attributes.at("type")=="cmd_service")
+		    {
+			command_attributes["name"] = std::string(command->Attribute("name"));
+			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
+		    }
+		    else
+		    {
+			std::cout<<" ( "<<yellow_string("Undefined command type")<<" ) "<<std::endl;
+			command = command->NextSiblingElement("command");
+			continue;
+		    }
+		    
+		    std::cout<<std::endl;
+		    
+		    commands.push_back(command_attributes);
+		    
 		    command = command->NextSiblingElement("command");
-		    continue;
 		}
-		
-		std::cout<<std::endl;
-		
-		commands.push_back(command_attributes);
-		
-		command = command->NextSiblingElement("command");
+
+		command_blocks.push_back(commands);
+
+		command_block = command_block->NextSiblingElement("command_block");
 	    }
 
-	    pilot_interface.add_module(module_name.c_str(),commands);
+	    pilot_interface.add_module(module_name.c_str(),command_blocks);
 
 	    module = module->NextSiblingElement("module");
 	}
 
-	commands.clear();
+	command_blocks.clear();
 
 	for(auto plugin:plugin_names)
 	{
-	    pilot_interface.add_module(plugin,commands);
+	    pilot_interface.add_module(plugin,command_blocks);
 	}
     }
 

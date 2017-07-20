@@ -40,7 +40,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::map<std::string,std::string>> commands_, rviz::ToolManager* tool_manager_=NULL);
+    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, rviz::ToolManager* tool_manager_=NULL);
     ~module();
 
     QPushButton* get_switch_button();
@@ -63,6 +63,7 @@ private:
     std::vector<command_widget*> command_widgets;
 
     QVBoxLayout main_layout;
+    std::vector<QHBoxLayout*> h_layout;
 
 };
 };

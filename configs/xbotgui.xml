@@ -46,35 +46,61 @@
 <modules> <!-- here are defined additional commands for plugins defined in yaml config files can be defined, pay attention to plugin names! -->
   
     <module name="ManipulationPlugin">
-	<command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
+        <command_block>
+	    <command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
+	</command_block>
     </module>
 
     <module name="Hose_Task">
-        <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
+        <command_block>
+	    <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
+	</command_block>
     </module>
 
     <module name="DebrisRemovalTask">
-      <command type="cmd_service" name="homing_success"/>
-      <command type="cmd_service" name="homing_fail"/>
-      <command type="cmd_service" name="reached_success"/>
-      <command type="cmd_service" name="reached_fail"/>
-      <command type="cmd_service" name="grasped_success"/>
-      <command type="cmd_service" name="grasped_fail"/>
-      <command type="cmd_service" name="move_away_after_ho"/>
-      <command type="cmd_service" name="picked_success"/>
-      <command type="cmd_service" name="picked_fail"/>
-      <command type="cmd_service" name="pick_second_hand"/>
-      <command type="cmd_service" name="pick_second_hand_success"/>
-      <command type="cmd_service" name="pick_second_hand_fail"/>
-      <command type="cmd_service" name="movedaway_success"/>
-      <command type="cmd_service" name="movedaway_fail"/>
-      <command type="cmd_service" name="ungrasped_success"/>
-      <command type="cmd_service" name="ungrasped_fail"/>
+	<command_block>
+	    <command type="cmd_service" name="homing_success"/>
+	    <command type="cmd_service" name="homing_fail"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="reached_success"/>
+	    <command type="cmd_service" name="reached_fail"/>
+	</command_block>
+      
+	<command_block>
+	    <command type="cmd_service" name="grasped_success"/>
+	    <command type="cmd_service" name="grasped_fail"/>
+	    <command type="cmd_service" name="move_away_after_ho"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="picked_success"/>
+	    <command type="cmd_service" name="picked_fail"/>
+	    <command type="cmd_service" name="pick_second_hand"/>
+	</command_block>
+	
+	<command_block>
+	    <command type="cmd_service" name="pick_second_hand_success"/>
+	    <command type="cmd_service" name="pick_second_hand_fail"/>
+	</command_block>
+      
+	<command_block>
+	    <command type="cmd_service" name="movedaway_success"/>
+	    <command type="cmd_service" name="movedaway_fail"/>
+	</command_block>
+      
+	<command_block>
+	    <command type="cmd_service" name="ungrasped_success"/>
+	    <command type="cmd_service" name="ungrasped_fail"/>
+	</command_block>
     </module>
 
     <module name="chengxu_walking">
-	<command type="goal" topic="chengxu_walking_goal"/>
-	<command type="object_sequence" topic="walking_sequence" interactive_markers_sequence="feet"/>
+	<command_block>
+	    <command type="goal" topic="chengxu_walking_goal"/>
+	    <command type="object_sequence" topic="walking_sequence" interactive_markers_sequence="feet"/>
+	</command_block>
     </module>
 </modules>
 
