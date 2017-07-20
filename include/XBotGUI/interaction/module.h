@@ -40,7 +40,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, rviz::ToolManager* tool_manager_=NULL);
+    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_,  std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
     ~module();
 
     QPushButton* get_switch_button();
@@ -50,12 +50,12 @@ private Q_SLOTS:
     void on_switch_button_clicked();
 
 private:
-    void start_info(bool error);
-    void stop_info(bool error);
+    void start_info(bool error, std::string plugin_name, bool called);
+    void stop_info(bool error, std::string plugin_name, bool called);
 
     std::string name;
     ros::NodeHandle nh;
-    ros::ServiceClient switch_client;
+    std::vector<ros::ServiceClient> switch_client;
     std_srvs::SetBool switch_service;
 
     QPushButton switch_button;

@@ -46,18 +46,38 @@
 <modules> <!-- here are defined additional commands for plugins defined in yaml config files can be defined, pay attention to plugin names! -->
   
     <module name="ManipulationPlugin">
-        <command_block>
+      	<dependencies>
+	    <plugin name="HomingExample"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	</dependencies>
+
+	<command_block>
 	    <command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
 	</command_block>
     </module>
 
     <module name="Hose_Task">
+      	<dependencies>
+	    <plugin name="HomingExample"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="ManipulationPlugin"/>
+	</dependencies>
+
         <command_block>
 	    <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
 	</command_block>
     </module>
 
     <module name="DebrisRemovalTask">
+	<dependencies>
+	    <plugin name="HomingExample"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="ManipulationPlugin"/>
+	</dependencies>
+      
 	<command_block>
 	    <command type="cmd_service" name="homing_success"/>
 	    <command type="cmd_service" name="homing_fail"/>

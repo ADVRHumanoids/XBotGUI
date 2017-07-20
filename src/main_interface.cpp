@@ -269,6 +269,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
         std::cout<<"    - - modules additional commands"<<std::endl;
 	TiXmlElement* module = modules->FirstChildElement("module");
 	std::vector<std::vector<std::map<std::string,std::string>>> command_blocks;
+	std::map<std::string,std::vector<std::string>> module_dependencies;
 
 	while(module)
 	{
@@ -286,6 +287,36 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    }
 
 	    std::cout<<std::endl;
+	    
+	    TiXmlElement* dependencies = module->FirstChildElement("dependencies");
+
+	    if(dependencies)
+	    {
+		std::vector<std::map<std::string,std::string>> commands;
+		TiXmlElement* dependency;
+
+		dependency = dependencies->FirstChildElement("plugin");
+
+		std::cout<<"    - - | > "<<"dependencies:"<<std::endl;
+
+		while(dependency)
+		{
+		    std::string plugin_name = dependency->Attribute("name");
+		    
+		    if(std::find(plugin_names.begin(),plugin_names.end(),plugin_name)==plugin_names.end())
+		    {
+			std::cout<<" ("<<yellow_string("not in Active Plugins, ignoring")<<")"<<std::endl;
+			dependency = dependency->NextSiblingElement("plugin");
+			continue;
+		    }
+
+		    std::cout<<"    - - - | > "<<plugin_name<<std::endl;
+
+		    module_dependencies[module_name].push_back(plugin_name);
+
+		    dependency = dependency->NextSiblingElement("plugin");
+		}
+	    }
 
 	    TiXmlElement* command_block = module->FirstChildElement("command_block");
 	    
@@ -355,16 +386,24 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		command_block = command_block->NextSiblingElement("command_block");
 	    }
 
-	    pilot_interface.add_module(module_name.c_str(),command_blocks);
+	    pilot_interface.add_module(module_name.c_str(),command_blocks,module_dependencies.at(module_name));
 
 	    module = module->NextSiblingElement("module");
 	}
 
-	command_blocks.clear();
-
 	for(auto plugin:plugin_names)
 	{
-	    pilot_interface.add_module(plugin,command_blocks);
+	    bool to_add=true;
+
+	    for(auto dep:module_dependencies)
+	    {
+		if((std::find(dep.second.begin(),dep.second.end(),plugin)!=dep.second.end()))
+		{
+		    to_add=false;
+		}
+	    }
+
+	    if(to_add) pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
 	}
     }
 
@@ -493,7 +532,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     tabs.addTab(&pilot_interface,"PI");
     
     #endif
-    
+
     main_layout.addWidget(&tabs);
 
     // first sense and move to activate and let the robot where it is

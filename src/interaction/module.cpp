@@ -19,33 +19,44 @@
 #include "XBotGUI/interaction/module.h"
 #include "XBotGUI/print_utils.h"
 
-void XBot::widgets::module::start_info(bool error)
+void XBot::widgets::module::start_info(bool error, std::string plugin_name, bool called)
 {
     if(!error)
     {
-	std::cout<<green_string("[ MODULE " + name +" ") + yellow_string("STARTED") + green_string(" ]")<<std::endl;
+	std::cout<<green_string("[ " + plugin_name +" ") + yellow_string("STARTED") + green_string(" ]")<<std::endl;
     }
     else
     {
-	std::cout<<red_string("[ ERROR STARTING MODULE " + name +" ]")<<std::endl;
+	if(!called)
+	    std::cout<<red_string("[ ERROR CALLING START SERVICE FOR " + plugin_name +" ]")<<std::endl;
+	else
+	    std::cout<<red_string("[ ERROR STARTING " + plugin_name +" ]")<<std::endl;
     }
 }
 
-void XBot::widgets::module::stop_info(bool error)
+void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool called)
 {
     if(!error)
     {
-	std::cout<<green_string("[ MODULE " + name +" ") + yellow_string("STOPPED") + green_string(" ]")<<std::endl;
+	std::cout<<green_string("[ MODULE " + plugin_name +" ") + yellow_string("STOPPED") + green_string(" ]")<<std::endl;
     }
     else
     {
-	std::cout<<red_string("[ ERROR STOPPING MODULE " + name +" ]")<<std::endl;
+        if(!called)
+	    std::cout<<red_string("[ ERROR CALLING STOP SERVICE FOR " + plugin_name +" ]")<<std::endl;
+	else
+	    std::cout<<red_string("[ ERROR STOPPING " + plugin_name +" ]")<<std::endl;
     }
 }
 
-XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, rviz::ToolManager* tool_manager_): QWidget(), name(name_)
+XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_): QWidget(), name(name_)
 {
-    switch_client = nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str());
+    switch_client.push_back(nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str()));
+
+    for(auto dep:module_dependencies)
+    {
+        switch_client.push_back(nh.serviceClient<std_srvs::SetBool>((dep+"_switch").c_str()));
+    }
 
     switch_button.setCheckable(true);
     switch_button.setText("Start");
@@ -110,33 +121,40 @@ void XBot::widgets::module::on_switch_button_clicked()
     {
 	switch_button.setText("Stop");
 	switch_service.request.data = true;
-	if(switch_client.call(switch_service))
+
+	for(auto& sc:switch_client)
 	{
-	    if(switch_service.response.success)
-		start_info(false);
+	    if(sc.call(switch_service))
+	    {
+		if(switch_service.response.success)
+		    start_info(false,sc.getService(),true);
+		else
+		    start_info(true,sc.getService(),true);
+	    }
 	    else
-		start_info(true);
-	}
-	else
-	{
-	    start_info(true);
+	    {
+		start_info(true,sc.getService(),false);
+	    }
 	}
     }
     else
     {
 	switch_button.setText("Start");
-
 	switch_service.request.data = false;
-	if(switch_client.call(switch_service))
+	
+	for(auto& sc:switch_client)
 	{
-	    if(switch_service.response.success)
-		stop_info(false);
+	    if(sc.call(switch_service))
+	    {
+		if(switch_service.response.success)
+		    stop_info(false,sc.getService(),true);
+		else
+		    stop_info(true,sc.getService(),true);
+	    }
 	    else
-		stop_info(true);
-	}
-	else
-	{
-	    stop_info(true);
+	    {
+		stop_info(true,sc.getService(),false);
+	    }
 	}
     }
 }
