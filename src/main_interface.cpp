@@ -386,7 +386,10 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		command_block = command_block->NextSiblingElement("command_block");
 	    }
 
-	    pilot_interface.add_module(module_name.c_str(),command_blocks,module_dependencies.at(module_name));
+	    if(module_dependencies.count(module_name))
+		pilot_interface.add_module(module_name.c_str(),command_blocks,module_dependencies.at(module_name));
+	    else
+		pilot_interface.add_module(module_name.c_str(),command_blocks,std::vector<std::string>());
 
 	    module = module->NextSiblingElement("module");
 	}
