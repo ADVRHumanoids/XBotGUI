@@ -47,7 +47,6 @@
   
     <module name="ManipulationPlugin">
       	<dependencies>
-	    <plugin name="HomingExample"/>
 	    <plugin name="IkRosSMPub"/>
 	    <plugin name="OpenSotIk"/>
 	</dependencies>
@@ -59,10 +58,9 @@
 
     <module name="Hose_Task">
       	<dependencies>
-	    <plugin name="HomingExample"/>
+	    <plugin name="ManipulationPlugin"/>
 	    <plugin name="IkRosSMPub"/>
 	    <plugin name="OpenSotIk"/>
-	    <plugin name="ManipulationPlugin"/>
 	</dependencies>
 
         <command_block>
@@ -72,10 +70,9 @@
 
     <module name="DebrisRemovalTask">
 	<dependencies>
-	    <plugin name="HomingExample"/>
+	    <plugin name="ManipulationPlugin"/>
 	    <plugin name="IkRosSMPub"/>
 	    <plugin name="OpenSotIk"/>
-	    <plugin name="ManipulationPlugin"/>
 	</dependencies>
       
 	<command_block>

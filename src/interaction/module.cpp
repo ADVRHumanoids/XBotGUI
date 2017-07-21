@@ -51,12 +51,12 @@ void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool 
 
 XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_): QWidget(), name(name_)
 {
-    switch_client.push_back(nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str()));
-
     for(auto dep:module_dependencies)
     {
         switch_client.push_back(nh.serviceClient<std_srvs::SetBool>((dep+"_switch").c_str()));
     }
+
+    switch_client.push_back(nh.serviceClient<std_srvs::SetBool>((name+"_switch").c_str()));
 
     switch_button.setCheckable(true);
     switch_button.setText("Start");
