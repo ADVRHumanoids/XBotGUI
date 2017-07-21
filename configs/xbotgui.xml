@@ -121,6 +121,10 @@
     </module>
 </modules>
 
+<utils>
+    <util name="trajectory_utils"/>
+</utils>
+
 <interactive_markers>
 
     <!--<interactive_marker name="object">

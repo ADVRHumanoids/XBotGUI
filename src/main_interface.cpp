@@ -407,6 +407,37 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	}
     }
 
+    TiXmlElement* utils=doc.FirstChildElement("utils");
+    if (utils==NULL || utils->Type()!=TiXmlNode::TINYXML_ELEMENT)
+    {
+        std::cout<<yellow_string("Could not find element utils into file "+filename)<<std::endl;
+    }
+    else
+    {
+	std::cout<<"    - - "<<purple_string("utils")<<std::endl;
+	TiXmlElement* util = utils->FirstChildElement("util");
+
+	while(util)
+	{
+	    std::string util_name = util->Attribute("name");
+
+	    std::cout<<"    - - | Util : "<<util_name;
+	    
+	    if(util_name!="trajectory_utils")
+	    {
+		std::cout<<" ( "<<yellow_string("Undefined util type")<<" ) "<<std::endl;
+		util = util->NextSiblingElement("util");
+		continue;
+	    }
+
+	    std::cout<<std::endl;
+
+	    pilot_interface.add_utility(util_name);
+
+	    util = util->NextSiblingElement("util");
+	}
+    }
+
     TiXmlElement* interactive_markers=doc.FirstChildElement("interactive_markers");
     if (interactive_markers==NULL || interactive_markers->Type()!=TiXmlNode::TINYXML_ELEMENT)
     {

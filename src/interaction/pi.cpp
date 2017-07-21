@@ -109,6 +109,22 @@ void XBot::widgets::pi::add_module(std::string name, std::vector<std::vector<std
     modules_tabs.addTab(modules.at(name),name.c_str());
 }
 
+void XBot::widgets::pi::add_utility(std::string name)
+{
+    if(utilities.count(name)) return;
+
+    utilities[name] = new utility(name);
+
+    QFrame* myFrame = new QFrame();
+    QPalette palette;
+    myFrame->setFrameShape(QFrame::VLine);
+    myFrame->setLineWidth(2);
+    palette.setColor(myFrame->foregroundRole(),Qt::gray);
+    myFrame->setPalette(palette);
+    buttons_layout.addWidget(myFrame);
+    buttons_layout.addWidget(utilities.at(name));
+}
+
 void XBot::widgets::pi::on_display_toggle_clicked()
 {
     if(display_toggle.isChecked())

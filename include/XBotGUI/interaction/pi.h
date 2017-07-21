@@ -31,6 +31,7 @@
 #include <QLabel>
 #include <QTabWidget>
 #include "XBotGUI/interaction/module.h"
+#include "XBotGUI/interaction/utility.h"
 #include "XBotGUI/interaction/im_single_widget.h"
 #include "XBotGUI/interaction/im_sequence_widget.h"
 #include "XBotGUI/utils/object_properties.h"
@@ -49,6 +50,7 @@ public:
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
     void add_frames(std::vector<std::string> names);
     void add_module(std::string name, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks, std::vector<std::string> module_dependencies);
+    void add_utility(std::string name);
     void add_interactive_marker(std::string name, std::map<std::string,object_properties> objects);
     void add_interactive_marker_sequence(std::string name, std::map<int,object_properties> objects);
     void set_robot_name(std::string robot_name_);
@@ -77,6 +79,7 @@ private:
     QPushButton interactive_tool_button;
 
     std::map<std::string, module*> modules;
+    std::map<std::string, utility*> utilities;
     std::map<std::string, im_single_widget*> im_widgets;
     std::map<std::string, im_sequence_widget*> im_sequence_widgets;
 
