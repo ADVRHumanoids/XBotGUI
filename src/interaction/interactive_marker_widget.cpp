@@ -28,7 +28,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    pose_service = nh.advertiseService(name+"_pose",&im_widget::pose_service_callback,this);
    pose_array_service = nh.advertiseService(name+"_pose_array",&im_widget::pose_array_service_callback,this);
    marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
-   publish_button.setText("Publish Marker");
+   publish_button.setText("Refresh Marker");
    im_sub = nh.subscribe(("/"+name+"_server/feedback").c_str(),1,&im_widget::im_callback,this);
 
    position_by_click_button.setCheckable(true);

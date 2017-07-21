@@ -87,8 +87,9 @@ void XBot::widgets::goal_command_widget::set_fixed_frame(std::string frame)
 	marker.header.frame_id=frame;
 	last_pose.pose = output.pose;
 	last_pose.header.frame_id=frame;
+	last_pose.pose.position.z = 0.0;
 	
-	update_coords(output.pose);
+	update_coords(last_pose.pose);
 	update_marker();
     }
     else
@@ -114,6 +115,7 @@ void XBot::widgets::goal_command_widget::update_marker()
 {
     marker.pose.position.x = coords_widgets.at(0)->edit.text().toDouble();
     marker.pose.position.y = coords_widgets.at(1)->edit.text().toDouble();
+    marker.pose.position.z = 0.0;
     marker.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0,0.0,coords_widgets.at(2)->edit.text().toDouble());
 }
 
