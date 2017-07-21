@@ -175,17 +175,17 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     
     std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
 
-    std::cout<<"    - Active Plugins:"<<std::endl;
+    std::cout<<"    - "<<cyan_string("Active Plugins")<<":"<<std::endl;
 
     for(auto plugin_name:plugin_names)
     {
 	std::cout<<"    - - "<<plugin_name<<std::endl;
     }
     
-    std::cout<<"    - Joints Control: " + cyan_string("ON")<<std::endl;
+    std::cout<<"    - "<<cyan_string("Joints Control")<<": "<< green_string("ON")<<std::endl;
     
     #ifndef USING_ROS
-    std::cout<<"    - PI:         " + purple_string("OFF")<<std::endl;
+    std::cout<<"    - "<<cyan_string("PI            ")<<":"  + red_string("OFF")<<std::endl;
     #else
 
     name_to_types["visualization_msgs::Marker::ARROW"] = visualization_msgs::Marker::ARROW;
@@ -203,7 +203,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     pilot_interface.set_robot_name(_XBotModel.getName());
 
-    std::cout<<"    - PI:         " + cyan_string("ON")<<std::endl;
+    std::cout<<"    - "<<cyan_string("PI            ")<<":"  + green_string("ON")<<std::endl;
 
     TiXmlElement* visualization=doc.FirstChildElement("visualization");
     if (visualization==NULL || visualization->Type()!=TiXmlNode::TINYXML_ELEMENT)
@@ -212,7 +212,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     else
     {
-        std::cout<<"    - - visualization"<<std::endl;
+        std::cout<<"    - - "<<purple_string("visualization")<<std::endl;
 	TiXmlElement* display = visualization->FirstChildElement("display");
 	TiXmlElement* property;
 	std::map<std::string,std::string> properties;	
@@ -266,7 +266,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     else
     {
-        std::cout<<"    - - modules additional commands"<<std::endl;
+        std::cout<<"    - - "<<purple_string("modules additional commands")<<std::endl;
 	TiXmlElement* module = modules->FirstChildElement("module");
 	std::vector<std::vector<std::map<std::string,std::string>>> command_blocks;
 	std::map<std::string,std::vector<std::string>> module_dependencies;
@@ -445,7 +445,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     else
     {
-        std::cout<<"    - - interactive_markers"<<std::endl;
+        std::cout<<"    - - "<<purple_string("interactive_markers")<<std::endl;
 	TiXmlElement* interactive_marker = interactive_markers->FirstChildElement("interactive_marker");
 
 	while(interactive_marker)
@@ -507,7 +507,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
     else
     {
-        std::cout<<"    - - interactive_markers_sequence"<<std::endl;
+        std::cout<<"    - - "<<purple_string("interactive_markers_sequence")<<std::endl;
 	TiXmlElement* interactive_marker = interactive_markers_sequence->FirstChildElement("interactive_marker");
 
 	while(interactive_marker)

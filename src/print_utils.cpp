@@ -22,42 +22,42 @@
 
 std::string blue_string(std::string s)
 {
-    std::string b="\033[0;94m";
+    std::string b="\033[1;94m";
     std::string n="\033[0m";
     return b+s+n;
 }
 
 std::string red_string(std::string s)
 {
-    std::string b="\033[0;91m";
+    std::string b="\033[1;91m";
     std::string n="\033[0m";
     return b+s+n;
 }
 
 std::string green_string(std::string s)
 {
-    std::string b="\033[0;92m";
+    std::string b="\033[1;92m";
     std::string n="\033[0m";
     return b+s+n;
 }
 
 std::string cyan_string(std::string s)
 {
-    std::string b="\033[0;96m";
+    std::string b="\033[1;96m";
     std::string n="\033[0m";
     return b+s+n;
 }
 
 std::string purple_string(std::string s)
 {
-    std::string b="\033[0;95m";
+    std::string b="\033[1;95m";
     std::string n="\033[0m";
     return b+s+n;
 }
 
 std::string yellow_string(std::string s)
 {
-    std::string b="\033[0;93m";
+    std::string b="\033[1;93m";
     std::string n="\033[0m";
     return b+s+n;
 }
