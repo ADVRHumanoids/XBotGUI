@@ -169,6 +169,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	}
     }
 
+    status_manager_.add_module_status_service("XBotCommunicationPlugin");
     robot_widget.generateRobotWidgetFromModel(_XBotModel,_RobotInterface);
 
     tabs.addTab(&robot_widget,"Joints");
@@ -394,9 +395,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    }
 
 	    if(module_dependencies.count(module_name))
-		pilot_interface.add_module(module_name.c_str(),command_blocks,module_dependencies.at(module_name));
+		pilot_interface.add_module(module_name,command_blocks,module_dependencies.at(module_name));
 	    else
-		pilot_interface.add_module(module_name.c_str(),command_blocks,std::vector<std::string>());
+		pilot_interface.add_module(module_name,command_blocks,std::vector<std::string>());
+
+	    status_manager_.add_module_status_service(module_name);
 
 	    module = module->NextSiblingElement("module");
 	}
@@ -413,7 +416,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		}
 	    }
 
-	    if(to_add) pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
+	    if(to_add)
+	    {
+		pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
+		status_manager_.add_module_status_service(plugin);
+	    }
 	}
     }
 

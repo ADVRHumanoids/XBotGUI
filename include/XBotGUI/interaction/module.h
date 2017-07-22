@@ -31,6 +31,7 @@
 #include "XBotGUI/utils/sequence_command_widget.h"
 #include "XBotGUI/utils/cmd_service_widget.h"
 #include "XBotGUI/utils/string_command_widget.h"
+#include "XBotGUI/utils/status_widget.h"
 #include <rviz/tool_manager.h>
 
 namespace XBot
@@ -60,10 +61,12 @@ private:
     std_srvs::SetBool switch_service;
 
     QPushButton switch_button;
+    status_widget status_wid;
 
     std::vector<command_widget*> command_widgets;
 
     QVBoxLayout main_layout;
+    QHBoxLayout basic_layout;
     std::vector<QHBoxLayout*> h_layout;
 
 };

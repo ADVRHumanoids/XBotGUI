@@ -37,6 +37,7 @@
 #ifndef USING_ROS
 #else
 #include "interaction/pi.h"
+#include "interaction/status_manager.h"
 #endif
 
 namespace XBot
@@ -68,6 +69,7 @@ private:
     #else
     std::map<std::string, visualization_msgs::Marker::Type::_type_type> name_to_types;
     widgets::pi pilot_interface;
+    status_manager status_manager_;
     #endif
     
     XBot::Utils::SecondOrderFilter<Eigen::VectorXd> _q_ref_filtered;
