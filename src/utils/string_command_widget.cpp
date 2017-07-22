@@ -29,6 +29,8 @@ topic_name(topic_name_), command_name(command_name_)
     main_layout.addWidget(&send_command_button);
 
     connect(&send_command_button,SIGNAL(clicked()),this,SLOT(on_send_command_button_clicked()));
+    
+    setLayout(&main_layout);
 }
 
 void XBot::widgets::string_command_widget::on_send_command_button_clicked()
