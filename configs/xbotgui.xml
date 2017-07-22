@@ -111,6 +111,15 @@
 	    <command type="cmd_service" name="ungrasped_success"/>
 	    <command type="cmd_service" name="ungrasped_fail"/>
 	</command_block>
+
+	<command_block>
+	    <command type="string" topic="hand_selection" name="LSoftHand"/>
+	    <command type="string" topic="hand_selection" name="RSoftHand"/>
+	</command_block>
+
+	<command_block>
+	    <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
+	</command_block>
     </module>
 
     <module name="chengxu_walking">
