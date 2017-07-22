@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-#include <XBotGUI/utils/string_command_widget.h>
+#include <XBotGUI/utils/cmd_service_widget.h>
 
-XBot::widgets::string_command_widget::string_command_widget(std::string module_name_, std::string command_name_): module_name(module_name_), command_name(command_name_)
+XBot::widgets::cmd_service_widget::cmd_service_widget(std::string module_name_, std::string command_name_): module_name(module_name_), command_name(command_name_)
 {
     cmd_client = nh.serviceClient<XCM::cmd_service>((module_name+"_cmd").c_str());
 
@@ -34,7 +34,7 @@ XBot::widgets::string_command_widget::string_command_widget(std::string module_n
     thread_waiting.store(false);
 }
 
-void XBot::widgets::string_command_widget::service_thread_body()
+void XBot::widgets::cmd_service_widget::service_thread_body()
 {
     XCM::cmd_service srv;
     srv.request.cmd = command_name;
@@ -49,9 +49,9 @@ void XBot::widgets::string_command_widget::service_thread_body()
     thread_waiting.store(false);
 }
 
-void XBot::widgets::string_command_widget::on_cmd_button_clicked()
+void XBot::widgets::cmd_service_widget::on_cmd_button_clicked()
 {
-    std::thread service_thread(&string_command_widget::service_thread_body,this);
+    std::thread service_thread(&cmd_service_widget::service_thread_body,this);
     thread_waiting.store(true);
 
     while(thread_waiting.load())

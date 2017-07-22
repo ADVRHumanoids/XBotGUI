@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
-#ifndef XBOTGUI_STRING_COMMAND_WIDGET_H
-#define XBOTGUI_STRING_COMMAND_WIDGET_H
+#ifndef XBOTGUI_CMD_SERVICE_WIDGET_H
+#define XBOTGUI_CMD_SERVICE_WIDGET_H
 
 #include <QWidget>
 #include <QPushButton>
@@ -34,11 +34,11 @@ namespace XBot
 {
 namespace widgets
 {
-class string_command_widget: public command_widget
+class cmd_service_widget: public command_widget
 {
 Q_OBJECT
 public:
-	string_command_widget(std::string module_name_, std::string command_name_);
+	cmd_service_widget(std::string module_name_, std::string command_name_);
 
 private Q_SLOTS:
 	void on_cmd_button_clicked();

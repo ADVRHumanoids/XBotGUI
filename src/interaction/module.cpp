@@ -83,7 +83,7 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    }
 	    else if(command.at("type")=="cmd_service")
 	    {
-		command_widgets.push_back(new string_command_widget(name,command.at("name")));
+		command_widgets.push_back(new cmd_service_widget(name,command.at("name")));
 	    }
 	    else continue;
 	    l->addWidget(command_widgets.back());
