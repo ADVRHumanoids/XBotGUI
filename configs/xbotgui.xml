@@ -3,6 +3,7 @@
     <frames>
       <frame name="base_link"/> <!-- 1st is used as default fixed frame -->
       <frame name="world"/>
+      <frame name="world_odom"/>
       <frame name="Waist"/>
       <frame name="l_sole"/>
       <frame name="r_sole"/>
