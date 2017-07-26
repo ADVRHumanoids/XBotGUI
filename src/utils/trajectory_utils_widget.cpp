@@ -45,6 +45,32 @@ XBot::widgets::trajectory_utils_widget::trajectory_utils_widget()
     
     command = QString::fromStdString("python " + path + "cartesianTrjParser2.py /RSoftHand_segments /segment_control");
     traj_utils_processes[command];
+
+    std::map<std::string,std::string> properties;
+
+    properties["Topic"] = "/LSoftHand_trj_viz";
+    displays.push_back(std::make_tuple("left_path","rviz/Path",properties));
+    properties.clear();
+    
+    properties["Update Topic"] = "/LSoftHand_trajectory_marker_server/update";
+    displays.push_back(std::make_tuple("left_marker","rviz/InteractiveMarkers",properties));
+    properties.clear();
+    
+    properties["Marker Topic"] = "/trj_visual_markers_Waist_to_LSoftHand";
+    displays.push_back(std::make_tuple("left_traj","rviz/MarkerArray",properties));
+    properties.clear();
+    
+    properties["Topic"] = "/RSoftHand_trj_viz";
+    displays.push_back(std::make_tuple("right_path","rviz/Path",properties));
+    properties.clear();
+    
+    properties["Update Topic"] = "/RSoftHand_trajectory_marker_server/update";
+    displays.push_back(std::make_tuple("right_marker","rviz/InteractiveMarkers",properties));
+    properties.clear();
+    
+    properties["Marker Topic"] = "/trj_visual_markers_Waist_to_RSoftHand";
+    displays.push_back(std::make_tuple("right_traj","rviz/MarkerArray",properties));
+    properties.clear();
 }
 
 void XBot::widgets::trajectory_utils_widget::on_switch_button_clicked()

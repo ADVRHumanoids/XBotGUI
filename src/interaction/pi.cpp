@@ -119,6 +119,11 @@ void XBot::widgets::pi::add_utility(std::string name)
 
     utilities[name] = new utility(name);
 
+    for(auto display:utilities.at(name)->displays())
+    {
+	add_display(std::get<0>(display),std::get<1>(display),std::get<2>(display));
+    }
+
     QFrame* myFrame = new QFrame();
     QPalette palette;
     myFrame->setFrameShape(QFrame::VLine);

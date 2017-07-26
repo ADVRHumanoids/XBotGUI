@@ -31,6 +31,14 @@ XBot::widgets::utility::utility(std::string name_): name(name_)
     setLayout(&main_layout);
 }
 
+std::vector< display_property > XBot::widgets::utility::displays()
+{
+    if(name=="trajectory_utils")
+	return ((trajectory_utils_widget*)wid)->displays;
+    else
+        return std::vector< display_property >();
+}
+
 XBot::widgets::utility::~utility()
 {
     delete wid;

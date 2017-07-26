@@ -24,20 +24,26 @@
 #include <QPushButton>
 #include <QWidget>
 #include <QProcess>
-#include "XBotGUI/utils/trajectory_utils_widget.h"
 #include <string>
 #include <map>
+#include <vector>
+#include <tuple>
+
+typedef std::tuple<std::string, std::string, std::map< std::string, std::string >> display_property;
 
 namespace XBot
 {
 namespace widgets
 {
+
 class trajectory_utils_widget: public QWidget
 {
 Q_OBJECT
 public:
     trajectory_utils_widget();
     ~trajectory_utils_widget();
+
+    std::vector<display_property> displays;
 
 private Q_SLOTS:
     void on_switch_button_clicked();

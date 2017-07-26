@@ -20,13 +20,15 @@
 #ifndef XBOTGUI_UTILITY_H
 #define XBOTGUI_UTILITY_H
 
+#include <string>
+#include <map>
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QWidget>
 #include "XBotGUI/utils/trajectory_utils_widget.h"
 
 namespace XBot
-{
+{ 
 namespace widgets
 {
 class utility: public QWidget
@@ -35,13 +37,12 @@ public:
     utility(std::string name_);
     ~utility();
 
-
+    std::vector<display_property> displays();
 private:
 
     std::string name;
     QWidget* wid;
     QHBoxLayout main_layout;
-
 };
 };
 };
