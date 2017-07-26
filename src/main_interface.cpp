@@ -375,6 +375,10 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			std::cout<<std::endl<<"    - - - - | > service_name: "<<command_attributes.at("service_name");
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 		    }
+		    else if(command_attributes.at("type")=="grasping")
+		    {
+
+		    }
 		    else if(command_attributes.at("type")=="string")
 		    {
 			command_attributes["name"] = std::string(command->Attribute("name"));

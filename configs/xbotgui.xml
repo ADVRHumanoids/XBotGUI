@@ -55,6 +55,9 @@
 	    <command type="std_srvs/Empty" name="Move Left" service_name="LSoftHand_getTrj"/>
 	    <command type="std_srvs/Empty" name="Move Right" service_name="RSoftHand_getTrj"/>
 	</command_block>
+	<command_block>
+	    <command type="grasping"/>
+	</command_block>
     </module>
 
     <module name="Hose_Task">

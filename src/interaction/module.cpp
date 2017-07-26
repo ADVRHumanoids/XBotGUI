@@ -93,6 +93,10 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    {
 		command_widgets.push_back(new empty_service_widget(command.at("service_name"),command.at("name")));
 	    }
+	    else if(command.at("type")=="grasping")
+	    {
+		command_widgets.push_back(new grasp_widget());
+	    }
 	    else if(command.at("type")=="string")
 	    {
 		command_widgets.push_back(new string_command_widget(command.at("topic"),command.at("name")));
