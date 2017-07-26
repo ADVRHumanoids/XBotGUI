@@ -294,6 +294,7 @@ void XBot::widgets::im_widget::generate_objects(std::map< std::string, XBot::obj
     object_combo.setCurrentIndex(0);
     load_object_params();
     update_scale();
+    update_coords();
 }
 
 void XBot::widgets::im_widget::add_object(XBot::object_properties object_)
