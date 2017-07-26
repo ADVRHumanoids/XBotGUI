@@ -87,7 +87,14 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    }
 	    else if(command.at("type")=="cmd_service")
 	    {
-		command_widgets.push_back(new cmd_service_widget(name,command.at("name")));
+	        if(command.count("label"))
+		{
+		    command_widgets.push_back(new cmd_service_widget(name,command.at("name"),command.at("label")));
+		}
+		else
+		{
+		    command_widgets.push_back(new cmd_service_widget(name,command.at("name")));
+		}
 	    }
 	    else if(command.at("type")=="std_srvs/Empty")
 	    {
