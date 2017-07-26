@@ -49,7 +49,7 @@ XBot::widgets::grasp_widget::grasp_widget()
 
     left_layout.addWidget(&left_label);
     left_layout.addWidget(&left_slider);
-    left_layout.addWidget(&right_edit);
+    left_layout.addWidget(&left_edit);
 
     right_layout.addWidget(&right_label);
     right_layout.addWidget(&right_slider);
@@ -70,12 +70,12 @@ XBot::widgets::grasp_widget::grasp_widget()
 
 void XBot::widgets::grasp_widget::left_slider_slot()
 {
-    left_edit.setText(QString::number(left_slider.value(),'f',1));
+    left_edit.setText(QString::number(double(left_slider.value())/100.0,'f',2));
 }
 
 void XBot::widgets::grasp_widget::right_slider_slot()
 {
-    right_edit.setText(QString::number(right_slider.value(),'f',1));
+    right_edit.setText(QString::number(double(right_slider.value())/100.0,'f',2));
 }
 
 void XBot::widgets::grasp_widget::service_thread_body()
