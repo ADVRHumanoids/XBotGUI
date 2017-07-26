@@ -514,6 +514,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		    if(std::string(property->Attribute("name"))=="id")
 			objects.at(object_name).id = std::atoi(property->Attribute("value"));
 
+		    if(std::string(property->Attribute("name"))=="position.x")
+			objects.at(object_name).pose.position.x = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="position.y")
+			objects.at(object_name).pose.position.y = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="position.z")
+			objects.at(object_name).pose.position.z = std::atof(property->Attribute("value"));
+
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
 		    property = property->NextSiblingElement("property");
@@ -573,6 +580,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 		    if(std::string(property->Attribute("name"))=="mesh")
 			objects.at(object_id).mesh_name = std::string(property->Attribute("value"));
+
+		    if(std::string(property->Attribute("name"))=="position.x")
+			objects.at(object_id).pose.position.x = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="position.y")
+			objects.at(object_id).pose.position.y = std::atof(property->Attribute("value"));
+		    if(std::string(property->Attribute("name"))=="position.z")
+			objects.at(object_id).pose.position.z = std::atof(property->Attribute("value"));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
