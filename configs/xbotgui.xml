@@ -144,9 +144,9 @@
   
     <interactive_marker name="valve">
 	<object name="valve">
-	    <property name="scale_x" value="0,01"/>
-	    <property name="scale_y" value="0,01"/>
-	    <property name="scale_z" value="0,3"/>
+	    <property name="scale_x" value="0.01"/>
+	    <property name="scale_y" value="0.01"/>
+	    <property name="scale_z" value="0.3"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
 	    <property name="mesh" value=""/>
@@ -155,9 +155,9 @@
     
     <interactive_marker name="door">
 	<object name="handle">
-	    <property name="scale_x" value="0,1"/>
-	    <property name="scale_y" value="0,05"/>
-	    <property name="scale_z" value="0,4"/>
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="0.4"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
@@ -166,41 +166,41 @@
     
     <interactive_marker name="debris">
 	<object name="right_hand">
-	    <property name="scale_x" value="0,001"/>
-	    <property name="scale_y" value="0,001"/>
-	    <property name="scale_z" value="0,001"/>
+	    <property name="scale_x" value="0.001"/>
+	    <property name="scale_y" value="0.001"/>
+	    <property name="scale_z" value="0.001"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_right_softhand.dae"/>
 	</object>
 	<object name="left_hand">
-	    <property name="scale_x" value="0,001"/>
-	    <property name="scale_y" value="0,001"/>
-	    <property name="scale_z" value="0,001"/>
+	    <property name="scale_x" value="0.001"/>
+	    <property name="scale_y" value="0.001"/>
+	    <property name="scale_z" value="0.001"/>
 	    <property name="id" value="1"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_left_softhand.dae"/>
 	</object>
 	<object name="debris_1">
-	    <property name="scale_x" value="0,05"/>
-	    <property name="scale_y" value="0,05"/>
-	    <property name="scale_z" value="1,2"/>
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.2"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
 	</object>
 	<object name="debris_2">
-	    <property name="scale_x" value="0,05"/>
-	    <property name="scale_y" value="0,05"/>
-	    <property name="scale_z" value="1,495"/>
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.495"/>
 	    <property name="id" value="1"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
 	</object>
 	<object name="debris_3">
-	    <property name="scale_x" value="0,05"/>
-	    <property name="scale_y" value="0,05"/>
-	    <property name="scale_z" value="1,999"/>
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.999"/>
 	    <property name="id" value="2"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
@@ -209,25 +209,25 @@
     
     <interactive_marker name="extinguisher">
 	<object name="handle">
-	    <property name="scale_x" value="0,1"/>
-	    <property name="scale_y" value="0,01"/>
-	    <property name="scale_z" value="0,01"/>
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.01"/>
+	    <property name="scale_z" value="0.01"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::ARROW"/>
 	    <property name="mesh" value=""/>
 	</object>
 	<object name="hose_end">
-	    <property name="scale_x" value="0,03"/>
-	    <property name="scale_y" value="0,03"/>
-	    <property name="scale_z" value="0,2"/>
+	    <property name="scale_x" value="0.03"/>
+	    <property name="scale_y" value="0.03"/>
+	    <property name="scale_z" value="0.2"/>
 	    <property name="id" value="1"/>
 	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
 	    <property name="mesh" value=""/>
 	</object>
 	<object name="fire">
-	    <property name="scale_x" value="0,1"/>
-	    <property name="scale_y" value="0,1"/>
-	    <property name="scale_z" value="0,1"/>
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.1"/>
+	    <property name="scale_z" value="0.1"/>
 	    <property name="id" value="2"/>
 	    <property name="type" value="visualization_msgs::Marker::SPHERE"/>
 	    <property name="mesh" value=""/>
@@ -239,16 +239,16 @@
 <interactive_markers_sequence>
     <interactive_marker name="feet">
 	<object name="right_foot" id="0">
-	    <property name="scale_x" value="0,001"/>
-	    <property name="scale_y" value="0,001"/>
-	    <property name="scale_z" value="0,001"/>
+	    <property name="scale_x" value="0.001"/>
+	    <property name="scale_y" value="0.001"/>
+	    <property name="scale_z" value="0.001"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_right_foot.dae"/>
 	</object>
 	<object name="left_foot" id="1">
-	    <property name="scale_x" value="0,001"/>
-	    <property name="scale_y" value="0,001"/>
-	    <property name="scale_z" value="0,001"/>
+	    <property name="scale_x" value="0.001"/>
+	    <property name="scale_y" value="0.001"/>
+	    <property name="scale_z" value="0.001"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_left_foot.dae"/>
 	</object>
