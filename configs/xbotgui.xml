@@ -149,6 +149,21 @@
 	    <command type="object_sequence" topic="walking_sequence" interactive_markers_sequence="feet"/>
 	</command_block>
     </module>
+    
+    <module name="DoorFinalDemo">
+	<command_block>
+	    <command type="object_pose" topic="handle_pose" interactive_marker="door"/>
+	    <command type="cmd_service" name="grasp_pos_received" label="Course Reach"/>
+	    <command type="cmd_service" name="" label="Fine Pose Tuning"/>
+	    <command type="cmd_service" name="check_touch" label="Fine Conctacting"/>
+	</command_block>
+	<command_block>
+	    <command type="cmd_service" name="door_grasp_ok" label="Push Door"/>
+	    <command type="cmd_service" name="door_push_ok" label="Move Away"/>
+	</command_block>
+    </module>
+	
+	
 </modules>
 
 <utils>
