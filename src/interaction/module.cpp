@@ -38,7 +38,7 @@ void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool 
 {
     if(!error)
     {
-	std::cout<<green_string("[ MODULE " + plugin_name +" ") + yellow_string("STOPPED") + green_string(" ]")<<std::endl;
+	std::cout<<green_string("[ " + plugin_name +" ") + purple_string("STOPPED") + green_string(" ]")<<std::endl;
     }
     else
     {
