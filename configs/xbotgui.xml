@@ -140,18 +140,7 @@
 </utils>
 
 <interactive_markers>
-
-    <!--<interactive_marker name="object">
-	<object name="box">
-	    <property name="scale_x" value="0,5"/>
-	    <property name="scale_y" value="0,5"/>
-	    <property name="scale_z" value="0,5"/>
-	    <property name="id" value="0"/>
-	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
-	    <property name="mesh" value=""/>
-	</object>
-    </interactive_marker>-->
-    
+  
     <interactive_marker name="valve">
 	<object name="valve">
 	    <property name="scale_x" value="0,01"/>
@@ -175,6 +164,22 @@
     </interactive_marker>
     
     <interactive_marker name="debris">
+	<object name="right_hand">
+	    <property name="scale_x" value="0,001"/>
+	    <property name="scale_y" value="0,001"/>
+	    <property name="scale_z" value="0,001"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
+	    <property name="mesh" value="walkman_right_softhand.dae"/>
+	</object>
+	<object name="left_hand">
+	    <property name="scale_x" value="0,001"/>
+	    <property name="scale_y" value="0,001"/>
+	    <property name="scale_z" value="0,001"/>
+	    <property name="id" value="1"/>
+	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
+	    <property name="mesh" value="walkman_left_softhand.dae"/>
+	</object>
 	<object name="debris_1">
 	    <property name="scale_x" value="0,05"/>
 	    <property name="scale_y" value="0,05"/>
@@ -226,27 +231,8 @@
 	    <property name="type" value="visualization_msgs::Marker::SPHERE"/>
 	    <property name="mesh" value=""/>
 	</object>
-    </interactive_marker>
+      </interactive_marker>
 
-<!--    <interactive_marker name="hands">
-	<object name="right_hand">
-	    <property name="scale_x" value="0,001"/>
-	    <property name="scale_y" value="0,001"/>
-	    <property name="scale_z" value="0,001"/>
-	    <property name="id" value="0"/>
-	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
-	    <property name="mesh" value="walkman_right_softhand.dae"/>
-	</object>
-	<object name="left_hand">
-	    <property name="scale_x" value="0,001"/>
-	    <property name="scale_y" value="0,001"/>
-	    <property name="scale_z" value="0,001"/>
-	    <property name="id" value="1"/>
-	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
-	    <property name="mesh" value="walkman_left_softhand.dae"/>
-	</object>
-    </interactive_marker>-->
-    
 </interactive_markers>
 
 <interactive_markers_sequence>
