@@ -18,11 +18,14 @@
 	<property name="Alpha" value="0.1"/>
     </display>
     
-    <display name="laser" type="rviz/LaserScan">
-	<property name="Topic" value="/multisense/TODO"/>
-	<property name="Decay Time" value="1.0"/>
+    <display name="laser" type="rviz/PointCloud2">
+	<property name="Topic" value="/multisense/lidar_points2_color"/>
+	<property name="Style" value="Points"/>
+	<property name="Size (Pixels)" value="3.0"/>
+	<property name="Alpha" value="0.1"/>
+        <property name="Decay Time" value="15.0"/>
     </display>
-    
+     
     <display name="camera" type="rviz/Image">
 	<property name="Image Topic" value="camera_raw"/>
     </display>
@@ -72,7 +75,13 @@
 	    <plugin name="ManipulationPlugin"/>
 	    <plugin name="IkRosSMPub"/>
 	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
 	</dependencies>
+
+	<command_block>
+	    <command type="cmd_service" name="success"/>
+	</command_block>
+	
 
         <command_block>
 	    <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
