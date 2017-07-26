@@ -52,7 +52,8 @@
 	</dependencies>
 
 	<command_block>
-	    <command type="object_pose" topic="manipulation_plugin_object_pose" interactive_marker="valve"/>
+	    <command type="std_srvs/Empty" name="Move Left" service_name="LSoftHand_getTrj"/>
+	    <command type="std_srvs/Empty" name="Move Right" service_name="RSoftHand_getTrj"/>
 	</command_block>
     </module>
 

@@ -30,6 +30,7 @@
 #include "XBotGUI/utils/goal_command_widget.h"
 #include "XBotGUI/utils/sequence_command_widget.h"
 #include "XBotGUI/utils/cmd_service_widget.h"
+#include "XBotGUI/utils/empty_service_widget.h"
 #include "XBotGUI/utils/string_command_widget.h"
 #include "XBotGUI/utils/status_widget.h"
 #include <rviz/tool_manager.h>

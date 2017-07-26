@@ -368,6 +368,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			command_attributes["name"] = std::string(command->Attribute("name"));
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 		    }
+		    else if(command_attributes.at("type")=="std_srvs/Empty")
+		    {
+			command_attributes["service_name"] = std::string(command->Attribute("service_name"));
+			command_attributes["name"] = std::string(command->Attribute("name"));
+			std::cout<<std::endl<<"    - - - - | > service_name: "<<command_attributes.at("service_name");
+			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
+		    }
 		    else if(command_attributes.at("type")=="string")
 		    {
 			command_attributes["name"] = std::string(command->Attribute("name"));
