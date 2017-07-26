@@ -18,6 +18,11 @@
 	<property name="Alpha" value="0.1"/>
     </display>
     
+    <display name="laser" type="rviz/LaserScan">
+	<property name="Topic" value="/multisense/TODO"/>
+	<property name="Decay Time" value="1.0"/>
+    </display>
+    
     <display name="camera" type="rviz/Image">
 	<property name="Image Topic" value="camera_raw"/>
     </display>
