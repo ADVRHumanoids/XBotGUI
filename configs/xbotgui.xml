@@ -73,6 +73,7 @@
 	    <plugin name="ManipulationPlugin"/>
 	    <plugin name="IkRosSMPub"/>
 	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
 	</dependencies>
       
 	<command_block>
