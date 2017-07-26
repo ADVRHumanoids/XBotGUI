@@ -132,6 +132,7 @@ void XBot::widgets::module::on_switch_button_clicked()
 
 	for(auto& sc:switch_client)
 	{
+        sleep(1);
 	    if(sc.call(switch_service))
 	    {
 		if(switch_service.response.success)
@@ -152,6 +153,7 @@ void XBot::widgets::module::on_switch_button_clicked()
 	
 	for(auto& sc:switch_client)
 	{
+        sleep(1);
 	    if(sc.call(switch_service))
 	    {
 		if(switch_service.response.success)
