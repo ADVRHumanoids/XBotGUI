@@ -171,32 +171,24 @@
     </interactive_marker>
     
     <interactive_marker name="door">
-	<object name="door_handle">
+	<object name="left_hand">
 	    <property name="scale_x" value="0.1"/>
 	    <property name="scale_y" value="0.05"/>
 	    <property name="scale_z" value="0.4"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
-	</object>
-	<object name="left_hand">
-	    <property name="scale_x" value="0.001"/>
-	    <property name="scale_y" value="0.001"/>
-	    <property name="scale_z" value="0.001"/>
-	    <property name="id" value="1"/>
-	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
-	    <property name="mesh" value="walkman_left_softhand.dae"/>
 	    <property name="position.x" value="0.75"/>
 	    <property name="position.y" value="0.05"/>
 	    <property name="position.z" value="0"/>
 	</object>
 	<object name="right_hand">
-	    <property name="scale_x" value="0.001"/>
-	    <property name="scale_y" value="0.001"/>
-	    <property name="scale_z" value="0.001"/>
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="0.4"/>
 	    <property name="id" value="0"/>
-	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
-	    <property name="mesh" value="walkman_right_softhand.dae"/>
+	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="mesh" value=""/>
 	    <property name="position.x" value="0.75"/>
 	    <property name="position.y" value="-0.05"/>
 	    <property name="position.z" value="0"/>
