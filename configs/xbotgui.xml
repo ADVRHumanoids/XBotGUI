@@ -132,6 +132,12 @@
     </module>
     
     <module name="DoorFinalDemo">
+        <dependencies>
+	    <plugin name="ManipulationPlugin"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
+	</dependencies>
 	<command_block>
 	    <command type="object_pose" topic="handle_pose" interactive_marker="door"/>
 	    <command type="cmd_service" name="grasp_pos_received" label="Course Reach"/>
