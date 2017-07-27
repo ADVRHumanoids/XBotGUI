@@ -59,11 +59,13 @@
 
 	<command_block>
 	    <command type="cmd_service" name="success"/>
+	    <command type="cmd_service" name="lh_move_fail"/>
+	    <command type="cmd_service" name="rh_move_fail"/>
 	</command_block>
 	
 
         <command_block>
-	    <command type="object_pose" topic="hose_grasp_pose" interactive_marker="extinguisher"/>
+	    <command type="object_pose" topic="hose_pose" interactive_marker="extinguisher"/>
 	</command_block>
     </module>
 
