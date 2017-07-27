@@ -143,8 +143,9 @@
 	    <command type="cmd_service" name="check_touch" label="Fine Conctacting"/>
 	</command_block>
 	<command_block>
-	    <command type="cmd_service" name="door_grasp_ok" label="Push Door"/>
+	    <command type="cmd_service" name="door_grasp_ok" label="Push Door"/>            
 	    <command type="cmd_service" name="door_push_ok" label="Move Away"/>
+            <command type="cmd_service" name="left_push_complete" label="Push complete"/>
 	</command_block>
     </module>
 	
