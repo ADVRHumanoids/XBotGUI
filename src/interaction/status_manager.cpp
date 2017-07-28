@@ -32,7 +32,7 @@ void XBot::status_manager::add_module_status_service(std::string module_name)
 
 void XBot::status_manager::status_thread_body()
 {
-    ros::Rate loop(1);
+    ros::Rate loop(10);
 
     while(ros::ok())
     {

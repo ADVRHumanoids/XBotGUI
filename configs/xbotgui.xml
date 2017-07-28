@@ -138,6 +138,11 @@
 	    <plugin name="OpenSotIk"/>
 	    <plugin name="Grasp"/>
 	</dependencies>
+	<status_block>
+	    <status type="led_status" name="Status" topic="door_status_led"/>
+	    <status type="led_status" name="Contact" topic="door_contact_led"/>
+	    <status type="led_status" name="Grasp" topic="door_grasp_led"/>
+	</status_block>
 	<command_block>
 	    <command type="object_pose" topic="handle_pose" interactive_marker="door"/>
 	    <command type="cmd_service" name="grasp_pos_received" label="Course Reach"/>

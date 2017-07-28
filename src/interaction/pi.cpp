@@ -105,11 +105,11 @@ void XBot::widgets::pi::add_interactive_marker_sequence(std::string name, std::m
     displays.at(name+"_aux")->setTopic(("/"+name+"_client").c_str(),"visualization_msgs/Marker");
 }
 
-void XBot::widgets::pi::add_module(std::string name, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks, std::vector<std::string> module_dependencies)
+void XBot::widgets::pi::add_module(std::string name, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies)
 {
     if(modules.count(name)) return;
 
-    modules[name] = new module(name,command_blocks,module_dependencies,tool_manager_);
+    modules[name] = new module(name,command_blocks,status_blocks,module_dependencies,tool_manager_);
     modules_tabs.addTab(modules.at(name),name.c_str());
 }
 

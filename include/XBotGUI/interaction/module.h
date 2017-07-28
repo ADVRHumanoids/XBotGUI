@@ -34,6 +34,7 @@
 #include "XBotGUI/utils/grasp_widget.h"
 #include "XBotGUI/utils/string_command_widget.h"
 #include "XBotGUI/utils/status_widget.h"
+#include "XBotGUI/utils/led_status_widget.h"
 #include <rviz/tool_manager.h>
 
 namespace XBot
@@ -44,7 +45,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_,  std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
+    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
     ~module();
 
     QPushButton* get_switch_button();
@@ -73,6 +74,8 @@ private:
     QHBoxLayout basic_layout;
     std::vector<QHBoxLayout*> h_layout;
 
+    std::vector<led_status_widget*> led_status_widgets;
+    QHBoxLayout led_layout;
 };
 };
 };

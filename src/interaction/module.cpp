@@ -49,7 +49,7 @@ void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool 
     }
 }
 
-XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
+XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
 : QWidget(), name(name_), status_wid(this,name_)
 {
     for(auto dep:module_dependencies)
@@ -65,7 +65,20 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
     basic_layout.addWidget(&switch_button);
     basic_layout.addWidget(&status_wid);
     
-    main_layout.addLayout(&basic_layout);
+    for(auto status_block:status_blocks)
+    {
+        for(auto status:status_block)
+	{
+	    if(status.at("type")=="led_status")
+	    {
+		led_status_widgets.push_back(new led_status_widget(status.at("name"),status.at("topic")));
+		led_layout.addWidget(led_status_widgets.back());
+	    }
+	    else continue;
+	}
+    }
+
+    if(led_status_widgets.size()) basic_layout.addLayout(&led_layout);
 
     for(auto command_block:command_blocks_)
     {
@@ -118,6 +131,8 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 
 	h_layout.push_back(l);
     }
+      
+    main_layout.addLayout(&basic_layout);
 
     for(auto l:h_layout)
     {

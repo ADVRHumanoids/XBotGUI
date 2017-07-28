@@ -270,6 +270,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
         std::cout<<"    - - "<<purple_string("modules additional commands")<<std::endl;
 	TiXmlElement* module = modules->FirstChildElement("module");
 	std::vector<std::vector<std::map<std::string,std::string>>> command_blocks;
+	std::vector<std::vector<std::map<std::string,std::string>>> status_blocks;
 	std::map<std::string,std::vector<std::string>> module_dependencies;
 
 	while(module)
@@ -415,10 +416,57 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		command_block = command_block->NextSiblingElement("command_block");
 	    }
 
+	    TiXmlElement* status_block = module->FirstChildElement("status_block");
+	    
+	    while(status_block)
+	    {
+
+	        std::vector<std::map<std::string,std::string>> statuses;
+		TiXmlElement* status;
+
+		status = status_block->FirstChildElement("status");
+
+		std::cout<<"    - - | > "<<"status group:"<<std::endl;
+
+		while(status)
+		{
+		    std::map<std::string,std::string> status_attributes;
+		    
+		    status_attributes["type"] = std::string(status->Attribute("type"));
+		    
+		    std::cout<<"    - - - | > "<<status_attributes.at("type");
+
+		    if(status_attributes.at("type")=="led_status")
+		    {
+		        status_attributes["name"] = std::string(status->Attribute("name"));
+			status_attributes["topic"] = std::string(status->Attribute("topic"));
+
+			std::cout<<std::endl<<"    - - - - | > name: "<<status_attributes.at("name");
+			std::cout<<std::endl<<"    - - - - | > topic: "<<status_attributes.at("topic");
+		    }
+		    else
+		    {
+			std::cout<<" ( "<<yellow_string("Undefined status type")<<" ) "<<std::endl;
+			status = status->NextSiblingElement("status");
+			continue;
+		    }
+
+		    std::cout<<std::endl;
+		    
+		    statuses.push_back(status_attributes);
+		    
+		    status = status->NextSiblingElement("status");
+		}
+
+		status_blocks.push_back(statuses);
+
+		status_block = status_block->NextSiblingElement("status_block");
+	    }
+
 	    if(module_dependencies.count(module_name))
-		pilot_interface.add_module(module_name,command_blocks,module_dependencies.at(module_name));
+		pilot_interface.add_module(module_name,command_blocks,status_blocks,module_dependencies.at(module_name));
 	    else
-		pilot_interface.add_module(module_name,command_blocks,std::vector<std::string>());
+		pilot_interface.add_module(module_name,command_blocks,status_blocks,std::vector<std::string>());
 
 	    status_manager_.add_module_status_service(module_name);
 
@@ -439,7 +487,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    if(to_add)
 	    {
-		pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
+		pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
 		status_manager_.add_module_status_service(plugin);
 	    }
 	}
