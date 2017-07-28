@@ -18,8 +18,9 @@
 */
 
 #include "XBotGUI/utils/status_widget.h"
+#include "XBotGUI/interaction/module.h"
 
-XBot::widgets::status_widget::status_widget(std::string module_name)
+XBot::widgets::status_widget::status_widget(XBot::widgets::module* top_module_, std::string module_name): top_module(top_module_)
 {
     sub = nh.subscribe((module_name+"_status_aux").c_str(),1,&status_widget::status_callback,this);
 
@@ -36,6 +37,8 @@ XBot::widgets::status_widget::status_widget(std::string module_name)
 void XBot::widgets::status_widget::status_callback(const std_msgs::String& status)
 {
     status_edit.setText(QString::fromStdString(status.data));
+
+    top_module->status_changed(status.data);
 
     status_timer.start(2000);
 }

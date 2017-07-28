@@ -32,16 +32,20 @@ namespace XBot
 {
 namespace widgets
 {
+class module;
+
 class status_widget: public QWidget
 {
 Q_OBJECT
 public:
-    status_widget(std::string module_name);
+    status_widget(module* top_module_, std::string module_name);
 
 private Q_SLOTS:
     void status_timer_body();
 
 private:
+    module* top_module;
+
     ros::NodeHandle nh;
     ros::Subscriber sub;
     void status_callback(const std_msgs::String& pose);

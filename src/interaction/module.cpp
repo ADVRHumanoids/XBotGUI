@@ -50,7 +50,7 @@ void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool 
 }
 
 XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
-: QWidget(), name(name_), status_wid(name_)
+: QWidget(), name(name_), status_wid(this,name_)
 {
     for(auto dep:module_dependencies)
     {
@@ -87,13 +87,11 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    }
 	    else if(command.at("type")=="cmd_service")
 	    {
+	        command_widgets.push_back(new cmd_service_widget(name,command.at("name")));
+
 	        if(command.count("label"))
 		{
-		    command_widgets.push_back(new cmd_service_widget(name,command.at("name"),command.at("label")));
-		}
-		else
-		{
-		    command_widgets.push_back(new cmd_service_widget(name,command.at("name")));
+		    ((cmd_service_widget*)(command_widgets.back()))->set_label(command.at("label"));
 		}
 	    }
 	    else if(command.at("type")=="std_srvs/Empty")
@@ -109,6 +107,12 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 		command_widgets.push_back(new string_command_widget(command.at("topic"),command.at("name")));
 	    }
 	    else continue;
+
+	    if(command.count("enabling_status"))
+	    {
+		command_widgets.back()->set_enabling_status(command.at("enabling_status"));
+	    }
+
 	    l->addWidget(command_widgets.back());
 	}
 
@@ -135,6 +139,15 @@ void XBot::widgets::module::set_fixed_frame(std::string frame)
     for(auto cmd_w:command_widgets)
     {
 	cmd_w->set_fixed_frame(frame);
+    }
+}
+
+void XBot::widgets::module::status_changed(std::string name)
+{
+    for(auto cmd_w:command_widgets)
+    {
+	if(cmd_w->get_enabling_status()!="")
+	      cmd_w->setEnabled(((cmd_service_widget*)(cmd_w))->get_enabling_status()==name);
     }
 }
 

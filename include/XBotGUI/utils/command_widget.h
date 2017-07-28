@@ -20,6 +20,7 @@
 #define XBOTGUI_COMMAND_WIDGET_H
 
 #include <QWidget>
+#include <string>
 
 namespace XBot
 {
@@ -29,6 +30,14 @@ class command_widget: public QWidget
 {
 public:
 	virtual void set_fixed_frame(std::string frame);
+
+	virtual std::string get_type();
+	
+	virtual std::string get_enabling_status();
+
+	virtual void set_enabling_status(std::string status);
+
+	std::string enabling_status;
 };
 }
 }

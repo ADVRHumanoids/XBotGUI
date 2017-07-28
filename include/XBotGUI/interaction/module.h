@@ -50,6 +50,8 @@ public:
     QPushButton* get_switch_button();
     void set_fixed_frame(std::string frame);
 
+    void status_changed(std::string name);
+
 private Q_SLOTS:
     void on_switch_button_clicked();
 

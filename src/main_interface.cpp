@@ -372,6 +372,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			    command_attributes["label"] = std::string(command->Attribute("label"));
 			    std::cout<<std::endl<<"    - - - - | > label: "<<command_attributes.at("label");
 			}
+			if(command->Attribute("enabling_status"))
+			{
+			    command_attributes["enabling_status"] = std::string(command->Attribute("enabling_status"));
+			    std::cout<<std::endl<<"    - - - - | > enabling_status: "<<command_attributes.at("enabling_status");
+			}
 		    }
 		    else if(command_attributes.at("type")=="std_srvs/Empty")
 		    {

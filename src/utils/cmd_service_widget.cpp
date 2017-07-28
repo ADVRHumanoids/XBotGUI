@@ -19,13 +19,11 @@
 
 #include <XBotGUI/utils/cmd_service_widget.h>
 
-XBot::widgets::cmd_service_widget::cmd_service_widget(std::string module_name_, std::string command_name_, std::string label_name): module_name(module_name_), command_name(command_name_)
+XBot::widgets::cmd_service_widget::cmd_service_widget(std::string module_name_, std::string command_name_): module_name(module_name_), command_name(command_name_)
 {
     cmd_client = nh.serviceClient<XCM::cmd_service>((module_name+"_cmd").c_str());
 
-    if(label_name=="") label_name=command_name;
-
-    cmd_button.setText(QString::fromStdString(label_name));
+    cmd_button.setText(QString::fromStdString(command_name));
     
     main_layout.addWidget(&cmd_button);
 
@@ -34,6 +32,11 @@ XBot::widgets::cmd_service_widget::cmd_service_widget(std::string module_name_, 
     setLayout(&main_layout);
 
     thread_waiting.store(false);
+}
+
+void XBot::widgets::cmd_service_widget::set_label(std::string label_name)
+{
+    cmd_button.setText(QString::fromStdString(label_name));
 }
 
 void XBot::widgets::cmd_service_widget::service_thread_body()

@@ -23,3 +23,18 @@ void XBot::widgets::command_widget::set_fixed_frame(std::string frame)
 {
 
 }
+
+std::string XBot::widgets::command_widget::get_type()
+{
+    return "command_widget";
+}
+
+void XBot::widgets::command_widget::set_enabling_status(std::string status)
+{
+    enabling_status=status;
+}
+
+std::string XBot::widgets::command_widget::get_enabling_status()
+{
+    return enabling_status;
+}

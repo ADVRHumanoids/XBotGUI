@@ -38,7 +38,9 @@ class cmd_service_widget: public command_widget
 {
 Q_OBJECT
 public:
-	cmd_service_widget(std::string module_name_, std::string command_name_, std::string label_name="");
+	cmd_service_widget(std::string module_name_, std::string command_name_);
+
+	void set_label(std::string label_name);
 
 private Q_SLOTS:
 	void on_cmd_button_clicked();
