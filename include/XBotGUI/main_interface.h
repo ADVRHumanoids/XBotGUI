@@ -26,6 +26,7 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QTimer>
+#include <QSocketNotifier>
 
 #include <yaml-cpp/yaml.h>
 #include <XBotCoreModel.h>
@@ -52,6 +53,9 @@ public:
     ~GUI();
 
     std::string getRobot();
+
+    //Unix signal handler
+    static void intSignalHandler(int);
 
 private:
     widgets::robot robot_widget;
@@ -81,6 +85,12 @@ private:
     char separator_symbol;
     std::string fix_double_separator(std::string str);
 
+    static int sigintFd[2];
+    QSocketNotifier* snInt;
+
+public Q_SLOTS:
+    void handleSigInt();
+    
 private Q_SLOTS:
     void sense();
     void move();

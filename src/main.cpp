@@ -72,5 +72,12 @@ int main(int argc, char** argv)
     }
     #endif
 
+    // handling unix signals
+    struct sigaction sigint;
+    sigint.sa_handler = XBot::GUI::intSignalHandler;
+    sigemptyset(&sigint.sa_mask);
+    sigint.sa_flags |= SA_RESTART;
+    if (sigaction(SIGINT, &sigint, 0) > 0) std::cout<<"ERROR: Something wrong with unix interrupt signal handling"<<std::endl;
+    
     return app.exec();
 }

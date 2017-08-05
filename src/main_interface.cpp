@@ -19,6 +19,32 @@
 #include "XBotGUI/main_interface.h"
 #include <iostream>
 #include <cstdlib>
+#include <sys/types.h>
+#include <sys/socket.h>
+
+int XBot::GUI::sigintFd[2];
+
+void XBot::GUI::handleSigInt()
+{
+    snInt->setEnabled(false);
+    char tmp;
+    ssize_t a = ::read(sigintFd[1], &tmp, sizeof(tmp));
+
+    std::string msg = "CTRL+C intercepted!";
+    std::string b="\033[41m\033[1;37m";
+    std::string n="\033[0m";
+    std::cout<<std::endl<<b<<msg<<n<<std::endl<<std::endl;
+
+    snInt->setEnabled(true);
+
+    delete this;
+}
+
+void XBot::GUI::intSignalHandler(int)
+{
+    char a = 1;
+    ssize_t b = ::write(sigintFd[0], &a, sizeof(a));
+}
 
 std::string XBot::GUI::fix_double_separator(std::string str)
 {
@@ -30,6 +56,10 @@ std::string XBot::GUI::fix_double_separator(std::string str)
 
 XBot::GUI::GUI(std::string config_file): QWidget()
 {   
+    if (::socketpair(AF_UNIX, SOCK_STREAM, 0, sigintFd)) yellow_string("Couldn't create SIGINT socketpair");
+    snInt = new QSocketNotifier(sigintFd[1],QSocketNotifier::Read,this);
+    connect(snInt, SIGNAL(activated(int)), this, SLOT(handleSigInt()));
+  
     #ifndef USING_COMMA_AS_DECIMAL_SEPARATOR
     separator_symbol='.';
     #else
