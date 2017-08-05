@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <atomic>
 #include <ros/ros.h>
 #include <ros/service.h>
 #include <std_msgs/String.h>
@@ -47,6 +48,7 @@ private:
     std::thread* status_thread;
     void status_thread_body();
 
+    std::atomic_bool shutdown;
 };
 };
 

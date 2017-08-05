@@ -21,6 +21,7 @@
 
 XBot::status_manager::status_manager()
 {
+    shutdown.store(false);
     status_thread =  new std::thread(&status_manager::status_thread_body,this);
 }
 
@@ -34,7 +35,7 @@ void XBot::status_manager::status_thread_body()
 {
     ros::Rate loop(10);
 
-    while(ros::ok())
+    while(ros::ok() && !shutdown.load())
     {
 	for(int i=0; i<status_clients.size(); i++)
 	{
@@ -58,5 +59,7 @@ void XBot::status_manager::status_thread_body()
 
 XBot::status_manager::~status_manager()
 {
-
+    shutdown.store(true);
+    if(status_thread->joinable()) status_thread->join();
+    delete status_thread;
 }
