@@ -4,6 +4,7 @@ project(XBotGUI)
 add_definitions(-std=c++11)
 
 option(USING_ROS "Compile many ROS based stuff" ON)
+option(USING_COMMA_AS_DECIMAL_SEPARATOR "parsing string with atof or stod works with dots or commas, depending on the system" ON)
 configure_file( cmake_options.h.in ${CMAKE_BINARY_DIR}/generated/cmake_options.h )
 include_directories( ${CMAKE_BINARY_DIR}/generated/ )
 

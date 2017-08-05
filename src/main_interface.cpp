@@ -18,11 +18,24 @@
 */
 #include "XBotGUI/main_interface.h"
 #include <iostream>
-#include <string>
 #include <cstdlib>
+
+std::string XBot::GUI::fix_double_separator(std::string str)
+{
+    std::size_t comma_pos = str.find(',');
+    if(comma_pos==-1) comma_pos = str.find('.');
+    if(comma_pos!=-1) str.replace(comma_pos,1,1,separator_symbol);
+    return str;
+}
 
 XBot::GUI::GUI(std::string config_file): QWidget()
 {   
+    #ifndef USING_COMMA_AS_DECIMAL_SEPARATOR
+    separator_symbol='.';
+    #else
+    separator_symbol=',';
+    #endif
+
     std::string filename = "/external/XBotGUI/configs/xbotgui.xml";
     filename = std::getenv("ROBOTOLOGY_ROOT") + filename;
 
@@ -558,11 +571,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		while(property)
 		{
 		    if(std::string(property->Attribute("name"))=="scale_x")
-			objects.at(object_name).scale.x = std::atof(property->Attribute("value"));
+			objects.at(object_name).scale.x = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="scale_y")
-			objects.at(object_name).scale.y = std::atof(property->Attribute("value"));
+			objects.at(object_name).scale.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="scale_z")
-			objects.at(object_name).scale.z = std::atof(property->Attribute("value"));
+			objects.at(object_name).scale.z = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    if(std::string(property->Attribute("name"))=="type")
 			objects.at(object_name).type = name_to_types.at(std::string(property->Attribute("value")));
@@ -574,11 +587,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			objects.at(object_name).id = std::atoi(property->Attribute("value"));
 
 		    if(std::string(property->Attribute("name"))=="position.x")
-			objects.at(object_name).pose.position.x = std::atof(property->Attribute("value"));
+			objects.at(object_name).pose.position.x = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.y")
-			objects.at(object_name).pose.position.y = std::atof(property->Attribute("value"));
+			objects.at(object_name).pose.position.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.z")
-			objects.at(object_name).pose.position.z = std::atof(property->Attribute("value"));
+			objects.at(object_name).pose.position.z = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
@@ -628,11 +641,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		while(property)
 		{
 		    if(std::string(property->Attribute("name"))=="scale_x")
-			objects.at(object_id).scale.x = std::atof(property->Attribute("value"));
+			objects.at(object_id).scale.x = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="scale_y")
-			objects.at(object_id).scale.y = std::atof(property->Attribute("value"));
+			objects.at(object_id).scale.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="scale_z")
-			objects.at(object_id).scale.z = std::atof(property->Attribute("value"));
+			objects.at(object_id).scale.z = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    if(std::string(property->Attribute("name"))=="type")
 			objects.at(object_id).type = name_to_types.at(std::string(property->Attribute("value")));
@@ -641,11 +654,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			objects.at(object_id).mesh_name = std::string(property->Attribute("value"));
 
 		    if(std::string(property->Attribute("name"))=="position.x")
-			objects.at(object_id).pose.position.x = std::atof(property->Attribute("value"));
+			objects.at(object_id).pose.position.x = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.y")
-			objects.at(object_id).pose.position.y = std::atof(property->Attribute("value"));
+			objects.at(object_id).pose.position.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.z")
-			objects.at(object_id).pose.position.z = std::atof(property->Attribute("value"));
+			objects.at(object_id).pose.position.z = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 

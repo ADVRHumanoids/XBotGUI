@@ -20,6 +20,8 @@
 #ifndef XBOTGUI_MAIN_H
 #define XBOTGUI_MAIN_H
 
+#include <string>
+
 #include <QWidget>
 #include <QPushButton>
 #include <QBoxLayout>
@@ -75,6 +77,9 @@ private:
     XBot::Utils::SecondOrderFilter<Eigen::VectorXd> _q_ref_filtered;
 
     std::vector<std::string> plugin_names;
+
+    char separator_symbol;
+    std::string fix_double_separator(std::string str);
 
 private Q_SLOTS:
     void sense();
