@@ -175,6 +175,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
         abort();
     }
 
+    #ifndef USE_ROBOT_SLIDERS
+    #else
     if (!_XBotModel.init(urdf_filename,srdf_filename,joint_map_config))
     {
         std::cout<<red_string("ERROR: model initialization failed, please check the urdf_path and srdf_path in your YAML config file.")<<std::endl; 
@@ -216,7 +218,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     robot_widget.generateRobotWidgetFromModel(_XBotModel,_RobotInterface);
 
     tabs.addTab(&robot_widget,"Joints");
-    
+    #endif
+
     std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
 
     std::cout<<"    - "<<cyan_string("Active Plugins")<<":"<<std::endl;
@@ -710,6 +713,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
     main_layout.addWidget(&tabs);
 
+    #ifndef USE_ROBOT_SLIDERS
+    #else
     // first sense and move to activate and let the robot where it is
     sense();
     usleep(10000);
@@ -723,7 +728,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     // initialize second order filter TBD take it from config file
     _q_ref_filtered.setDamping(1.0);
     _q_ref_filtered.setOmega(10);    // TBD to tune
-    _q_ref_filtered.setTimeStep(5);  // NOTE equal to the move calling frequency   
+    _q_ref_filtered.setTimeStep(5);  // NOTE equal to the move calling frequency
+    #endif
 
     setLayout(&main_layout);
 }
