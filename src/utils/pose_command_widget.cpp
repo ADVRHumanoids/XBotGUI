@@ -24,7 +24,7 @@ XBot::widgets::pose_command_widget::pose_command_widget(std::string topic_name_,
     pose_client = nh.serviceClient<ADVR_ROS::im_pose>((service_name+"_pose").c_str());
     pub = nh.advertise<ADVR_ROS::im_pose_msg>(topic_name.c_str(),1);
 
-    pose_button.setText(QString::fromStdString("Send Object Pose"));
+    pose_button.setText(QString::fromStdString("Send "+service_name_+" Pose"));
     
     main_layout.addWidget(&pose_button);
 

@@ -24,7 +24,7 @@ XBot::widgets::sequence_command_widget::sequence_command_widget(std::string topi
     sequence_client = nh.serviceClient<ADVR_ROS::im_pose_array>((service_name+"_pose_array").c_str());
     pub = nh.advertise<ADVR_ROS::im_pose_array_msg>(topic_name.c_str(),1);
 
-    sequence_button.setText(QString::fromStdString("Send Object Sequence"));
+    sequence_button.setText(QString::fromStdString("Send "+service_name_));
     
     main_layout.addWidget(&sequence_button);
 
