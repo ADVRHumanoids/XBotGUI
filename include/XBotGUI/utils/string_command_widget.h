@@ -50,7 +50,6 @@ private:
 	ros::Publisher pub;
 
 	QPushButton send_command_button;
-	QVBoxLayout main_layout;
 };
 }
 }

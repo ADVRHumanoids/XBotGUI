@@ -20,6 +20,7 @@
 #define XBOTGUI_COMMAND_WIDGET_H
 
 #include <QWidget>
+#include <QBoxLayout>
 #include <string>
 
 namespace XBot
@@ -38,6 +39,8 @@ public:
 	virtual void set_enabling_status(std::string status);
 
 	std::string enabling_status;
+	
+	QVBoxLayout main_layout;
 };
 }
 }

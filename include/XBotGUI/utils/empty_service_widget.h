@@ -51,7 +51,6 @@ private:
 	std::atomic_bool thread_waiting;
 
         QPushButton cmd_button;
-	QVBoxLayout main_layout;
 
 	std::string service_name;
 	std::string command_name;

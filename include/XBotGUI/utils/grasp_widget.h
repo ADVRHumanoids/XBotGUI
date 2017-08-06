@@ -67,7 +67,6 @@ private:
 	QHBoxLayout right_layout;
 	
         QPushButton grasp_button;
-	QVBoxLayout main_layout;
 };
 }
 }

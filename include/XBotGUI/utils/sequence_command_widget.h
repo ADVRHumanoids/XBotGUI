@@ -53,7 +53,6 @@ private:
 	std::atomic_bool thread_waiting;
 
         QPushButton sequence_button;
-	QVBoxLayout main_layout;
 
 	std::string topic_name;
 	std::string service_name;

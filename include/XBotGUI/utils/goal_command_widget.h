@@ -73,7 +73,6 @@ private:
 	QSignalMapper coord_mapper;
 	QGridLayout coords_layout;
 	std::atomic_bool changing_coords;
-	QVBoxLayout main_layout;
 	QHBoxLayout c_layout;
 
 	std::string topic_name;
