@@ -73,7 +73,6 @@ XBot::widgets::pi::pi(): QWidget()
     setLayout(&main_layout);
 
     connect(&display_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_display_combo_changed()));
-    connect(&frame_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_frame_combo_changed()));
     connect(&display_toggle, SIGNAL(clicked(bool)), this, SLOT(on_display_toggle_clicked()));
     connect(&interactive_tool_button, SIGNAL(clicked(bool)), this, SLOT(on_interactive_tool_button_clicked()));
 }
@@ -177,16 +176,24 @@ void XBot::widgets::pi::on_display_combo_changed()
 
 void XBot::widgets::pi::on_frame_combo_changed()
 {
+    std::string err_msg;
+    if(tf_.waitForTransform(visualization_manager_->getFixedFrame().toStdString(),frame_combo.currentText().toStdString(),ros::Time::now(), ros::Duration(1.0), ros::Duration(0.01), &err_msg))
+    {
+	for(auto module:modules)
+	    module.second->set_fixed_frame(frame_combo.currentText().toStdString());
+
+	for(auto im_w:im_widgets)
+	    im_w.second->set_fixed_frame(frame_combo.currentText().toStdString());
+
+	for(auto im_s_w:im_sequence_widgets)
+	    im_s_w.second->set_fixed_frame(frame_combo.currentText().toStdString());
+    }
+    else
+    {
+	std::cout<<red_string("ERROR: TF not found between " + visualization_manager_->getFixedFrame().toStdString() + " and " + frame_combo.currentText().toStdString() + ". TF based features may not work properly.")<<std::endl;
+    }
+
     visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
-    
-    for(auto module:modules)
-	module.second->set_fixed_frame(frame_combo.currentText().toStdString());
-
-    for(auto im_w:im_widgets)
-	im_w.second->set_fixed_frame(frame_combo.currentText().toStdString());
-
-    for(auto im_s_w:im_sequence_widgets)
-	im_s_w.second->set_fixed_frame(frame_combo.currentText().toStdString());
 }
 
 void XBot::widgets::pi::add_frames(std::vector< std::string > names)
@@ -198,6 +205,8 @@ void XBot::widgets::pi::add_frames(std::vector< std::string > names)
 
     frame_combo.setCurrentIndex(0);
     visualization_manager_->setFixedFrame(frame_combo.currentText().toStdString().c_str());
+
+    connect(&frame_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_frame_combo_changed()));
 }
 
 void XBot::widgets::pi::add_display(std::string name, std::string type, std::map< std::string, std::string > properties)

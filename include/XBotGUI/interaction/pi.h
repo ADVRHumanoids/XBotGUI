@@ -25,6 +25,7 @@
 #include <rviz/render_panel.h>
 #include <rviz/display.h>
 #include <rviz/tool_manager.h>
+#include <tf/transform_listener.h>
 #include <QBoxLayout>
 #include <QComboBox>
 #include <QPushButton>
@@ -67,6 +68,7 @@ private:
     rviz::ToolManager* tool_manager_=NULL;
     rviz::Tool* interactive_tool;
     rviz::RenderPanel* render_panel_=NULL;
+    tf::TransformListener tf_;
 
     std::map<std::string,rviz::Display*> displays;
     std::map<std::string,bool> displays_enable;
