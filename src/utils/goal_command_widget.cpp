@@ -176,3 +176,11 @@ void XBot::widgets::goal_command_widget::on_send_goal_button_clicked()
 {
     pub.publish(last_pose);
 }
+
+XBot::widgets::goal_command_widget::~goal_command_widget()
+{
+    for(auto c:coords_widgets)
+    {
+	delete c.second;
+    }
+}

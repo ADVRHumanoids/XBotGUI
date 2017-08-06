@@ -47,6 +47,8 @@ class goal_command_widget: public command_widget
 Q_OBJECT
 public:
 	goal_command_widget(rviz::ToolManager* tool_manager_, std::string topic_name_);
+	~goal_command_widget();
+
 	void set_fixed_frame(std::string frame);
 
 private Q_SLOTS:
