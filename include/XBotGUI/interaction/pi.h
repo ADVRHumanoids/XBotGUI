@@ -92,6 +92,9 @@ private:
     QHBoxLayout view_layout;
     QVBoxLayout main_layout;
 
+    QFrame myFrame;
+    QFrame myFrame2;
+    QFrame myFrame3;
 };
 };
 };

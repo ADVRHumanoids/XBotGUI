@@ -27,9 +27,8 @@ XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_
     int c = 0;
     for(auto joint_:joint_names)
     {
-        joint* j = new joint(joint_,urdf->getJoint(joint_),control_map.at(joint_));
-	joints[joint_] = j;
-	main_layout.addWidget(j,r,c);
+	joints[joint_] = new joint(joint_,urdf->getJoint(joint_),control_map.at(joint_));;
+	main_layout.addWidget(joints.at(joint_),r,c);
 	c++;
 	if(c==4)
 	{

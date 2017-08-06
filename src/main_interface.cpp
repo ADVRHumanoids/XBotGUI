@@ -765,5 +765,5 @@ std::string XBot::GUI::getRobot()
 
 XBot::GUI::~GUI()
 {
-
+    delete snInt;
 }

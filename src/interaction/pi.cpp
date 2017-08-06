@@ -52,21 +52,19 @@ XBot::widgets::pi::pi(): QWidget()
 
     buttons_layout.addWidget(&frame_label);
     buttons_layout.addWidget(&frame_combo);
-    QFrame* myFrame = new QFrame();
     QPalette palette;
-    myFrame->setFrameShape(QFrame::VLine);
-    myFrame->setLineWidth(2);
-    palette.setColor(myFrame->foregroundRole(),Qt::gray);
-    myFrame->setPalette(palette);
-    buttons_layout.addWidget(myFrame);
-    QFrame* myFrame2  = new QFrame();
-    myFrame2->setFrameShape(QFrame::VLine);
-    myFrame2->setLineWidth(2);
-    myFrame2->setPalette(palette);
+    myFrame.setFrameShape(QFrame::VLine);
+    myFrame.setLineWidth(2);
+    palette.setColor(myFrame.foregroundRole(),Qt::gray);
+    myFrame.setPalette(palette);
+    buttons_layout.addWidget(&myFrame);
+    myFrame2.setFrameShape(QFrame::VLine);
+    myFrame2.setLineWidth(2);
+    myFrame2.setPalette(palette);
     buttons_layout.addWidget(&display_label);
     buttons_layout.addWidget(&display_combo);
     buttons_layout.addWidget(&display_toggle);
-    buttons_layout.addWidget(myFrame2);
+    buttons_layout.addWidget(&myFrame2);
     buttons_layout.addWidget(&interactive_tool_button);
     
     main_layout.addLayout(&buttons_layout);
@@ -124,13 +122,12 @@ void XBot::widgets::pi::add_utility(std::string name)
 	add_display(std::get<0>(display),std::get<1>(display),std::get<2>(display));
     }
 
-    QFrame* myFrame = new QFrame();
     QPalette palette;
-    myFrame->setFrameShape(QFrame::VLine);
-    myFrame->setLineWidth(2);
-    palette.setColor(myFrame->foregroundRole(),Qt::gray);
-    myFrame->setPalette(palette);
-    buttons_layout.addWidget(myFrame);
+    myFrame3.setFrameShape(QFrame::VLine);
+    myFrame3.setLineWidth(2);
+    palette.setColor(myFrame3.foregroundRole(),Qt::gray);
+    myFrame3.setPalette(palette);
+    buttons_layout.addWidget(&myFrame3);
     buttons_layout.addWidget(utilities.at(name));
 }
 
@@ -233,5 +230,20 @@ XBot::widgets::pi::~pi()
     for(auto module:modules)
     {
 	delete module.second;
+    }
+
+    for(auto im:im_widgets)
+    {
+	delete im.second;
+    }
+
+    for(auto ims:im_sequence_widgets)
+    {
+	delete ims.second;
+    }
+
+    for(auto ut:utilities)
+    {
+	delete ut.second;
     }
 }

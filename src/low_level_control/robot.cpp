@@ -56,9 +56,8 @@ void XBot::widgets::robot::generateRobotWidgetFromModel(XBotCoreModel& model, Ro
 	{
 	    joint_names.push_back(model.rid2Joint(j));
 	}
-        chain* c = new chain(chain_.first,joint_names,joint_names_id,model.get_urdf_model(), control_map);
-	chains[chain_.first] = c;
-	tabs.addTab(c,QString::fromStdString(chain_.first));
+	chains[chain_.first] = new chain(chain_.first,joint_names,joint_names_id,model.get_urdf_model(), control_map);;
+	tabs.addTab(chains.at(chain_.first),QString::fromStdString(chain_.first));
     }
 
     main_layout.addWidget(&xbot_communication_plugin);
