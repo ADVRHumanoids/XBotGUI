@@ -350,7 +350,8 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		while(dependency)
 		{
 		    std::string plugin_name = dependency->Attribute("name");
-		    
+		    std::cout<<"    - - - | > "<<plugin_name;
+
 		    if(std::find(plugin_names.begin(),plugin_names.end(),plugin_name)==plugin_names.end())
 		    {
 			std::cout<<" ("<<yellow_string("not in Active Plugins, ignoring")<<")"<<std::endl;
@@ -358,7 +359,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			continue;
 		    }
 
-		    std::cout<<"    - - - | > "<<plugin_name<<std::endl;
+		    std::cout<<std::endl;
 
 		    module_dependencies[module_name].push_back(plugin_name);
 
