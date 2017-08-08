@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <clocale>
 
 int XBot::GUI::sigintFd[2];
 
@@ -56,6 +57,8 @@ std::string XBot::GUI::fix_double_separator(std::string str)
 
 XBot::GUI::GUI(std::string config_file): QWidget()
 {   
+    setlocale(LC_ALL, "C");
+
     if (::socketpair(AF_UNIX, SOCK_STREAM, 0, sigintFd)) yellow_string("Couldn't create SIGINT socketpair");
     snInt = new QSocketNotifier(sigintFd[1],QSocketNotifier::Read,this);
     connect(snInt, SIGNAL(activated(int)), this, SLOT(handleSigInt()));
