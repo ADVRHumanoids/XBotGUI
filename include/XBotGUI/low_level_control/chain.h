@@ -49,14 +49,15 @@ public:
 
 private Q_SLOTS:
     void on_plot_button_clicked();
+    void on_effort_button_clicked();
 
 private:
     std::map<std::string,joint*> joints;
     QGridLayout main_layout;
 
-    QPushButton plot_button;
+    QPushButton plot_button, plot_effort;
     QProcess plot_process;
-    QString plot_process_string;
+    QString plot_process_string, plot_effort_string;
 
     std::string name;
 };

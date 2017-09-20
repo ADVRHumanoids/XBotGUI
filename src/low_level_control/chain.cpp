@@ -38,20 +38,42 @@ XBot::widgets::chain::chain(std::string name_, std::vector< std::string > joint_
     }
 
     plot_button.setText("Plot");
+    plot_effort.setText("Effort");
     
     main_layout.addWidget(&plot_button,r+1,0);
 
+    main_layout.addWidget(&plot_effort,r+1,1);
+    
     connect(&plot_button,SIGNAL(clicked()),this,SLOT(on_plot_button_clicked()));
+    
+    connect(&plot_effort,SIGNAL(clicked()),this,SLOT(on_effort_button_clicked()));
 
     plot_process_string = "rosrun rqt_plot rqt_plot ";
+    plot_effort_string = "rosrun rqt_plot rqt_plot ";
 
     for(auto name:joint_names)
     {
-	plot_process_string = plot_process_string + "/xbotcore/" + QString::fromStdString(urdf->name_)  + "/joint_states/link_position[" + QString::number(joint_names_id.at(name)) + "] ";
+	
+        plot_process_string = plot_process_string + "/xbotcore/" + QString::fromStdString(urdf->name_)  + "/joint_states/link_position[" + QString::number(joint_names_id.at(name)) + "] ";
+        plot_effort_string = plot_effort_string + "/xbotcore/" + QString::fromStdString(urdf->name_)  + "/joint_states/effort[" + QString::number(joint_names_id.at(name)) + "] ";
+        
     }
 
     setLayout(&main_layout);
 }
+
+void XBot::widgets::chain::on_effort_button_clicked()
+{
+    if(plot_process.state()==QProcess::Running || plot_process.state()==QProcess::Starting)
+    {
+    plot_process.terminate();
+    plot_process.waitForFinished();
+    }
+
+    plot_process.start(plot_effort_string);
+    plot_process.waitForStarted(-1);
+}
+
 
 void XBot::widgets::chain::on_plot_button_clicked()
 {	
