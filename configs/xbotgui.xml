@@ -113,7 +113,12 @@
 	    <command type="cmd_service" name="movedaway_success" enabling_status="RUNNING:MOVEDAWAY"/>
 	    <command type="cmd_service" name="movedaway_fail" enabling_status="RUNNING:MOVEDAWAY"/>
 	</command_block>
-      
+
+	<command_block>
+	    <command type="cmd_service" name="placeddown_success" enabling_status="RUNNING:PLACEDDOWN"/>
+	    <command type="cmd_service" name="placeddown_fail" enabling_status="RUNNING:PLACEDDOWN"/>
+	</command_block>
+
 	<command_block>
 	    <command type="cmd_service" name="ungrasped_success" enabling_status="RUNNING:UNGRASPED"/>
 	    <command type="cmd_service" name="ungrasped_fail" enabling_status="RUNNING:UNGRASPED"/>
