@@ -33,8 +33,10 @@
 #include "XBotGUI/utils/empty_service_widget.h"
 #include "XBotGUI/utils/grasp_widget.h"
 #include "XBotGUI/utils/string_command_widget.h"
+#include "XBotGUI/utils/click_command_widget.h"
 #include "XBotGUI/utils/status_widget.h"
 #include "XBotGUI/utils/led_status_widget.h"
+#include "XBotGUI/utils/gaze_command_widget.h"
 #include <rviz/tool_manager.h>
 
 namespace XBot

@@ -442,6 +442,17 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
 		    }
+		    else if(command_attributes.at("type")=="click")
+		    {
+			command_attributes["name"] = std::string(command->Attribute("name"));
+			command_attributes["topic"] = std::string(command->Attribute("topic"));
+			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
+			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
+		    }
+		    else if(command_attributes.at("type")=="gaze")
+		    {
+
+		    }
 		    else
 		    {
 			std::cout<<" ( "<<yellow_string("Undefined command type")<<" ) "<<std::endl;
