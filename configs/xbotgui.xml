@@ -206,6 +206,13 @@
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
 	    <property name="mesh" value=""/>
+	    <property name="position.x" value="0"/>
+	    <property name="position.y" value="0"/>
+	    <property name="position.z" value="0"/>
+	    <property name="orientation.x" value="0"/>
+	    <property name="orientation.y" value="0"/>
+	    <property name="orientation.z" value="0"/>
+	    <property name="orientation.w" value="1"/>
 	</object>
     </interactive_marker>
     

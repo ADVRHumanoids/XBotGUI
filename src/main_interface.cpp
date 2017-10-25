@@ -640,6 +640,14 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			objects.at(object_name).pose.position.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.z")
 			objects.at(object_name).pose.position.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.x")
+			objects.at(object_name).pose.orientation.x = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.y")
+			objects.at(object_name).pose.orientation.y = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.z")
+			objects.at(object_name).pose.orientation.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.w")
+			objects.at(object_name).pose.orientation.w = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
@@ -707,6 +715,14 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			objects.at(object_id).pose.position.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.z")
 			objects.at(object_id).pose.position.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.x")
+			objects.at(object_id).pose.orientation.x = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.y")
+			objects.at(object_id).pose.orientation.y = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.z")
+			objects.at(object_id).pose.orientation.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.w")
+			objects.at(object_id).pose.orientation.w = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
