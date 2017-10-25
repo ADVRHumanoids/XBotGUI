@@ -123,6 +123,10 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    {
 		command_widgets.push_back(new click_command_widget(tool_manager_,command.at("topic"),command.at("name")));
 	    }
+	    else if(command.at("type")=="gaze")
+	    {
+		command_widgets.push_back(new gaze_command_widget());
+	    }
 	    else continue;
 
 	    if(command.count("enabling_status"))

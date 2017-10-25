@@ -47,6 +47,9 @@
 	<command_block>
 	    <command type="grasping"/>
 	</command_block>
+	<command_block>
+	    <command type="gaze"/>
+	</command_block>
     </module>
 
     <module name="Hose_Task">
