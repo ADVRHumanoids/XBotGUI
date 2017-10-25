@@ -80,6 +80,7 @@
 	<command_block>
 	    <command type="cmd_service" name="homing_success" enabling_status="RUNNING:HOMING"/>
 	    <command type="cmd_service" name="homing_fail" enabling_status="RUNNING:HOMING"/>
+	    <command type="cmd_service" name="homing_success_valve" enabling_status="RUNNING:HOMING"/>
 	</command_block>
 
 	<command_block>
@@ -122,6 +123,21 @@
 	<command_block>
 	    <command type="cmd_service" name="ungrasped_success" enabling_status="RUNNING:UNGRASPED"/>
 	    <command type="cmd_service" name="ungrasped_fail" enabling_status="RUNNING:UNGRASPED"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="valvereach_success" enabling_status="RUNNING:VALVEREACH"/>
+	    <command type="cmd_service" name="valvereach_fail" enabling_status="RUNNING:VALVEREACH"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="valveturn_success" enabling_status="RUNNING:VALVETURN"/>
+	    <command type="cmd_service" name="valveturn_fail" enabling_status="RUNNING:VALVETURN"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="valvegoback_success" enabling_status="RUNNING:VALVEGOBACK"/>
+	    <command type="cmd_service" name="valvegoback_fail" enabling_status="RUNNING:VALVEGOBACK"/>
 	</command_block>
 
 	<command_block>
