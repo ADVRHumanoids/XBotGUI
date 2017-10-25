@@ -157,6 +157,9 @@ void XBot::widgets::gaze_command_widget::on_yaw_plus_button_clicked()
 void XBot::widgets::gaze_command_widget::pitch_slider_slot()
 {
     pitch_current.setText(QString::number(pitch_slider.value(),'f',2));
+
+    if(!control_active) return;
+
     joint_states_cmd.position.at(pitch_index) = pitch_slider.value()*DEG2RAD;
     pub.publish(joint_states_cmd);
 }
@@ -164,6 +167,9 @@ void XBot::widgets::gaze_command_widget::pitch_slider_slot()
 void XBot::widgets::gaze_command_widget::yaw_slider_slot()
 {
     yaw_current.setText(QString::number(yaw_slider.value(),'f',2));
+
+    if(!control_active) return;
+    
     joint_states_cmd.position.at(yaw_index) = yaw_slider.value()*DEG2RAD;
     pub.publish(joint_states_cmd);
 }
