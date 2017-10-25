@@ -159,6 +159,9 @@
 	    <command type="cmd_service" name="door_push_ok" label="Move Away"/>
             <command type="cmd_service" name="left_push_complete" label="Push complete"/>
 	</command_block>
+	<command_block>
+	    <command type="click" name="handle" topic="handle_click"/>
+	</command_block>
     </module>
 	
 	
