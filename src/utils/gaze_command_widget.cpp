@@ -185,8 +185,8 @@ void XBot::widgets::gaze_command_widget::joint_states_callback(const XCM::JointS
 	    joint_states_cmd.name.push_back(joint_states.name.at(i));
 	    joint_states_cmd.position.push_back(0.0);
 
-	    if(joint_states.name.at(i)=="NeckYawj") pitch_index=i;
-	    if(joint_states.name.at(i)=="NeckPitchj") yaw_index=i;
+	    if(joint_states.name.at(i)=="NeckYawj") yaw_index=i;
+	    if(joint_states.name.at(i)=="NeckPitchj") pitch_index=i;
 	}
 	
 	if(pitch_index==-1 || yaw_index==-1)
