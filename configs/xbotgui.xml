@@ -191,6 +191,7 @@
 
 <utils>
     <util name="trajectory_utils"/>
+    <util name="manipulation_map"/>
 </utils>
 
 <interactive_markers>

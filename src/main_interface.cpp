@@ -571,7 +571,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    std::cout<<"    - - | Util : "<<util_name;
 	    
-	    if(util_name!="trajectory_utils")
+	    if(util_name!="trajectory_utils" && util_name!="manipulation_map")
 	    {
 		std::cout<<" ( "<<yellow_string("Undefined util type")<<" ) "<<std::endl;
 		util = util->NextSiblingElement("util");

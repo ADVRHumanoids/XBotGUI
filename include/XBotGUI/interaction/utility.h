@@ -26,6 +26,7 @@
 #include <QPushButton>
 #include <QWidget>
 #include "XBotGUI/utils/trajectory_utils_widget.h"
+#include "XBotGUI/utils/manipulation_map_utils_widget.h"
 
 namespace XBot
 { 
