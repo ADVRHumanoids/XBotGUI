@@ -60,6 +60,7 @@ public:
 private Q_SLOTS:
     void on_publish_button_clicked();
     void on_position_by_click_button_clicked();
+    void on_vision_estimation_button_clicked();
     void on_coords_changed(int id);
     void on_scale_changed(int id);
 
@@ -84,6 +85,15 @@ private:
     ros::Subscriber position_by_click_sub;
     rviz::Tool* click_tool;
     rviz::Tool* last_tool;
+
+    QPushButton vision_estimation_button;
+    void vision_callback(const geometry_msgs::PoseStamped& object);
+    ros::Subscriber vision_sub;
+    void vision_click_callback(const geometry_msgs::PointStamped& point);
+    ros::Subscriber vision_click_sub;
+    rviz::Tool* vision_click_tool;
+    bool waiting_click=false;
+    bool waiting_vision=false;
 
     QSignalMapper coord_mapper;
     std::map<int, label_lineedit*> coords_widgets;

@@ -37,6 +37,13 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    click_tool->getPropertyContainer()->subProp("Topic")->setValue(("/" +name+ "_clicked_point").c_str());
    position_by_click_sub = nh.subscribe("/" +name+ "_clicked_point",1,&im_widget::position_by_click_callback,this);
 
+   vision_estimation_button.setCheckable(true);
+   vision_estimation_button.setText("Visual Perception Estimation");
+   vision_click_tool = tool_manager->addTool("rviz/PublishPoint");
+   vision_click_tool->getPropertyContainer()->subProp("Topic")->setValue("/grasp_click");
+   vision_click_sub = nh.subscribe("/grasp_click",1,&im_widget::vision_click_callback,this);
+   vision_sub = nh.subscribe("/grasp_pose",1,&im_widget::vision_callback,this);
+
    coords_widgets[0] = new label_lineedit("x:");
    coords_widgets[1] = new label_lineedit("y:");
    coords_widgets[2] = new label_lineedit("z:");
@@ -74,11 +81,13 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    main_layout.addLayout(&coords_layout);
    main_layout.addLayout(&scale_layout);
    main_layout.addLayout(&buttons_layout);
+   main_layout.addWidget(&vision_estimation_button);
    
    setLayout(&main_layout);
    
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
    connect(&position_by_click_button, SIGNAL(clicked(bool)), this, SLOT(on_position_by_click_button_clicked()));
+   connect(&vision_estimation_button, SIGNAL(clicked(bool)), this, SLOT(on_vision_estimation_button_clicked()));
    
    marker.color.g=1;
    marker.color.a=1;
@@ -91,6 +100,60 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
       scale_mapper.setMapping(&(scale_widgets.at(i)->edit), i);
    }
    connect(&scale_mapper, SIGNAL(mapped(int)), this, SLOT(on_scale_changed(int))) ;
+}
+
+void XBot::widgets::im_widget::on_vision_estimation_button_clicked()
+{
+    if(vision_estimation_button.isChecked())
+    {
+        last_tool = tool_manager->getCurrentTool();
+	tool_manager->setCurrentTool(vision_click_tool);
+	vision_estimation_button.setText("Click on the scene (click the button to ABORT)");
+	waiting_click = true;
+    }
+    else
+    {
+	tool_manager->setCurrentTool(last_tool);
+	vision_estimation_button.setText("Visual Perception Estimation");
+	waiting_click = false;
+    }
+}
+
+void XBot::widgets::im_widget::vision_click_callback(const geometry_msgs::PointStamped& point)
+{
+    if(!waiting_click) return;
+
+    vision_estimation_button.setChecked(false);
+    vision_estimation_button.setText("Waiting for perception...");
+    tool_manager->setCurrentTool(last_tool);
+    
+    waiting_click = false;
+    waiting_vision = true;
+}
+
+void XBot::widgets::im_widget::vision_callback(const geometry_msgs::PoseStamped& object)
+{
+    if(!waiting_vision) return;
+
+    marker.pose.position.x = object.pose.position.x;
+    marker.pose.position.y = object.pose.position.y;
+    marker.pose.position.z = object.pose.position.z;
+    marker.pose.orientation.x = object.pose.orientation.x;
+    marker.pose.orientation.y = object.pose.orientation.y;
+    marker.pose.orientation.z = object.pose.orientation.z;
+    marker.pose.orientation.w = object.pose.orientation.w;
+
+    changing_coords.store(true);
+    update_coords();
+    changing_coords.store(false);
+
+    on_publish_button_clicked();
+
+    on_coords_changed(0);
+
+    vision_estimation_button.setText("Visual Perception Estimation");
+    
+    waiting_vision=false;
 }
 
 bool XBot::widgets::im_widget::pose_service_callback(ADVR_ROS::im_pose::Request& req, ADVR_ROS::im_pose::Response& res)
