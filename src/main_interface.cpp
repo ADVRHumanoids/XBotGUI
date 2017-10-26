@@ -449,7 +449,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
 		    }
-		    else if(command_attributes.at("type")=="gaze")
+		    else if(command_attributes.at("type")=="postural")
 		    {
 
 		    }
@@ -526,9 +526,9 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    }
 
 	    if(module_dependencies.count(module_name))
-		pilot_interface.add_module(module_name,command_blocks,status_blocks,module_dependencies.at(module_name));
+		pilot_interface.add_module(_XBotModel.get_urdf_model(),module_name,command_blocks,status_blocks,module_dependencies.at(module_name));
 	    else
-		pilot_interface.add_module(module_name,command_blocks,status_blocks,std::vector<std::string>());
+		pilot_interface.add_module(_XBotModel.get_urdf_model(),module_name,command_blocks,status_blocks,std::vector<std::string>());
 
 	    status_manager_.add_module_status_service(module_name);
 
@@ -549,7 +549,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    if(to_add)
 	    {
-		pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
+		pilot_interface.add_module(_XBotModel.get_urdf_model(),plugin,std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
 		status_manager_.add_module_status_service(plugin);
 	    }
 	}

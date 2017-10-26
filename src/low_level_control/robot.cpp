@@ -19,7 +19,7 @@
 
 #include "XBotGUI/low_level_control/robot.h"
 
-XBot::widgets::robot::robot(): QWidget(), xbot_communication_plugin("XBotCommunicationPlugin",std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::string>())
+XBot::widgets::robot::robot(): QWidget(), xbot_communication_plugin(boost::shared_ptr<urdf::ModelInterface const>(),"XBotCommunicationPlugin",std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::string>())
 {
 
 }

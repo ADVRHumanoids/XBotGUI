@@ -49,7 +49,7 @@ void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool 
     }
 }
 
-XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
+XBot::widgets::module::module(boost::shared_ptr<urdf::ModelInterface const> urdf, std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
 : QWidget(), name(name_), status_wid(this,name_)
 {
     for(auto dep:module_dependencies)
@@ -123,9 +123,9 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    {
 		command_widgets.push_back(new click_command_widget(tool_manager_,command.at("topic"),command.at("name")));
 	    }
-	    else if(command.at("type")=="gaze")
+	    else if(command.at("type")=="postural")
 	    {
-		command_widgets.push_back(new gaze_command_widget());
+		command_widgets.push_back(new postural_command_widget(urdf));
 	    }
 	    else continue;
 

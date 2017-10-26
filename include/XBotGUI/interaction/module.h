@@ -36,8 +36,9 @@
 #include "XBotGUI/utils/click_command_widget.h"
 #include "XBotGUI/utils/status_widget.h"
 #include "XBotGUI/utils/led_status_widget.h"
-#include "XBotGUI/utils/gaze_command_widget.h"
+#include "XBotGUI/utils/postural_command_widget.h"
 #include <rviz/tool_manager.h>
+#include <urdf_parser/urdf_parser.h>
 
 namespace XBot
 {
@@ -47,7 +48,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
+    module(boost::shared_ptr<urdf::ModelInterface const> urdf, std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
     ~module();
 
     QPushButton* get_switch_button();

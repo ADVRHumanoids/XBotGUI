@@ -16,14 +16,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
-#ifndef XBOTGUI_GAZE_COMMAND_WIDGET_H
-#define XBOTGUI_GAZE_COMMAND_WIDGET_H
+#ifndef XBOTGUI_POSTURAL_COMMAND_WIDGET_H
+#define XBOTGUI_POSTURAL_COMMAND_WIDGET_H
 
 #include <QWidget>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QSlider>
 #include <QLabel>
+#include <QComboBox>
 #include <string>
 #include <mutex>
 #include <ros/ros.h>
@@ -31,11 +32,7 @@
 #include <XCM/JointStateAdvr.h>
 #include "XBotGUI/utils/command_widget.h"
 #include "XBotGUI/print_utils.h"
-
-#define PITCH_MIN -15.0
-#define PITCH_MAX 60.0
-#define YAW_MIN -35.0
-#define YAW_MAX 35.0
+#include <urdf_parser/urdf_parser.h>
 
 #define RAD2DEG 180.0/3.1415
 #define DEG2RAD 3.1415/180.0
@@ -44,61 +41,51 @@ namespace XBot
 {
 namespace widgets
 {
-class gaze_command_widget: public command_widget
+class postural_command_widget: public command_widget
 {
 Q_OBJECT
 public:
-	gaze_command_widget();
-	~gaze_command_widget();
+	postural_command_widget(boost::shared_ptr<urdf::ModelInterface const> urdf_);
+	~postural_command_widget();
 
 private Q_SLOTS:
 	void on_enable_button_clicked();
-	void pitch_slider_slot();
-	void yaw_slider_slot();
-	void on_pitch_minus_button_clicked();
-	void on_pitch_plus_button_clicked();
-	void on_yaw_minus_button_clicked();
-	void on_yaw_plus_button_clicked();
+	void slider_slot();
+	void on_minus_button_clicked();
+	void on_plus_button_clicked();
+	void on_joint_combo_changed();
 
 private:
 	ros::NodeHandle nh;
-	
-	QLabel pitch_title;
-	QLabel pitch_min;
-	QLabel pitch_max;
-	QLabel pitch_current;
-	QSlider pitch_slider;
-	QPushButton pitch_minus_button;
-	QPushButton pitch_plus_button;
 
-	QLabel yaw_title;
-	QLabel yaw_min;
-	QLabel yaw_max;
-	QLabel yaw_current;
-	QSlider yaw_slider;
-	QPushButton yaw_minus_button;
-	QPushButton yaw_plus_button;
+	QLabel title;
+	QLabel min;
+	QLabel max;
+	QLabel current;
+	QSlider slider;
+	QPushButton minus_button;
+	QPushButton plus_button;
 
+	boost::shared_ptr<urdf::ModelInterface const> urdf;
+	std::map<std::string,int> joint_indeces;
+	std::map<std::string,double> joint_min;
+	std::map<std::string,double> joint_max;
 	std::mutex joint_mutex;
 	ros::Publisher pub;
 	sensor_msgs::JointState joint_states_cmd;
 	ros::Subscriber sub;
 	void joint_states_callback(const XCM::JointStateAdvr& joint_states);
 
+	QComboBox joint_combo;
 	QPushButton toggle_button;
 	bool control_active=false;
 	bool first_time_callback=true;
-	int pitch_index=-1;
-	int yaw_index=-1;
 
-	QHBoxLayout pitch_1st_layout;
-	QHBoxLayout pitch_2nd_layout;
-	QVBoxLayout pitch_3rd_layout;
-	QHBoxLayout pitch_4th_layout;
-	QHBoxLayout yaw_1st_layout;
-	QHBoxLayout yaw_2nd_layout;
-	QVBoxLayout yaw_3rd_layout;
-	QHBoxLayout yaw_4th_layout;
+	QHBoxLayout _1st_layout;
+	QHBoxLayout _2nd_layout;
+	QVBoxLayout _3rd_layout;
+	QHBoxLayout _4th_layout;
+	QHBoxLayout _5th_layout;
 	QVBoxLayout main_layout;
 };
 }
