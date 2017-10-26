@@ -135,13 +135,27 @@ void XBot::widgets::im_widget::vision_callback(const geometry_msgs::PoseStamped&
 {
     if(!waiting_vision) return;
 
-    marker.pose.position.x = object.pose.position.x;
-    marker.pose.position.y = object.pose.position.y;
-    marker.pose.position.z = object.pose.position.z;
-    marker.pose.orientation.x = object.pose.orientation.x;
-    marker.pose.orientation.y = object.pose.orientation.y;
-    marker.pose.orientation.z = object.pose.orientation.z;
-    marker.pose.orientation.w = object.pose.orientation.w;
+    if(object.header.frame_id!=marker.header.frame_id)
+    {
+	std::string err_msg;
+	if(tf_.waitForTransform(object.header.frame_id,marker.header.frame_id,ros::Time::now(), ros::Duration(1.0), ros::Duration(0.01), &err_msg))
+	{
+	    geometry_msgs::PoseStamped input;
+	    input.header.frame_id = object.header.frame_id;
+	    input.pose = object.pose;
+	    geometry_msgs::PoseStamped output;
+	    tf_.transformPose(marker.header.frame_id,input,output);
+	    marker.pose = output.pose;
+	}
+	else
+	{
+	    std::cout<<red_string("ERROR: TF not found between " + object.header.frame_id + " and " + marker.header.frame_id)<<std::endl;
+	}
+    }
+    else
+    {
+	marker.pose = object.pose;
+    }
 
     changing_coords.store(true);
     update_coords();
@@ -152,7 +166,7 @@ void XBot::widgets::im_widget::vision_callback(const geometry_msgs::PoseStamped&
     on_coords_changed(0);
 
     vision_estimation_button.setText("Visual Perception Estimation");
-    
+
     waiting_vision=false;
 }
 
