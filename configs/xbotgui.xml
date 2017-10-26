@@ -48,9 +48,9 @@
 	<command_block>
 	    <command type="grasping"/>
 	</command_block>
-	<command_block>
+<!--	<command_block>
 	    <command type="postural"/>
-	</command_block>
+	</command_block>-->
     </module>
 
     <module name="Hose_Task">
@@ -183,9 +183,6 @@
 	    <command type="cmd_service" name="door_grasp_ok" label="Push Door"/>            
 	    <command type="cmd_service" name="door_push_ok" label="Move Away"/>
             <command type="cmd_service" name="left_push_complete" label="Push complete"/>
-	</command_block>
-	<command_block>
-	    <command type="click" name="handle" topic="handle_click"/>
 	</command_block>
     </module>
 	
