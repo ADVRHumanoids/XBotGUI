@@ -37,6 +37,7 @@
 #include "XBotGUI/utils/status_widget.h"
 #include "XBotGUI/utils/led_status_widget.h"
 #include "XBotGUI/utils/postural_command_widget.h"
+#include "XBotGUI/utils/traj_utils_move_reset_widget.h"
 #include <rviz/tool_manager.h>
 #include <urdf_parser/urdf_parser.h>
 
@@ -58,6 +59,7 @@ public:
 
 private Q_SLOTS:
     void on_switch_button_clicked();
+    void status_timer_body();
 
 private:
     void start_info(bool error, std::string plugin_name, bool called);
@@ -79,6 +81,11 @@ private:
 
     std::vector<led_status_widget*> led_status_widgets;
     QHBoxLayout led_layout;
+
+    std::string last_status;
+    QTimer status_timer;
+    void status_callback(const std_msgs::String& status);
+    ros::Subscriber status_sub;
 };
 };
 };
