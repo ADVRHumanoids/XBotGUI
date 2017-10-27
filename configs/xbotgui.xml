@@ -48,9 +48,9 @@
 	<command_block>
 	    <command type="grasping"/>
 	</command_block>
-<!--	<command_block>
+	<command_block>
 	    <command type="postural"/>
-	</command_block>-->
+	</command_block>
     </module>
 
     <module name="Hose_Task">
