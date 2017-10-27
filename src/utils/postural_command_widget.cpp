@@ -76,6 +76,8 @@ XBot::widgets::postural_command_widget::postural_command_widget(boost::shared_pt
     connect(&joint_combo, SIGNAL(currentIndexChanged(int)), this, SLOT(on_joint_combo_changed()));
 
     setLayout(&main_layout);
+
+    control_active.store(false);
 }
 
 void XBot::widgets::postural_command_widget::on_joint_combo_changed()
@@ -97,9 +99,7 @@ void XBot::widgets::postural_command_widget::on_enable_button_clicked()
 	minus_button.setEnabled(true);
 	plus_button.setEnabled(true);
 
-	joint_mutex.lock();
-	control_active=true;
-	joint_mutex.unlock();
+	control_active.store(true);
 
 	pub.publish(joint_states_cmd);
     }
@@ -110,9 +110,7 @@ void XBot::widgets::postural_command_widget::on_enable_button_clicked()
 	minus_button.setEnabled(false);
 	plus_button.setEnabled(false);
 
-	joint_mutex.lock();
-	control_active=false;
-	joint_mutex.unlock();
+	control_active.store(false);
     }
 }
 
@@ -130,7 +128,7 @@ void XBot::widgets::postural_command_widget::slider_slot()
 {
     current.setText(QString::number(slider.value(),'f',2));
 
-    if(!control_active) return;
+    if(!control_active.load()) return;
 
     joint_states_cmd.position.at(joint_indeces.at(joint_combo.currentText().toStdString())) = slider.value()*DEG2RAD;
     pub.publish(joint_states_cmd);
@@ -138,7 +136,7 @@ void XBot::widgets::postural_command_widget::slider_slot()
 
 void XBot::widgets::postural_command_widget::joint_states_callback(const XCM::JointStateAdvr& joint_states)
 {
-    joint_mutex.lock();
+    if(control_active.load()) return;
 
     if(first_time_callback)
     {
@@ -163,19 +161,11 @@ void XBot::widgets::postural_command_widget::joint_states_callback(const XCM::Jo
     {
 	if(joint_indeces.at(joint_combo.currentText().toStdString())==i)
 	{
-	    if(!control_active)
-	    {
-		joint_states_cmd.position.at(i) = joint_states.motor_position.at(i);
-		slider.setValue(joint_states_cmd.position.at(i)*RAD2DEG);
-	    }
+	    slider.setValue(joint_states_cmd.position.at(i)*RAD2DEG);
 	}
-	else
-	{
-	    joint_states_cmd.position.at(i) = joint_states.motor_position.at(i);
-	}
-    }
 
-    joint_mutex.unlock();
+	joint_states_cmd.position.at(i) = joint_states.motor_position.at(i);
+    }
 }
 
 XBot::widgets::postural_command_widget::~postural_command_widget()

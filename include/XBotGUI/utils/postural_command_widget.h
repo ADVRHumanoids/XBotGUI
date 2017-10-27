@@ -26,7 +26,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <string>
-#include <mutex>
+#include <atomic>
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <XCM/JointStateAdvr.h>
@@ -70,7 +70,7 @@ private:
 	std::map<std::string,int> joint_indeces;
 	std::map<std::string,double> joint_min;
 	std::map<std::string,double> joint_max;
-	std::mutex joint_mutex;
+	std::atomic_bool control_active;
 	ros::Publisher pub;
 	sensor_msgs::JointState joint_states_cmd;
 	ros::Subscriber sub;
@@ -78,7 +78,6 @@ private:
 
 	QComboBox joint_combo;
 	QPushButton toggle_button;
-	bool control_active=false;
 	bool first_time_callback=true;
 
 	QHBoxLayout _1st_layout;
