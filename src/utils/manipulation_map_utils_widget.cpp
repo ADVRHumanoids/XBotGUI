@@ -38,106 +38,67 @@ XBot::widgets::manipulation_map_utils_widget::manipulation_map_utils_widget()
     properties["Marker Topic"] = "/manipulation_map";
     displays.push_back(std::make_tuple("manipulation_map","rviz/Marker",properties));
 
-    marker.header.frame_id="/base_link";
+	visualization_msgs::Marker marker;
+    marker.header.frame_id="/world_odom";
     marker.id = 0;
-    marker.type = visualization_msgs::Marker::CUBE_LIST;
-    marker.scale.x = 0.1;
-    marker.scale.y = 0.1;
-    marker.scale.z = 0.1;
+    marker.type = visualization_msgs::Marker::CUBE;
+    marker.scale.x = 0.04;
+    marker.scale.y = 0.02;
+    marker.scale.z = 0.02;
+	marker.pose.position.x = 0.78;
+	marker.pose.position.y = 0.48;
+	marker.pose.position.z = 1.05;
+	marker.pose.orientation.w=1;
+    marker.color.a = 0.5;
+    marker.color.g = 1;
 
-    geometry_msgs::Point point;
-    visualization_msgs::Marker::_color_type color;
+	markers.push_back(marker);
 
-    point.x = 0;
-    point.y = 0;
-    point.z = 0;
-    color.a=0.5;
-    color.r=0.0;
-    color.g=1.0;
-    color.b=0.0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.1;
-    point.y = 0;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0;
-    point.y = 0.1;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    
-    point.x = 0.2;
-    point.y = 0;
-    point.z = 0;
-    color.a=0.5;
-    color.r=1.0;
-    color.g=1.0;
-    color.b=0.0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.1;
-    point.y = 0.1;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0;
-    point.y = 0.2;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.1;
-    point.y = 0.2;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.2;
-    point.y = 0.1;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
+	marker.id = 1;
+	marker.scale.x = 0.08;
+    marker.scale.y = 0.02;
+    marker.scale.z = 0.02;
+	marker.pose.position.x = 0.78;
+	marker.pose.position.y = 0.50;
 
-    point.x = 0.2;
-    point.y = 0.2;
-    point.z = 0;
-    color.a=0.5;
-    color.r=1.0;
-    color.g=0.0;
-    color.b=0.0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.2;
-    point.y = 0.3;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.3;
-    point.y = 0.2;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.1;
-    point.y = 0.3;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.3;
-    point.y = 0.1;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0;
-    point.y = 0.3;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
-    point.x = 0.3;
-    point.y = 0;
-    point.z = 0;
-    marker.points.push_back(point);
-    marker.colors.push_back(color);
+	markers.push_back(marker);
+	
+	marker.id = 2;
+	marker.scale.x = 0.1;
+    marker.scale.y = 0.02;
+    marker.scale.z = 0.02;
+	marker.pose.position.x = 0.79;
+	marker.pose.position.y = 0.52;
 
+	markers.push_back(marker);
+
+	marker.id = 3;
+	marker.scale.x = 0.12;
+    marker.scale.y = 0.07;
+    marker.scale.z = 0.02;
+	marker.pose.position.x = 0.84;
+	marker.pose.position.y = 0.565;
+
+	markers.push_back(marker);
+
+	marker.id = 4;
+	marker.scale.x = 0.08;
+    marker.scale.y = 0.02;
+    marker.scale.z = 0.02;
+	marker.pose.position.x = 0.84;
+	marker.pose.position.y = 0.61;
+
+	markers.push_back(marker);
+
+	marker.id = 5;
+	marker.scale.x = 0.04;
+    marker.scale.y = 0.02;
+    marker.scale.z = 0.02;
+	marker.pose.position.x = 0.84;
+	marker.pose.position.y = 0.63;
+
+	markers.push_back(marker);
+ 
     pub = nh.advertise<visualization_msgs::Marker>("/manipulation_map",1);
 }
 
@@ -147,17 +108,23 @@ void XBot::widgets::manipulation_map_utils_widget::on_switch_button_clicked()
     {
 	switch_button.setText("Hide Manipulation Map");
 
-	marker.action = visualization_msgs::Marker::ADD;
-	pub.publish(marker);
-
+    for(auto m:markers)
+	{
+		m.action = visualization_msgs::Marker::ADD;
+		pub.publish(m);
+	}
 	std::cout<<green_string("[ UTIL manipulation_map ") + yellow_string("STARTED") + green_string(" ]")<<std::endl;
     }
     else
     {
 	switch_button.setText("Show Manipulation Map");
 
-	marker.action = visualization_msgs::Marker::DELETE;
-	pub.publish(marker);
+    for(auto m:markers)
+	{
+		m.action = visualization_msgs::Marker::DELETE;
+		pub.publish(m);
+	}
+	std::cout<<green_string("[ UTIL manipulation_map ") + yellow_string("STARTED") + green_string(" ]")<<std::endl;
 
 	std::cout<<green_string("[ UTIL manipulation ") + yellow_string("STOPPED") + green_string(" ]")<<std::endl;
     }

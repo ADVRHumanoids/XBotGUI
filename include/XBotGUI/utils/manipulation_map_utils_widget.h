@@ -53,7 +53,7 @@ private Q_SLOTS:
 private:
     ros::NodeHandle nh;
     ros::Publisher pub;
-    visualization_msgs::Marker marker;
+    std::vector<visualization_msgs::Marker> markers;
 
     QPushButton switch_button;
 
