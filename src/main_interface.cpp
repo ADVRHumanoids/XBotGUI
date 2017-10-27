@@ -431,6 +431,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			std::cout<<std::endl<<"    - - - - | > service_name: "<<command_attributes.at("service_name");
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 		    }
+		    else if(command_attributes.at("type")=="traj_utils_move_and_reset")
+		    {
+			command_attributes["marker_name"] = std::string(command->Attribute("marker_name"));
+			command_attributes["name"] = std::string(command->Attribute("name"));
+			std::cout<<std::endl<<"    - - - - | > marker_name: "<<command_attributes.at("marker_name");
+			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
+		    }
 		    else if(command_attributes.at("type")=="grasping")
 		    {
 
