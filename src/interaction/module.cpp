@@ -49,9 +49,11 @@ void XBot::widgets::module::stop_info(bool error, std::string plugin_name, bool 
     }
 }
 
-XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
+XBot::widgets::module::module(boost::shared_ptr<urdf::ModelInterface const> urdf, std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_)
 : QWidget(), name(name_), status_wid(this,name_)
 {
+    status_sub = nh.subscribe((name+"_status_aux").c_str(),1,&module::status_callback,this);
+
     for(auto dep:module_dependencies)
     {
         switch_client.push_back(nh.serviceClient<std_srvs::SetBool>((dep+"_switch").c_str()));
@@ -111,6 +113,10 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    {
 		command_widgets.push_back(new empty_service_widget(command.at("service_name"),command.at("name")));
 	    }
+	    else if(command.at("type")=="traj_utils_move_and_reset")
+	    {
+		command_widgets.push_back(new traj_utils_move_reset_widget(command.at("marker_name"),command.at("name")));
+	    }
 	    else if(command.at("type")=="grasping")
 	    {
 		command_widgets.push_back(new grasp_widget());
@@ -118,6 +124,14 @@ XBot::widgets::module::module(std::string name_, std::vector<std::vector<std::ma
 	    else if(command.at("type")=="string")
 	    {
 		command_widgets.push_back(new string_command_widget(command.at("topic"),command.at("name")));
+	    }
+	    else if(command.at("type")=="click")
+	    {
+		command_widgets.push_back(new click_command_widget(tool_manager_,command.at("topic"),command.at("name")));
+	    }
+	    else if(command.at("type")=="postural")
+	    {
+		command_widgets.push_back(new postural_command_widget(urdf));
 	    }
 	    else continue;
 
@@ -210,6 +224,37 @@ void XBot::widgets::module::on_switch_button_clicked()
 	    }
 	}
     }
+}
+
+void XBot::widgets::module::status_callback(const std_msgs::String& status)
+{
+    last_status = status.data;
+
+    if( last_status.find("STARTED") != std::string::npos )
+    {
+	switch_button.setChecked(true);
+	switch_button.setText("Stop");
+    }
+    if( last_status.find("RUNNING") != std::string::npos )
+    {
+	switch_button.setChecked(true);
+	switch_button.setText("Stop");
+    }
+    if( last_status.find("STOPPED") != std::string::npos)
+    {
+	switch_button.setChecked(false);
+	switch_button.setText("Start");
+    }
+
+    status_timer.start(2000);
+}
+
+void XBot::widgets::module::status_timer_body()
+{
+    last_status = "-";
+
+    switch_button.setChecked(false);
+    switch_button.setText("Start");
 }
 
 XBot::widgets::module::~module()

@@ -17,35 +17,50 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 
-#include "XBotGUI/interaction/utility.h"
+#ifndef XBOTGUI_MANIPULATION_MAP_UTILS_WIDGET_H
+#define XBOTGUI_MANIPULATION_MAP_UTILS_WIDGET_H
 
-XBot::widgets::utility::utility(std::string name_): name(name_)
+#include <QBoxLayout>
+#include <QPushButton>
+#include <QWidget>
+#include <QProcess>
+#include <string>
+#include <map>
+#include <vector>
+#include <tuple>
+#include <ros/ros.h>
+#include <visualization_msgs/Marker.h>
+
+typedef std::tuple<std::string, std::string, std::map< std::string, std::string >> display_property;
+
+namespace XBot
 {
-    if(name=="trajectory_utils")
-    {
-	wid = new trajectory_utils_widget();
-    }
-    if(name=="manipulation_map")
-    {
-	wid = new manipulation_map_utils_widget();
-    }
-
-    main_layout.addWidget(wid);
-
-    setLayout(&main_layout);
-}
-
-std::vector< display_property > XBot::widgets::utility::displays()
+namespace widgets
 {
-    if(name=="trajectory_utils")
-	return ((trajectory_utils_widget*)wid)->displays;
-    if(name=="manipulation_map")
-	return ((trajectory_utils_widget*)wid)->displays;
-    else
-        return std::vector< display_property >();
-}
 
-XBot::widgets::utility::~utility()
+class manipulation_map_utils_widget: public QWidget
 {
-    delete wid;
-}
+Q_OBJECT
+public:
+    manipulation_map_utils_widget();
+    ~manipulation_map_utils_widget();
+
+    std::vector<display_property> displays;
+
+private Q_SLOTS:
+    void on_switch_button_clicked();
+
+private:
+    ros::NodeHandle nh;
+    ros::Publisher pub;
+    std::vector<visualization_msgs::Marker> markers;
+
+    QPushButton switch_button;
+
+    QHBoxLayout main_layout;
+
+};
+};
+};
+
+#endif

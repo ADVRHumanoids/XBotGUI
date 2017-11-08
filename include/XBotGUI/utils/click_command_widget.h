@@ -16,36 +16,48 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
+#ifndef XBOTGUI_CLICK_COMMAND_WIDGET_H
+#define XBOTGUI_CLICK_COMMAND_WIDGET_H
 
-#ifndef XBOTGUI_UTILITY_H
-#define XBOTGUI_UTILITY_H
-
-#include <string>
-#include <map>
-#include <QBoxLayout>
-#include <QPushButton>
 #include <QWidget>
-#include "XBotGUI/utils/trajectory_utils_widget.h"
-#include "XBotGUI/utils/manipulation_map_utils_widget.h"
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <string>
+#include <thread>
+#include <atomic>
+#include <ros/ros.h>
+#include <rviz/tool_manager.h>
+#include <rviz/properties/property.h>
+#include <std_msgs/String.h>
+#include <geometry_msgs/PointStamped.h>
+#include "XBotGUI/utils/command_widget.h"
 
 namespace XBot
-{ 
+{
 namespace widgets
 {
-class utility: public QWidget
+class click_command_widget: public command_widget
 {
+Q_OBJECT
 public:
-    utility(std::string name_);
-    ~utility();
+	click_command_widget(rviz::ToolManager* tool_manager_, std::string topic_name_, std::string command_name_);
 
-    std::vector<display_property> displays();
+private Q_SLOTS:
+	void on_click_button_clicked();
+
 private:
+	std::string topic_name;
+	std::string command_name;
 
-    std::string name;
-    QWidget* wid;
-    QHBoxLayout main_layout;
+	ros::NodeHandle nh;
+	ros::Subscriber click_sub;
+	void click_callback(const geometry_msgs::PointStamped& point);
+	rviz::ToolManager* tool_manager;
+	rviz::Tool* click_tool;
+
+	QPushButton click_button;
 };
-};
-};
+}
+}
 
 #endif

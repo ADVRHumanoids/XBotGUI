@@ -16,36 +16,51 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
+#ifndef XBOTGUI_TRAJ_UTILS_MOVE_RESET_WIDGET_H
+#define XBOTGUI_TRAJ_UTILS_MOVE_RESET_WIDGET_H
 
-#ifndef XBOTGUI_UTILITY_H
-#define XBOTGUI_UTILITY_H
-
-#include <string>
-#include <map>
-#include <QBoxLayout>
-#include <QPushButton>
 #include <QWidget>
-#include "XBotGUI/utils/trajectory_utils_widget.h"
-#include "XBotGUI/utils/manipulation_map_utils_widget.h"
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <string>
+#include <thread>
+#include <atomic>
+#include <ros/ros.h>
+#include <ros/service.h>
+#include <std_srvs/Empty.h>
+#include <XBotGUI/utils/command_widget.h>
+#include <visualization_msgs/InteractiveMarkerFeedback.h>
 
 namespace XBot
-{ 
+{
 namespace widgets
 {
-class utility: public QWidget
+class traj_utils_move_reset_widget: public command_widget
 {
+Q_OBJECT
 public:
-    utility(std::string name_);
-    ~utility();
+	traj_utils_move_reset_widget(std::string marker_name_, std::string command_name_);
 
-    std::vector<display_property> displays();
+private Q_SLOTS:
+	void on_cmd_button_clicked();
+
 private:
+	ros::NodeHandle nh;
+	ros::ServiceClient empty_client;
+	void service_thread_body();
+	std::atomic_bool thread_waiting;
 
-    std::string name;
-    QWidget* wid;
-    QHBoxLayout main_layout;
+	ros::Publisher feedback_publisher;
+	visualization_msgs::InteractiveMarkerFeedback feedback_msg;
+
+        QPushButton cmd_button;
+
+	std::string marker_name;
+	std::string command_name;
+	std::string service_name;
+	std::string feedback_name;
 };
-};
-};
+}
+}
 
 #endif

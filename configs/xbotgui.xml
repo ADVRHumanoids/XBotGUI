@@ -284,6 +284,301 @@
       <property name="mesh" value=""/>
     </object>
   </interactive_marker>
+    <!-- NOTE: the properties reflect rviz display properties, please use the correct name -->
+    <frames>
+      <frame name="base_link"/> <!-- 1st is used as default fixed frame -->
+      <frame name="world"/>
+      <frame name="world_odom"/>
+      <frame name="Waist"/>
+      <frame name="l_sole"/>
+      <frame name="r_sole"/>
+      <frame name="multisense/left_camera_optical_frame"/>
+    </frames>
+
+    <display name="robot" type="rviz/RobotModel"/>
+
+    <display name="point_cloud" type="rviz/PointCloud2">
+	<property name="Topic" value="/multisense/image_points2_color"/>
+	<property name="Style" value="Points"/>
+	<property name="Size (Pixels)" value="3.0"/>
+	<property name="Alpha" value="0.1"/>
+    </display>
+
+    <display name="laser" type="rviz/PointCloud2">
+	<property name="Topic" value="/multisense/lidar_points2_color"/>
+	<property name="Style" value="Points"/>
+	<property name="Size (Pixels)" value="3.0"/>
+	<property name="Alpha" value="0.1"/>
+        <property name="Decay Time" value="15.0"/>
+    </display>
+
+    <display name="camera" type="rviz/Image">
+	<property name="Image Topic" value="camera_raw"/>
+    </display>
+</visualization>
+
+<modules> <!-- here are defined additional commands for plugins defined in yaml config files can be defined, pay attention to plugin names! -->
+
+    <module name="ManipulationPlugin">
+      	<dependencies>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
+	</dependencies>
+
+	<command_block>
+	    <command type="std_srvs/Empty" name="Move Left" service_name="LSoftHand_getTrj"/>
+	    <command type="std_srvs/Empty" name="Move Right" service_name="RSoftHand_getTrj"/>
+	</command_block>
+	<command_block>
+	    <command type="grasping"/>
+	</command_block>
+	<command_block>
+	    <command type="postural"/>
+	</command_block>
+    </module>
+
+    <module name="Hose_Task">
+      	<dependencies>
+	    <plugin name="ManipulationPlugin"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
+	</dependencies>
+
+	<command_block>
+	    <command type="cmd_service" name="success"/>
+	    <command type="cmd_service" name="lh_move_fail"/>
+	    <command type="cmd_service" name="rh_move_fail"/>
+	</command_block>
+
+
+        <command_block>
+	    <command type="object_pose" topic="hose_pose" interactive_marker="extinguisher"/>
+	</command_block>
+    </module>
+
+    <module name="DebrisRemovalTask">
+	<dependencies>
+	    <plugin name="ManipulationPlugin"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
+	</dependencies>
+
+	<command_block>
+	    <command type="cmd_service" name="homing_success" enabling_status="RUNNING:HOMING"/>
+	    <command type="cmd_service" name="homing_fail" enabling_status="RUNNING:HOMING"/>
+	    <command type="cmd_service" name="homing_success_valve" enabling_status="RUNNING:HOMING"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="reached_success" enabling_status="RUNNING:REACHED"/>
+	    <command type="cmd_service" name="reached_fail" enabling_status="RUNNING:REACHED"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="grasped_success" enabling_status="RUNNING:GRASPED"/>
+	    <command type="cmd_service" name="grasped_fail" enabling_status="RUNNING:GRASPED"/>
+	    <command type="cmd_service" name="move_away_after_ho" enabling_status="RUNNING:GRASPED"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="picked_success" enabling_status="RUNNING:PICKED"/>
+	    <command type="cmd_service" name="picked_fail" enabling_status="RUNNING:PICKED"/>
+	    <command type="cmd_service" name="pick_second_hand" enabling_status="RUNNING:PICKED" label="Handover"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="pick_second_hand_success" enabling_status="RUNNING:PICKSECONDHAND" label="Handover_success"/>
+	    <command type="cmd_service" name="pick_second_hand_fail" enabling_status="RUNNING:PICKSECONDHAND" label="Handover_failed"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="lefthoming_success" enabling_status="RUNNING:LEFTHOMING"/>
+	    <command type="cmd_service" name="lefthoming_fail" enabling_status="RUNNING:LEFTHOMING"/>
+	    <command type="cmd_service" name="movedaway_success" enabling_status="RUNNING:MOVEDAWAY"/>
+	    <command type="cmd_service" name="movedaway_fail" enabling_status="RUNNING:MOVEDAWAY"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="placeddown_success" enabling_status="RUNNING:PLACEDDOWN"/>
+	    <command type="cmd_service" name="placeddown_fail" enabling_status="RUNNING:PLACEDDOWN"/>
+	    <command type="cmd_service" name="ungrasped_success" enabling_status="RUNNING:UNGRASPED"/>
+	    <command type="cmd_service" name="ungrasped_fail" enabling_status="RUNNING:UNGRASPED"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="valvereach_success" enabling_status="RUNNING:VALVEREACH"/>
+	    <command type="cmd_service" name="valvereach_fail" enabling_status="RUNNING:VALVEREACH"/>
+	    <command type="cmd_service" name="valveturn_success" enabling_status="RUNNING:VALVETURN"/>
+	    <command type="cmd_service" name="valveturn_fail" enabling_status="RUNNING:VALVETURN"/>
+	    <command type="cmd_service" name="valvegoback_success" enabling_status="RUNNING:VALVEGOBACK"/>
+	    <command type="cmd_service" name="valvegoback_fail" enabling_status="RUNNING:VALVEGOBACK"/>
+	</command_block>
+
+	<command_block>
+	    <command type="string" topic="hand_selection" name="LSoftHand" label="Left Hand"/>
+	    <command type="string" topic="hand_selection" name="RSoftHand" label="Right Hand"/>
+	    <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
+	</command_block>
+    </module>
+
+    <module name="chengxu_walking">
+	<command_block>
+	    <command type="goal" topic="chengxu_walking_goal"/>
+	    <command type="object_sequence" topic="walking_sequence" interactive_markers_sequence="feet"/>
+	</command_block>
+    </module>
+
+    <module name="DoorFinalDemo">
+        <dependencies>
+	    <plugin name="ManipulationPlugin"/>
+	    <plugin name="IkRosSMPub"/>
+	    <plugin name="OpenSotIk"/>
+	    <plugin name="Grasp"/>
+	</dependencies>
+	<status_block>
+	    <status type="led_status" name="Status" topic="door_status_led"/>
+	    <status type="led_status" name="Contact" topic="door_contact_led"/>
+	    <status type="led_status" name="Grasp" topic="door_grasp_led"/>
+	</status_block>
+	<command_block>
+	    <command type="object_pose" topic="handle_pose" interactive_marker="door"/>
+	    <command type="cmd_service" name="grasp_pos_received" label="Course Reach"/>
+	    <command type="cmd_service" name="" label="Fine Pose Tuning"/>
+	    <command type="cmd_service" name="check_touch" label="Fine Conctacting"/>
+	</command_block>
+	<command_block>
+	    <command type="cmd_service" name="door_grasp_ok" label="Push Door"/>
+	    <command type="cmd_service" name="door_push_ok" label="Move Away"/>
+            <command type="cmd_service" name="left_push_complete" label="Push complete"/>
+	</command_block>
+    </module>
+
+
+</modules>
+
+<utils>
+    <util name="trajectory_utils"/>
+    <util name="manipulation_map"/>
+</utils>
+
+<interactive_markers>
+
+    <interactive_marker name="valve">
+	<object name="valve">
+	    <property name="scale_x" value="0.01"/>
+	    <property name="scale_y" value="0.01"/>
+	    <property name="scale_z" value="0.3"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
+	    <property name="mesh" value=""/>
+	    <property name="position.x" value="0"/>
+	    <property name="position.y" value="0"/>
+	    <property name="position.z" value="0"/>
+	    <property name="orientation.x" value="0"/>
+	    <property name="orientation.y" value="0"/>
+	    <property name="orientation.z" value="0"/>
+	    <property name="orientation.w" value="1"/>
+	</object>
+    </interactive_marker>
+
+    <interactive_marker name="door">
+	<object name="left_hand">
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="0.4"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="mesh" value=""/>
+	    <property name="position.x" value="0.75"/>
+	    <property name="position.y" value="0.05"/>
+	    <property name="position.z" value="0"/>
+	</object>
+	<object name="right_hand">
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="0.4"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="mesh" value=""/>
+	    <property name="position.x" value="0.75"/>
+	    <property name="position.y" value="-0.05"/>
+	    <property name="position.z" value="0"/>
+	</object>
+    </interactive_marker>
+
+    <interactive_marker name="debris">
+	<object name="right_hand">
+	    <property name="scale_x" value="0.001"/>
+	    <property name="scale_y" value="0.001"/>
+	    <property name="scale_z" value="0.001"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
+	    <property name="mesh" value="walkman_right_softhand.dae"/>
+	</object>
+	<object name="left_hand">
+	    <property name="scale_x" value="0.001"/>
+	    <property name="scale_y" value="0.001"/>
+	    <property name="scale_z" value="0.001"/>
+	    <property name="id" value="1"/>
+	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
+	    <property name="mesh" value="walkman_left_softhand.dae"/>
+	</object>
+	<object name="debris_1">
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.2"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="mesh" value=""/>
+	</object>
+	<object name="debris_2">
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.495"/>
+	    <property name="id" value="1"/>
+	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="mesh" value=""/>
+	</object>
+	<object name="debris_3">
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.999"/>
+	    <property name="id" value="2"/>
+	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
+	    <property name="mesh" value=""/>
+	</object>
+    </interactive_marker>
+
+    <interactive_marker name="extinguisher">
+	<object name="handle">
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.01"/>
+	    <property name="scale_z" value="0.01"/>
+	    <property name="id" value="0"/>
+	    <property name="type" value="visualization_msgs::Marker::ARROW"/>
+	    <property name="mesh" value=""/>
+	</object>
+	<object name="hose_end">
+	    <property name="scale_x" value="0.03"/>
+	    <property name="scale_y" value="0.03"/>
+	    <property name="scale_z" value="0.2"/>
+	    <property name="id" value="1"/>
+	    <property name="type" value="visualization_msgs::Marker::CYLINDER"/>
+	    <property name="mesh" value=""/>
+	</object>
+	<object name="fire">
+	    <property name="scale_x" value="0.1"/>
+	    <property name="scale_y" value="0.1"/>
+	    <property name="scale_z" value="0.1"/>
+	    <property name="id" value="2"/>
+	    <property name="type" value="visualization_msgs::Marker::SPHERE"/>
+	    <property name="mesh" value=""/>
+	</object>
+      </interactive_marker>
+
 
 </interactive_markers>
 

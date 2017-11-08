@@ -50,7 +50,7 @@ public:
 
     void add_display(std::string name, std::string type, std::map<std::string,std::string> properties);
     void add_frames(std::vector<std::string> names);
-    void add_module(std::string name, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies);
+    void add_module(boost::shared_ptr<urdf::ModelInterface const> urdf, std::string name, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies);
     void add_utility(std::string name);
     void add_interactive_marker(std::string name, std::map<std::string,object_properties> objects);
     void add_interactive_marker_sequence(std::string name, std::map<int,object_properties> objects);

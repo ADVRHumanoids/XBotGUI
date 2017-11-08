@@ -33,9 +33,13 @@
 #include "XBotGUI/utils/empty_service_widget.h"
 #include "XBotGUI/utils/grasp_widget.h"
 #include "XBotGUI/utils/string_command_widget.h"
+#include "XBotGUI/utils/click_command_widget.h"
 #include "XBotGUI/utils/status_widget.h"
 #include "XBotGUI/utils/led_status_widget.h"
+#include "XBotGUI/utils/postural_command_widget.h"
+#include "XBotGUI/utils/traj_utils_move_reset_widget.h"
 #include <rviz/tool_manager.h>
+#include <urdf_parser/urdf_parser.h>
 
 namespace XBot
 {
@@ -45,7 +49,7 @@ class module: public QWidget
 {
 Q_OBJECT
 public:
-    module(std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
+    module(boost::shared_ptr<urdf::ModelInterface const> urdf, std::string name_, std::vector<std::vector<std::map<std::string,std::string>>> command_blocks_, std::vector<std::vector<std::map<std::string,std::string>>> status_blocks, std::vector<std::string> module_dependencies, rviz::ToolManager* tool_manager_=NULL);
     ~module();
 
     QPushButton* get_switch_button();
@@ -55,6 +59,7 @@ public:
 
 private Q_SLOTS:
     void on_switch_button_clicked();
+    void status_timer_body();
 
 private:
     void start_info(bool error, std::string plugin_name, bool called);
@@ -76,6 +81,11 @@ private:
 
     std::vector<led_status_widget*> led_status_widgets;
     QHBoxLayout led_layout;
+
+    std::string last_status;
+    QTimer status_timer;
+    void status_callback(const std_msgs::String& status);
+    ros::Subscriber status_sub;
 };
 };
 };

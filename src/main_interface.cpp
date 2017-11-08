@@ -431,6 +431,13 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			std::cout<<std::endl<<"    - - - - | > service_name: "<<command_attributes.at("service_name");
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 		    }
+		    else if(command_attributes.at("type")=="traj_utils_move_and_reset")
+		    {
+			command_attributes["marker_name"] = std::string(command->Attribute("marker_name"));
+			command_attributes["name"] = std::string(command->Attribute("name"));
+			std::cout<<std::endl<<"    - - - - | > marker_name: "<<command_attributes.at("marker_name");
+			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
+		    }
 		    else if(command_attributes.at("type")=="grasping")
 		    {
 
@@ -441,6 +448,17 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			command_attributes["topic"] = std::string(command->Attribute("topic"));
 			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
 			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
+		    }
+		    else if(command_attributes.at("type")=="click")
+		    {
+			command_attributes["name"] = std::string(command->Attribute("name"));
+			command_attributes["topic"] = std::string(command->Attribute("topic"));
+			std::cout<<std::endl<<"    - - - - | > name: "<<command_attributes.at("name");
+			std::cout<<std::endl<<"    - - - - | > topic: "<<command_attributes.at("topic");
+		    }
+		    else if(command_attributes.at("type")=="postural")
+		    {
+
 		    }
 		    else
 		    {
@@ -515,9 +533,9 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 	    }
 
 	    if(module_dependencies.count(module_name))
-		pilot_interface.add_module(module_name,command_blocks,status_blocks,module_dependencies.at(module_name));
+		pilot_interface.add_module(_XBotModel.get_urdf_model(),module_name,command_blocks,status_blocks,module_dependencies.at(module_name));
 	    else
-		pilot_interface.add_module(module_name,command_blocks,status_blocks,std::vector<std::string>());
+		pilot_interface.add_module(_XBotModel.get_urdf_model(),module_name,command_blocks,status_blocks,std::vector<std::string>());
 
 	    status_manager_.add_module_status_service(module_name);
 
@@ -538,7 +556,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    if(to_add)
 	    {
-		pilot_interface.add_module(plugin,std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
+		pilot_interface.add_module(_XBotModel.get_urdf_model(),plugin,std::vector<std::vector<std::map<std::string,std::string>>>(),std::vector<std::vector<std::map<std::string,std::string>>>(), std::vector<std::string>());
 		status_manager_.add_module_status_service(plugin);
 	    }
 	}
@@ -560,7 +578,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 
 	    std::cout<<"    - - | Util : "<<util_name;
 	    
-	    if(util_name!="trajectory_utils")
+	    if(util_name!="trajectory_utils" && util_name!="manipulation_map")
 	    {
 		std::cout<<" ( "<<yellow_string("Undefined util type")<<" ) "<<std::endl;
 		util = util->NextSiblingElement("util");
@@ -629,6 +647,14 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			objects.at(object_name).pose.position.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.z")
 			objects.at(object_name).pose.position.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.x")
+			objects.at(object_name).pose.orientation.x = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.y")
+			objects.at(object_name).pose.orientation.y = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.z")
+			objects.at(object_name).pose.orientation.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.w")
+			objects.at(object_name).pose.orientation.w = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
@@ -696,6 +722,14 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 			objects.at(object_id).pose.position.y = std::stod(fix_double_separator(property->Attribute("value")));
 		    if(std::string(property->Attribute("name"))=="position.z")
 			objects.at(object_id).pose.position.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.x")
+			objects.at(object_id).pose.orientation.x = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.y")
+			objects.at(object_id).pose.orientation.y = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.z")
+			objects.at(object_id).pose.orientation.z = std::stod(fix_double_separator(property->Attribute("value")));
+		    if(std::string(property->Attribute("name"))=="orientation.w")
+			objects.at(object_id).pose.orientation.w = std::stod(fix_double_separator(property->Attribute("value")));
 
 		    std::cout<<"    - - - | > "<<property->Attribute("name")<<" : "<<property->Attribute("value")<<std::endl;
 
