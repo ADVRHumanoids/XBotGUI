@@ -92,48 +92,18 @@
 	</dependencies>
 
 	<command_block>
-	    <command type="cmd_service" name="homing_success" enabling_status="RUNNING:HOMING"/>
-	    <command type="cmd_service" name="homing_fail" enabling_status="RUNNING:HOMING"/>
+	    <command type="cmd_service" name="success"/>
+	    <command type="cmd_service" name="fail"/>
+	</command_block>
+
+	<command_block>
+	    <command type="cmd_service" name="Handover_success" enabling_status="RUNNING:HOMING_LEE"/>
+	    <command type="cmd_service" name="After_handover" enabling_status="RUNNING:GRASPED"/>
+	    <command type="cmd_service" name="Handover" enabling_status="RUNNING:PICKED"/>
+	</command_block>
+
+	<command_block>
 	    <command type="cmd_service" name="homing_success_valve" enabling_status="RUNNING:HOMING"/>
-	</command_block>
-
-	<command_block>
-	    <command type="cmd_service" name="reached_success" enabling_status="RUNNING:REACHED"/>
-	    <command type="cmd_service" name="reached_fail" enabling_status="RUNNING:REACHED"/>
-	</command_block>
-
-	<command_block>
-	    <command type="cmd_service" name="grasped_success" enabling_status="RUNNING:GRASPED"/>
-	    <command type="cmd_service" name="grasped_fail" enabling_status="RUNNING:GRASPED"/>
-	    <command type="cmd_service" name="move_away_after_ho" enabling_status="RUNNING:GRASPED"/>
-	</command_block>
-
-	<command_block>
-	    <command type="cmd_service" name="picked_success" enabling_status="RUNNING:PICKED"/>
-	    <command type="cmd_service" name="picked_fail" enabling_status="RUNNING:PICKED"/>
-	    <command type="cmd_service" name="pick_second_hand" enabling_status="RUNNING:PICKED" label="Handover"/>
-	</command_block>
-
-	<command_block>
-	    <command type="cmd_service" name="pick_second_hand_success" enabling_status="RUNNING:PICKSECONDHAND" label="Handover_success"/>
-	    <command type="cmd_service" name="pick_second_hand_fail" enabling_status="RUNNING:PICKSECONDHAND" label="Handover_failed"/>
-	</command_block>
-
-	<command_block>
-	    <command type="cmd_service" name="lefthoming_success" enabling_status="RUNNING:LEFTHOMING"/>
-	    <command type="cmd_service" name="lefthoming_fail" enabling_status="RUNNING:LEFTHOMING"/>
-	    <command type="cmd_service" name="movedaway_success" enabling_status="RUNNING:MOVEDAWAY"/>
-	    <command type="cmd_service" name="movedaway_fail" enabling_status="RUNNING:MOVEDAWAY"/>
-	</command_block>
-
-	<command_block>
-	    <command type="cmd_service" name="placeddown_success" enabling_status="RUNNING:PLACEDDOWN"/>
-	    <command type="cmd_service" name="placeddown_fail" enabling_status="RUNNING:PLACEDDOWN"/>
-	    <command type="cmd_service" name="ungrasped_success" enabling_status="RUNNING:UNGRASPED"/>
-	    <command type="cmd_service" name="ungrasped_fail" enabling_status="RUNNING:UNGRASPED"/>
-	</command_block>
-
-	<command_block>
 	    <command type="cmd_service" name="valvereach_success" enabling_status="RUNNING:VALVEREACH"/>
 	    <command type="cmd_service" name="valvereach_fail" enabling_status="RUNNING:VALVEREACH"/>
 	    <command type="cmd_service" name="valveturn_success" enabling_status="RUNNING:VALVETURN"/>
