@@ -113,8 +113,8 @@
 	</command_block>
 
 	<command_block>
-	    <command type="string" topic="hand_selection" name="LSoftHand" label="Left Hand"/>
-	    <command type="string" topic="hand_selection" name="RSoftHand" label="Right Hand"/>
+	    <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
+	    <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
 	    <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
 	</command_block>
     </module>
