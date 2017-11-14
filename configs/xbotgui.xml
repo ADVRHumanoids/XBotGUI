@@ -94,6 +94,7 @@
 	<command_block>
 	    <command type="cmd_service" name="success"/>
 	    <command type="cmd_service" name="fail"/>
+	    <command type="cmd_service" name="Adjust" enabling_status="RUNNING:REACHED"/>
 	</command_block>
 
 	<command_block>
