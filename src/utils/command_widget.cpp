@@ -18,6 +18,7 @@
 */
 
 #include <XBotGUI/utils/command_widget.h>
+#include <sstream>
 
 void XBot::widgets::command_widget::set_fixed_frame(std::string frame)
 {
@@ -31,10 +32,17 @@ std::string XBot::widgets::command_widget::get_type()
 
 void XBot::widgets::command_widget::set_enabling_status(std::string status)
 {
-    enabling_status=status;
+    std::istringstream source(status);
+
+    std::string state;
+
+    while(std::getline(source,state,' '))
+    {
+	    enabling_status.push_back(state);
+    }
 }
 
-std::string XBot::widgets::command_widget::get_enabling_status()
+std::vector<std::string> XBot::widgets::command_widget::get_enabling_status()
 {
     return enabling_status;
 }

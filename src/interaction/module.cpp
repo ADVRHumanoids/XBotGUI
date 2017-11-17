@@ -175,8 +175,19 @@ void XBot::widgets::module::status_changed(std::string name)
 {
     for(auto cmd_w:command_widgets)
     {
-	if(cmd_w->get_enabling_status()!="")
-	      cmd_w->setEnabled(((cmd_service_widget*)(cmd_w))->get_enabling_status()==name);
+	if(cmd_w->get_enabling_status().size()>0)
+	{
+	      for(auto state:((cmd_service_widget*)(cmd_w))->get_enabling_status())
+	      {
+		  if(name == state)
+		  {
+		      cmd_w->setEnabled(true);
+		      return;
+		  }
+	      }
+	      
+	      cmd_w->setEnabled(false);
+	}
     }
 }
 

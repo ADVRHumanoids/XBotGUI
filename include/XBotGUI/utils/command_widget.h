@@ -34,11 +34,11 @@ public:
 
 	virtual std::string get_type();
 	
-	virtual std::string get_enabling_status();
+	virtual std::vector<std::string> get_enabling_status();
 
 	virtual void set_enabling_status(std::string status);
 
-	std::string enabling_status;
+	std::vector<std::string> enabling_status;
 	
 	QVBoxLayout main_layout;
 };
