@@ -29,7 +29,7 @@
 #include <atomic>
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
-#include <XCM/JointStateAdvr.h>
+#include <XBotCore/JointStateAdvr.h>
 #include "XBotGUI/utils/command_widget.h"
 #include "XBotGUI/print_utils.h"
 #include <urdf_parser/urdf_parser.h>
@@ -74,7 +74,7 @@ private:
 	ros::Publisher pub;
 	sensor_msgs::JointState joint_states_cmd;
 	ros::Subscriber sub;
-	void joint_states_callback(const XCM::JointStateAdvr& joint_states);
+	void joint_states_callback(const XBotCore::JointStateAdvr& joint_states);
 
 	QComboBox joint_combo;
 	QPushButton toggle_button;

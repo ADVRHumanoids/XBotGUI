@@ -134,7 +134,7 @@ void XBot::widgets::postural_command_widget::slider_slot()
     pub.publish(joint_states_cmd);
 }
 
-void XBot::widgets::postural_command_widget::joint_states_callback(const XCM::JointStateAdvr& joint_states)
+void XBot::widgets::postural_command_widget::joint_states_callback(const XBotCore::JointStateAdvr& joint_states)
 {
     if(control_active.load()) return;
 

@@ -16,6 +16,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(XBotCoreModel REQUIRED)
 find_package(XBotInterface REQUIRED)
+find_package(Boost REQUIRED COMPONENTS program_options)
 
 include_directories(include ${XBotCoreModel_INCLUDE_DIRS} ${XBotInterface_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS})
 
@@ -118,7 +119,7 @@ elseif($ENV{ROS_DISTRO} STRGREATER "indigo")
     qt5_use_modules(XBotGUI Widgets Gui)
 endif()
 
-target_link_libraries(XBotGUI ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(XBotGUI ${QT_LIBRARIES} yaml-cpp ${XBotCoreModel_LIBRARIES} ${XBotInterface_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 install(TARGETS XBotGUI
         EXPORT  XBotGUI

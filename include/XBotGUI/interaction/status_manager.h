@@ -27,7 +27,7 @@
 #include <ros/ros.h>
 #include <ros/service.h>
 #include <std_msgs/String.h>
-#include <XCM/status_service.h>
+#include <XBotCore/status_service.h>
 
 namespace XBot
 {

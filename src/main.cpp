@@ -17,11 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
 */
 #include "XBotGUI/main_interface.h"
+
 #include <QApplication>
 #include <qicon.h>
 #include <iostream>
 #include <tf/transform_broadcaster.h>
 #include <tf_conversions/tf_kdl.h>
+
+#include <XBotInterface/Logger.hpp>
+#include <XBotInterface/RtLog.hpp>
+
+#include <XBotCore-interfaces/XBotOptions.h>
+
+#include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
+
+namespace po = boost::program_options;
+namespace fs = boost::filesystem;
+
+bool getDefaultConfig(std::string& config) 
+{
+    config = XBot::Utils::getXBotConfig();
+    if(config == "") {
+        return false;
+    }
+    return true;
+}
 
 int main(int argc, char** argv)
 {
@@ -35,20 +56,59 @@ int main(int argc, char** argv)
     }
     #endif
     
+    std::string config_file = "";
+    
     QApplication app(argc,argv);
 
-    if(argc < 2)
-    {
-	std::cout<<red_string("ERROR: please, pass the configuration file")<<std::endl;
-	abort();
-    }
-    if(argc > 2)
-    {
-	std::cout<<red_string("ERROR: please, pass ONLY the configuration file")<<std::endl;
-	abort();
-    }
+    XBot::Options options;
     
-    std::string config_file = std::string(argv[1]);
+    {
+        po::options_description desc("XBotGUI. Available options");
+        desc.add_options()
+            ("config,C", po::value<std::string>(),"Path to custom config file. If not set, a default config file must be configured via set_xbot_config.")
+            ("verbose,V", "Verbose mode.")
+            ("help", "Shows this help message.")
+            
+        ;
+
+        
+        po::positional_options_description p;
+        p.add("config", -1);
+
+        po::variables_map vm;
+        po::store(po::command_line_parser(argc, argv).
+                options(desc).positional(p).run(), vm);
+        po::notify(vm);
+        
+        if(vm.count("help")){
+            std::cout << desc << std::endl;
+            return 0;
+        }
+        
+        if(vm.count("verbose")){
+            XBot::Logger::SetVerbosityLevel(XBot::Logger::Severity::LOW);
+            XBot::Logger::info("Verbose mode ON \n");
+        }
+        else{
+            XBot::Logger::SetVerbosityLevel(XBot::Logger::Severity::MID);
+        }
+        
+        if(vm.count("config")) {
+            config_file = fs::absolute(vm["config"].as<std::string>()).string();
+        }
+        else{
+            if(!getDefaultConfig(config_file)){
+                std::cout << desc << std::endl;
+                return -1;
+            }
+        }
+        
+    }
+
+
+    XBot::Logger::info(XBot::Logger::Severity::HIGH) << XBot::bold_on << "XBotCore using config file " << config_file << XBot::Logger::endl();
+
+
     XBot::GUI gui(config_file);
   
     gui.show();

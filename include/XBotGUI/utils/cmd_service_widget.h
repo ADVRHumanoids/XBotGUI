@@ -27,7 +27,7 @@
 #include <atomic>
 #include <ros/ros.h>
 #include <ros/service.h>
-#include <XCM/cmd_service.h>
+#include <XBotCore/cmd_service.h>
 #include <XBotGUI/utils/command_widget.h>
 
 namespace XBot

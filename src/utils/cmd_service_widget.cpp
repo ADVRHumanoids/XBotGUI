@@ -21,7 +21,7 @@
 
 XBot::widgets::cmd_service_widget::cmd_service_widget(std::string module_name_, std::string command_name_): module_name(module_name_), command_name(command_name_)
 {
-    cmd_client = nh.serviceClient<XCM::cmd_service>((module_name+"_cmd").c_str());
+    cmd_client = nh.serviceClient<XBotCore::cmd_service>((module_name+"_cmd").c_str());
 
     cmd_button.setText(QString::fromStdString(command_name));
     
@@ -41,7 +41,7 @@ void XBot::widgets::cmd_service_widget::set_label(std::string label_name)
 
 void XBot::widgets::cmd_service_widget::service_thread_body()
 {
-    XCM::cmd_service srv;
+    XBotCore::cmd_service srv;
     srv.request.cmd = command_name;
     if(cmd_client.call(srv))
     {

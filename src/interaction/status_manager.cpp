@@ -27,7 +27,7 @@ XBot::status_manager::status_manager()
 
 void XBot::status_manager::add_module_status_service(std::string module_name)
 {
-    status_clients.push_back(nh.serviceClient<XCM::status_service>((module_name+"_status").c_str()));
+    status_clients.push_back(nh.serviceClient<XBotCore::status_service>((module_name+"_status").c_str()));
     status_pubs.push_back(nh.advertise<std_msgs::String>((module_name+"_status_aux").c_str(),1));
 }
 
@@ -39,7 +39,7 @@ void XBot::status_manager::status_thread_body()
     {
 	for(int i=0; i<status_clients.size(); i++)
 	{
-	    XCM::status_service srv;
+	    XBotCore::status_service srv;
 	    std_msgs::String status;
 	    if(status_clients.at(i).call(srv))
 	    {
