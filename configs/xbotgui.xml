@@ -124,6 +124,7 @@
 	<command_block>
 	    <command type="goal" topic="chengxu_walking_goal"/>
 	    <command type="object_sequence" topic="walking_sequence" interactive_markers_sequence="feet"/>
+	    <command type="locomotion" service="walking_command"/>
 	</command_block>
     </module>
 

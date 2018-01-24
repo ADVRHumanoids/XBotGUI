@@ -460,6 +460,11 @@ XBot::GUI::GUI(std::string config_file): QWidget()
 		    {
 
 		    }
+		    else if(command_attributes.at("type")=="locomotion")
+		    {
+			command_attributes["service"] = std::string(command->Attribute("service"));
+			std::cout<<std::endl<<"    - - - - | > service: "<<command_attributes.at("service");
+		    }
 		    else
 		    {
 			std::cout<<" ( "<<yellow_string("Undefined command type")<<" ) "<<std::endl;

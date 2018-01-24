@@ -133,6 +133,10 @@ XBot::widgets::module::module(boost::shared_ptr<urdf::ModelInterface const> urdf
 	    {
 		command_widgets.push_back(new postural_command_widget(urdf));
 	    }
+	    else if(command.at("type")=="locomotion")
+	    {
+		command_widgets.push_back(new locomotion_command_widget(command.at("service")));
+	    }
 	    else continue;
 
 	    if(command.count("enabling_status"))

@@ -113,7 +113,8 @@ int main(int argc, char** argv)
   
     gui.show();
     gui.setWindowTitle(QString::fromStdString("XBotGUI : " + gui.getRobot()));
-    gui.setWindowIcon(QIcon("resources/logo.png"));
+    std::string robotology_root = std::getenv("ROBOTOLOGY_ROOT");
+    gui.setWindowIcon(QIcon(QString::fromStdString(robotology_root+"/external/XBotGUI/resources/logo.png")));
 
     std::cout<<std::endl;
     std::cout<<green_string(" >> Started XBotGUI for robot ")<<cyan_string(gui.getRobot())<<green_string(" <<")<<std::endl<<std::endl;

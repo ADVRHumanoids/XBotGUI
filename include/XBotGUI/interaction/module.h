@@ -38,6 +38,7 @@
 #include "XBotGUI/utils/led_status_widget.h"
 #include "XBotGUI/utils/postural_command_widget.h"
 #include "XBotGUI/utils/traj_utils_move_reset_widget.h"
+#include "XBotGUI/utils/locomotion_command_widget.h"
 #include <rviz/tool_manager.h>
 #include <urdf_parser/urdf_parser.h>
 
