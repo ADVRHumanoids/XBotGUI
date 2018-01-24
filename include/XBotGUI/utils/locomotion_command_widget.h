@@ -83,7 +83,7 @@ private:
 
 	std::string service_name;
 	
-	std::string command;
+	int command;
 	void call_service();
 };
 }

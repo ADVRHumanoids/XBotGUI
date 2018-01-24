@@ -111,7 +111,7 @@ void XBot::widgets::locomotion_command_widget::service_thread_body()
     ADVR_ROS::advr_locomotion srv;
     srv.request.step_length = step_edit.text().toDouble();
     srv.request.command_type = command;
-    if(command == "turn_left" || command == "turn_right")
+    if(command == 5 || command == 6)
     {
 	srv.request.command_value = turn_edit.text().toDouble();
     }
@@ -129,37 +129,37 @@ void XBot::widgets::locomotion_command_widget::service_thread_body()
 
 void XBot::widgets::locomotion_command_widget::on_walk_forward_button_clicked()
 {
-    command = "walk_forward";
+    command = 1;
     call_service();
 }
 
 void XBot::widgets::locomotion_command_widget::on_walk_backward_button_clicked()
 {
-    command = "walk_backward";
+    command = 2;
     call_service();
 }
 
 void XBot::widgets::locomotion_command_widget::on_walk_left_button_clicked()
 {
-    command = "walk_left";
+    command = 3;
     call_service();
 }
 
 void XBot::widgets::locomotion_command_widget::on_walk_right_button_clicked()
 {
-    command = "walk_right";
+    command = 4;
     call_service();
 }
 
 void XBot::widgets::locomotion_command_widget::on_turn_left_button_clicked()
 {
-    command = "turn_left";
+    command = 5;
     call_service();
 }
 
 void XBot::widgets::locomotion_command_widget::on_turn_right_button_clicked()
 {
-    command = "turn_right";
+    command = 6;
     call_service();
 }
 
