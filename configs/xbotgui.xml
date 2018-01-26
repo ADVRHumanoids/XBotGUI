@@ -119,6 +119,20 @@
 	    <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
 	</command_block>
     </module>
+    
+    <module name="ValveTask">
+        <dependencies>
+            <plugin name="ManipulationPlugin"/>
+            <plugin name="IkRosSMPub"/>
+            <plugin name="OpenSotIk"/>
+            <plugin name="Grasp"/>
+        </dependencies>
+
+        <command_block>
+            <command type="cmd_service" name="success"/>
+            <command type="cmd_service" name="fail"/>
+        </command_block>
+    </module>
 
     <module name="chengxu_walking">
 	<command_block>
