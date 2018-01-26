@@ -104,20 +104,24 @@
 	</command_block>
 
 	<command_block>
-	    <command type="cmd_service" name="homing_success_valve" enabling_status="RUNNING:HOMING"/>
-	    <command type="cmd_service" name="valvereach_success" enabling_status="RUNNING:VALVEREACH"/>
-	    <command type="cmd_service" name="valvereach_fail" enabling_status="RUNNING:VALVEREACH"/>
-	    <command type="cmd_service" name="valveturn_success" enabling_status="RUNNING:VALVETURN"/>
-	    <command type="cmd_service" name="valveturn_fail" enabling_status="RUNNING:VALVETURN"/>
-	    <command type="cmd_service" name="valvegoback_success" enabling_status="RUNNING:VALVEGOBACK"/>
-	    <command type="cmd_service" name="valvegoback_fail" enabling_status="RUNNING:VALVEGOBACK"/>
-	</command_block>
-
-	<command_block>
 	    <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
 	    <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
 	    <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
 	</command_block>
+    </module>
+    
+    <module name="ValveTask">
+        <dependencies>
+            <plugin name="ManipulationPlugin"/>
+            <plugin name="IkRosSMPub"/>
+            <plugin name="OpenSotIk"/>
+            <plugin name="Grasp"/>
+        </dependencies>
+
+        <command_block>
+            <command type="cmd_service" name="success"/>
+            <command type="cmd_service" name="fail"/>
+        </command_block>
     </module>
 
     <module name="chengxu_walking">
