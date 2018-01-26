@@ -23,7 +23,7 @@ XBot::widgets::postural_command_widget::postural_command_widget(boost::shared_pt
 {
     pub = nh.advertise<sensor_msgs::JointState>("joint_positions_desired",1);
 
-    sub = nh.subscribe("/xbotcore/bigman/joint_states",1,&postural_command_widget::joint_states_callback,this);
+    sub = nh.subscribe("/xbotcore/walkman/joint_states",1,&postural_command_widget::joint_states_callback,this);
     
     title.setText("-");
     slider.setOrientation(Qt::Horizontal);
