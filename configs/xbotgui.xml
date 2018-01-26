@@ -94,20 +94,23 @@
 	<command_block>
 	    <command type="cmd_service" name="success"/>
 	    <command type="cmd_service" name="fail"/>
-	    <command type="cmd_service" name="Adjust" enabling_status="RUNNING:REACHED"/>
+	    <command type="cmd_service" name="Adjust" enabling_status="RUNNING:REACH"/>
 	</command_block>
 
 	<command_block>
 	    <command type="cmd_service" name="Handover_success" enabling_status="RUNNING:HOMING_LEE"/>
-	    <command type="cmd_service" name="After_handover" enabling_status="RUNNING:GRASPED"/>
-	    <command type="cmd_service" name="Handover" enabling_status="RUNNING:PICKED"/>
+	    <command type="cmd_service" name="After_handover" enabling_status="RUNNING:GRASP"/>
+	    <command type="cmd_service" name="Handover" enabling_status="RUNNING:PICK"/>
 	</command_block>
 
-	<command_block>
-	    <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
-	    <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
-	    <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
-	</command_block>
+        <command_block>
+<!--                      commented out for the moment since not working properly                       -->
+<!--             <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/> -->
+<!--             <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/> -->
+            <command type="cmd_service" name="LSoftHand"/>
+            <command type="cmd_service" name="RSoftHand"/>
+            <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
+        </command_block>
     </module>
     
     <module name="ValveTask">
