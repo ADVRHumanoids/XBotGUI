@@ -64,13 +64,19 @@
 	<command_block>
 	    <command type="cmd_service" name="success"/>
 	    <command type="cmd_service" name="lh_move_fail"/>
-	    <command type="cmd_service" name="rh_move_fail"/>
+
+
+	</command_block>
+
+  <command_block>
+      <command type="cmd_service" name="lh_grasp_fail"/>
+	    <command type="cmd_service" name="lh_orient_fail"/>
 	</command_block>
 
 
       <command_block>
-        <command type="cmd_service" name="push_fail"/>
-        <command type="cmd_service" name="orient_fail"/>
+        <command type="cmd_service" name="rh_move_fail"/>
+        <command type="cmd_service" name="rh_push_fail"/>
       </command_block>
 
       <command_block>
@@ -112,7 +118,7 @@
             <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
         </command_block>
     </module>
-    
+
     <module name="ValveTask">
         <dependencies>
             <plugin name="ManipulationPlugin"/>
