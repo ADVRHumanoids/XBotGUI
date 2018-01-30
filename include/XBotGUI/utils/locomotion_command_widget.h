@@ -82,7 +82,10 @@ private:
 	
 	QHBoxLayout commands_layout;
 	QLabel units_label;
+	
+	QLineEdit execute_edit;
 	QPushButton execute_button;
+	QHBoxLayout execute_layout;
 
 	QVBoxLayout main_layout;
 

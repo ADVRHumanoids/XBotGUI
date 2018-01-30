@@ -91,16 +91,23 @@ XBot::widgets::locomotion_command_widget::locomotion_command_widget(std::string 
     commands_layout.addLayout(&walk_layout);
     commands_layout.addWidget(&mid_frame);
     commands_layout.addLayout(&turn_layout);
+    
     units_label.setText("Remember! [m] and [deg]");
+    
     execute_button.setMinimumSize(30,30);
     execute_button.setText("Execute");
+    execute_edit.setText("c");
+    execute_edit.setFixedSize(40,30);
+    execute_layout.addWidget(&execute_button);
+    execute_layout.addWidget(&execute_edit);
+    
     main_layout.addLayout(&step_layout);
     main_layout.addWidget(&top_frame);
     main_layout.addLayout(&commands_layout);
     main_layout.addWidget(&bottom_frame);
     main_layout.addWidget(&units_label);
     main_layout.addWidget(&bbottom_frame);
-    main_layout.addWidget(&execute_button);
+    main_layout.addLayout(&execute_layout);
 
     connect(&walk_forward_button,SIGNAL(clicked()),this,SLOT(on_walk_forward_button_clicked()));
     connect(&walk_backward_button,SIGNAL(clicked()),this,SLOT(on_walk_backward_button_clicked()));
@@ -120,7 +127,17 @@ void XBot::widgets::locomotion_command_widget::service_thread_body()
     ADVR_ROS::advr_locomotion srv;
     srv.request.step_length = step_edit.text().toDouble();
     srv.request.command_type = command;
-    srv.request.execute=execute?'c':' ';
+    srv.request.execute=' ';
+    if(execute)
+    {
+        std::string exec_string = execute_edit.text().toStdString();
+
+	if(exec_string.size()==1)
+	{
+	    srv.request.execute=execute_edit.text().toStdString().at(0);
+	}
+    }
+
     if(command == 5 || command == 6)
     {
 	srv.request.command_value = turn_edit.text().toDouble();
