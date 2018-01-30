@@ -110,11 +110,8 @@
 	</command_block>
 
         <command_block>
-<!--                      commented out for the moment since not working properly                       -->
-<!--             <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/> -->
-<!--             <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/> -->
-            <command type="cmd_service" name="LSoftHand"/>
-            <command type="cmd_service" name="RSoftHand"/>
+            <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
+            <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
             <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
         </command_block>
     </module>
