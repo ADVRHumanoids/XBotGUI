@@ -44,6 +44,10 @@ XBot::widgets::locomotion_command_widget::locomotion_command_widget(std::string 
     bottom_frame.setLineWidth(2);
     palette.setColor(bottom_frame.foregroundRole(),Qt::gray);
     bottom_frame.setPalette(palette);
+    bbottom_frame.setFrameShape(QFrame::HLine);
+    bbottom_frame.setLineWidth(2);
+    palette.setColor(bbottom_frame.foregroundRole(),Qt::gray);
+    bbottom_frame.setPalette(palette);
 
     step_label.setText("Step Lenght: ");
     step_edit.setMinimumSize(30,30);
@@ -87,12 +91,16 @@ XBot::widgets::locomotion_command_widget::locomotion_command_widget(std::string 
     commands_layout.addLayout(&walk_layout);
     commands_layout.addWidget(&mid_frame);
     commands_layout.addLayout(&turn_layout);
-    units_label.setText("Remember! [m] and [deg]");;
+    units_label.setText("Remember! [m] and [deg]");
+    execute_button.setMinimumSize(30,30);
+    execute_button.setText("Execute");
     main_layout.addLayout(&step_layout);
     main_layout.addWidget(&top_frame);
     main_layout.addLayout(&commands_layout);
     main_layout.addWidget(&bottom_frame);
     main_layout.addWidget(&units_label);
+    main_layout.addWidget(&bbottom_frame);
+    main_layout.addWidget(&execute_button);
 
     connect(&walk_forward_button,SIGNAL(clicked()),this,SLOT(on_walk_forward_button_clicked()));
     connect(&walk_backward_button,SIGNAL(clicked()),this,SLOT(on_walk_backward_button_clicked()));
@@ -100,6 +108,7 @@ XBot::widgets::locomotion_command_widget::locomotion_command_widget(std::string 
     connect(&walk_right_button,SIGNAL(clicked()),this,SLOT(on_walk_right_button_clicked()));
     connect(&turn_left_button,SIGNAL(clicked()),this,SLOT(on_turn_left_button_clicked()));
     connect(&turn_right_button,SIGNAL(clicked()),this,SLOT(on_turn_right_button_clicked()));
+    connect(&execute_button,SIGNAL(clicked()),this,SLOT(on_execute_button_clicked()));
 
     setLayout(&main_layout);
 
@@ -111,6 +120,7 @@ void XBot::widgets::locomotion_command_widget::service_thread_body()
     ADVR_ROS::advr_locomotion srv;
     srv.request.step_length = step_edit.text().toDouble();
     srv.request.command_type = command;
+    srv.request.execute=execute?'c':' ';
     if(command == 5 || command == 6)
     {
 	srv.request.command_value = turn_edit.text().toDouble();
@@ -125,6 +135,7 @@ void XBot::widgets::locomotion_command_widget::service_thread_body()
 	ROS_ERROR_STREAM("Error calling "<<service_name<<" service");
     }
     thread_waiting.store(false);
+    execute=false;
 }
 
 void XBot::widgets::locomotion_command_widget::on_walk_forward_button_clicked()
@@ -160,6 +171,13 @@ void XBot::widgets::locomotion_command_widget::on_turn_left_button_clicked()
 void XBot::widgets::locomotion_command_widget::on_turn_right_button_clicked()
 {
     command = 6;
+    call_service();
+}
+
+void XBot::widgets::locomotion_command_widget::on_execute_button_clicked()
+{
+    command = 0;
+    execute = true;
     call_service();
 }
 

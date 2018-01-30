@@ -49,6 +49,7 @@ private Q_SLOTS:
 	void on_walk_right_button_clicked();
 	void on_turn_left_button_clicked();
 	void on_turn_right_button_clicked();
+	void on_execute_button_clicked();
 
 private:
 	ros::NodeHandle nh;
@@ -56,10 +57,12 @@ private:
 	ros::ServiceClient locomotion_client;
 	void service_thread_body();
 	std::atomic_bool thread_waiting;
+	bool execute = false;
 
 	QFrame top_frame;
 	QFrame mid_frame;
 	QFrame bottom_frame;
+	QFrame bbottom_frame;
 
 	QLabel step_label;
 	QLineEdit step_edit;
@@ -79,6 +82,8 @@ private:
 	
 	QHBoxLayout commands_layout;
 	QLabel units_label;
+	QPushButton execute_button;
+
 	QVBoxLayout main_layout;
 
 	std::string service_name;
