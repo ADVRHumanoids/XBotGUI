@@ -92,7 +92,7 @@ private:
     void vision_click_callback(const geometry_msgs::PointStamped& point);
     ros::Subscriber vision_click_sub;
     rviz::Tool* vision_click_tool;
-    bool waiting_click=false;
+    int waiting_click=0;
     bool waiting_vision=false;
 
     QSignalMapper coord_mapper;

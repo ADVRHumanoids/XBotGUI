@@ -108,14 +108,14 @@ void XBot::widgets::im_widget::on_vision_estimation_button_clicked()
     {
         last_tool = tool_manager->getCurrentTool();
 	tool_manager->setCurrentTool(vision_click_tool);
-	vision_estimation_button.setText("Click on the scene (click the button to ABORT)");
-	waiting_click = true;
+	vision_estimation_button.setText("Click on the wall (click the button to ABORT)");
+	waiting_click = 2;
     }
     else
     {
 	tool_manager->setCurrentTool(last_tool);
 	vision_estimation_button.setText("Visual Perception Estimation");
-	waiting_click = false;
+	waiting_click = 0;
     }
 }
 
@@ -123,12 +123,20 @@ void XBot::widgets::im_widget::vision_click_callback(const geometry_msgs::PointS
 {
     if(!waiting_click) return;
 
-    vision_estimation_button.setChecked(false);
-    vision_estimation_button.setText("Waiting for perception...");
-    tool_manager->setCurrentTool(last_tool);
-    
-    waiting_click = false;
-    waiting_vision = true;
+    waiting_click--;
+
+    if(waiting_click==1)
+    {
+	vision_estimation_button.setText("Click on the object (click the button to ABORT)");
+	tool_manager->setCurrentTool(vision_click_tool);
+    }
+    else if(waiting_click==0)
+    {
+        vision_estimation_button.setChecked(false);
+	vision_estimation_button.setText("Waiting for perception...");
+	tool_manager->setCurrentTool(last_tool);
+	waiting_vision = true;
+    }
 }
 
 void XBot::widgets::im_widget::vision_callback(const geometry_msgs::PoseStamped& object)
