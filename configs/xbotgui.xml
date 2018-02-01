@@ -100,8 +100,12 @@
 	<command_block>
 	    <command type="cmd_service" name="success"/>
 	    <command type="cmd_service" name="fail"/>
-	    <command type="cmd_service" name="Adjust" enabling_status="RUNNING:REACH"/>
-	</command_block>
+        </command_block>
+        
+        <command_block>        
+                    <command type="cmd_service" name="AdjustLaterally" enabling_status="RUNNING:REACH RUNNING:ADJUSTLATERALLY RUNNING:ADJUSTFORWARD"/>        
+                    <command type="cmd_service" name="AdjustForward" enabling_status="RUNNING:REACH RUNNING:ADJUSTLATERALLY RUNNING:ADJUSTFORWARD"/>
+        </command_block>
 
 	<command_block>
 	    <command type="cmd_service" name="Handover_success" enabling_status="RUNNING:HOMING_LEE"/>
@@ -234,28 +238,34 @@
 	    <property name="mesh" value="walkman_left_softhand.dae"/>
 	</object>
 	<object name="debris_1">
-	    <property name="scale_x" value="0.05"/>
-	    <property name="scale_y" value="0.05"/>
-	    <property name="scale_z" value="1.2"/>
+	    <property name="scale_x" value="0.0"/>
+	    <property name="scale_y" value="0.0"/>
+	    <property name="scale_z" value="0.0"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
+            <property name="position.x" value="0.68"/>
+            <property name="position.y" value="-0.28"/>
+            <property name="position.z" value="0.95"/>
+            <property name="orientation.x" value="0"/>
+            <property name="orientation.y" value="-0.5591931143131625"/>
+            <property name="orientation.z" value="0"/>
+            <property name="orientation.w" value="0.8290374303399975"/>
 	</object>
 	<object name="debris_2">
-	    <property name="scale_x" value="0.05"/>
-	    <property name="scale_y" value="0.05"/>
-	    <property name="scale_z" value="1.495"/>
-	    <property name="id" value="1"/>
-	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
-	    <property name="mesh" value=""/>
-	</object>
-	<object name="debris_3">
-	    <property name="scale_x" value="0.05"/>
-	    <property name="scale_y" value="0.05"/>
-	    <property name="scale_z" value="1.999"/>
-	    <property name="id" value="2"/>
-	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
-	    <property name="mesh" value=""/>
+            <property name="scale_x" value="0.0"/>
+            <property name="scale_y" value="0.0"/>
+            <property name="scale_z" value="0.0"/>
+            <property name="id" value="1"/>
+            <property name="type" value="visualization_msgs::Marker::CUBE"/>
+            <property name="mesh" value=""/>
+            <property name="position.x" value="0.58"/>
+            <property name="position.y" value="0.16"/>
+            <property name="position.z" value="0.82"/>
+            <property name="orientation.x" value="0"/>
+            <property name="orientation.y" value="-0.5591931143131625"/>
+            <property name="orientation.z" value="0"/>
+            <property name="orientation.w" value="0.8290374303399975"/>
 	</object>
     </interactive_marker>
 
