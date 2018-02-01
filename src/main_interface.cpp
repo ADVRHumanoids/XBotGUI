@@ -220,7 +220,6 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     status_manager_.add_module_status_service("XBotCommunicationPlugin");
     robot_widget.generateRobotWidgetFromModel(_XBotModel,_RobotInterface);
 
-    tabs.addTab(&robot_widget,"Joints");
     #endif
 
     std::cout<<std::endl<<" - Generating GUI..."<<std::endl;
@@ -751,6 +750,7 @@ XBot::GUI::GUI(std::string config_file): QWidget()
     }
 
     tabs.addTab(&pilot_interface,"PI");
+    tabs.addTab(&robot_widget,"Joints");
     
     #endif
 
