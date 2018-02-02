@@ -238,9 +238,9 @@
 	    <property name="mesh" value="walkman_left_softhand.dae"/>
 	</object>
 	<object name="debris_1">
-	    <property name="scale_x" value="0.0"/>
-	    <property name="scale_y" value="0.0"/>
-	    <property name="scale_z" value="0.0"/>
+	    <property name="scale_x" value="0.05"/>
+	    <property name="scale_y" value="0.05"/>
+	    <property name="scale_z" value="1.5"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
@@ -253,9 +253,9 @@
             <property name="orientation.w" value="0.8290374303399975"/>
 	</object>
 	<object name="debris_2">
-            <property name="scale_x" value="0.0"/>
-            <property name="scale_y" value="0.0"/>
-            <property name="scale_z" value="0.0"/>
+            <property name="scale_x" value="0.05"/>
+            <property name="scale_y" value="0.05"/>
+            <property name="scale_z" value="1.5"/>
             <property name="id" value="1"/>
             <property name="type" value="visualization_msgs::Marker::CUBE"/>
             <property name="mesh" value=""/>
