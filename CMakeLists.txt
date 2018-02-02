@@ -132,3 +132,8 @@ install(DIRECTORY resources/
 install(DIRECTORY configs/
     DESTINATION "configs"
     FILES_MATCHING PATTERN "*.xml")
+
+#tests
+
+add_executable(test_frame_marker tests/test_frame_marker.cpp src/interaction/frame_marker.cpp)
+target_link_libraries(test_frame_marker ${catkin_LIBRARIES})

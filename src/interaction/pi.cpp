@@ -89,6 +89,8 @@ void XBot::widgets::pi::add_interactive_marker(std::string name,std::map<std::st
     std::map<std::string,std::string> properties;
     add_display(name,"rviz/InteractiveMarkers",properties);
     displays.at(name)->setTopic(("/"+name+"_server/update").c_str(),"visualization_msgs/InteractiveMarkerUpdate");
+    add_display(name+"_frame","rviz/Marker",properties);
+    displays.at(name+"_frame")->setTopic(("/"+name+"_client_frame").c_str(),"visualization_msgs/Marker");
 }
 
 void XBot::widgets::pi::add_interactive_marker_sequence(std::string name, std::map< int, object_properties > objects)

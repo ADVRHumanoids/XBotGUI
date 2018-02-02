@@ -36,6 +36,7 @@
 #include "XBotGUI/utils/object_properties.h"
 #include "XBotGUI/utils/Label_LineEdit.h" //NOTE: mixing CamelCase and under_score because reasons
 #include "XBotGUI/print_utils.h"
+#include "XBotGUI/interaction/frame_marker.h"
 #include <tf/transform_listener.h>
 #include <atomic>
 
@@ -61,6 +62,7 @@ private Q_SLOTS:
     void on_publish_button_clicked();
     void on_position_by_click_button_clicked();
     void on_vision_estimation_button_clicked();
+    void on_show_frame_button_clicked();
     void on_coords_changed(int id);
     void on_scale_changed(int id);
 
@@ -71,6 +73,7 @@ private:
     ros::NodeHandle nh;
     std::map<int,int> combo_ids;
     ros::Publisher marker_pub;
+    ros::Publisher frame_marker_pub;
     visualization_msgs::Marker marker;
     ros::Subscriber im_sub;
     void im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback);
@@ -95,11 +98,16 @@ private:
     int waiting_click=0;
     bool waiting_vision=false;
 
+    QPushButton show_frame;
+    frameMarker frame_marker;
+    bool show_frame_enable=false;
+
     QSignalMapper coord_mapper;
     std::map<int, label_lineedit*> coords_widgets;
 
     QGridLayout coords_layout;
     QHBoxLayout buttons_layout;
+    QHBoxLayout bot_layout;
     QVBoxLayout main_layout;
 
     std::map<std::string,object_properties> objects;

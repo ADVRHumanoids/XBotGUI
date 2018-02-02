@@ -28,6 +28,7 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    pose_service = nh.advertiseService(name+"_pose",&im_widget::pose_service_callback,this);
    pose_array_service = nh.advertiseService(name+"_pose_array",&im_widget::pose_array_service_callback,this);
    marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client",1);
+   frame_marker_pub = nh.advertise<visualization_msgs::Marker>(name+"_client_frame",1);
    publish_button.setText("Refresh Marker");
    im_sub = nh.subscribe(("/"+name+"_server/feedback").c_str(),1,&im_widget::im_callback,this);
 
@@ -43,6 +44,9 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    vision_click_tool->getPropertyContainer()->subProp("Topic")->setValue("/grasp_click");
    vision_click_sub = nh.subscribe("/grasp_click",1,&im_widget::vision_click_callback,this);
    vision_sub = nh.subscribe("/grasp_pose",1,&im_widget::vision_callback,this);
+
+   show_frame.setCheckable(true);
+   show_frame.setText("Show Frame");
 
    coords_widgets[0] = new label_lineedit("x:");
    coords_widgets[1] = new label_lineedit("y:");
@@ -78,16 +82,20 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
    scale_layout.addWidget(scale_widgets.at(1));
    scale_layout.addWidget(scale_widgets.at(2));
    
+   bot_layout.addWidget(&show_frame);
+   bot_layout.addWidget(&vision_estimation_button);
+   
    main_layout.addLayout(&coords_layout);
    main_layout.addLayout(&scale_layout);
    main_layout.addLayout(&buttons_layout);
-   main_layout.addWidget(&vision_estimation_button);
+   main_layout.addLayout(&bot_layout);
    
    setLayout(&main_layout);
    
    connect(&publish_button, SIGNAL(clicked(bool)), this, SLOT(on_publish_button_clicked()));
    connect(&position_by_click_button, SIGNAL(clicked(bool)), this, SLOT(on_position_by_click_button_clicked()));
    connect(&vision_estimation_button, SIGNAL(clicked(bool)), this, SLOT(on_vision_estimation_button_clicked()));
+   connect(&show_frame, SIGNAL(clicked(bool)), this, SLOT(on_show_frame_button_clicked()));
    
    marker.color.g=1;
    marker.color.a=1;
@@ -100,6 +108,22 @@ XBot::widgets::im_widget::im_widget(rviz::ToolManager* tool_manager_, std::strin
       scale_mapper.setMapping(&(scale_widgets.at(i)->edit), i);
    }
    connect(&scale_mapper, SIGNAL(mapped(int)), this, SLOT(on_scale_changed(int))) ;
+}
+
+void XBot::widgets::im_widget::on_show_frame_button_clicked()
+{
+    if(show_frame.isChecked())
+    {
+	show_frame_enable=true;
+	show_frame.setText("Hide Frame");
+	on_publish_button_clicked();
+    }
+    else
+    {
+	show_frame_enable=false;
+	show_frame.setText("Show Frame");
+	on_publish_button_clicked();
+    }
 }
 
 void XBot::widgets::im_widget::on_vision_estimation_button_clicked()
@@ -250,7 +274,21 @@ void XBot::widgets::im_widget::on_position_by_click_button_clicked()
 
 void XBot::widgets::im_widget::on_publish_button_clicked()
 {
+    if(show_frame_enable)
+	marker.action = visualization_msgs::Marker::DELETE;
+    else
+	marker.action = visualization_msgs::Marker::ADD;
+
     marker_pub.publish(marker);
+
+    frame_marker.update_markers(marker.header.frame_id,marker.pose,show_frame_enable);
+    std::vector<visualization_msgs::Marker> axes;
+    frame_marker.get_markers(axes);
+    for(auto axis:axes)
+    {
+        usleep(1000);
+	frame_marker_pub.publish(axis);
+    }
 }
 
 void XBot::widgets::im_widget::im_callback(const visualization_msgs::InteractiveMarkerFeedback& feedback)
