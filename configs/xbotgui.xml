@@ -244,9 +244,9 @@
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
-            <property name="position.x" value="0.68"/>
+            <property name="position.x" value="0.63"/>
             <property name="position.y" value="-0.28"/>
-            <property name="position.z" value="0.95"/>
+            <property name="position.z" value="1.00"/>
             <property name="orientation.x" value="0"/>
             <property name="orientation.y" value="-0.5591931143131625"/>
             <property name="orientation.z" value="0"/>
