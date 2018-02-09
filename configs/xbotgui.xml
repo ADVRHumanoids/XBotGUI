@@ -260,8 +260,8 @@
             <property name="type" value="visualization_msgs::Marker::CUBE"/>
             <property name="mesh" value=""/>
 <!--             <property name="position.x" value="0.58"/> -->
-            <property name="position.x" value="0.68"/>
-            <property name="position.y" value="0.28"/>
+            <property name="position.x" value="0.61"/>
+            <property name="position.y" value="0.16"/> <!--0.18-->
 <!--             <property name="position.z" value="0.82"/> -->
             <property name="position.z" value="0.95"/>
             <property name="orientation.x" value="0"/>
