@@ -114,8 +114,8 @@
 	</command_block>
 
         <command_block>
-            <command type="cmd_service" name="LSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
-            <command type="cmd_service" name="RSoftHand" enabling_status="RUNNING:HANDSELECTION"/>
+            <command type="cmd_service" name="arm1_8" enabling_status="RUNNING:HANDSELECTION"/>
+            <command type="cmd_service" name="arm2_8" enabling_status="RUNNING:HANDSELECTION"/>
             <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
         </command_block>
     </module>
