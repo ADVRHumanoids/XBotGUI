@@ -114,8 +114,8 @@
 	</command_block>
 
         <command_block>
-            <command type="cmd_service" name="arm1_8" enabling_status="RUNNING:HANDSELECTION"/>
-            <command type="cmd_service" name="arm2_8" enabling_status="RUNNING:HANDSELECTION"/>
+            <command type="cmd_service" name="arm1_8" label="Left_Hand" enabling_status="RUNNING:HANDSELECTION"/>
+            <command type="cmd_service" name="arm2_8" label="Right_Hand" enabling_status="RUNNING:HANDSELECTION"/>
             <command type="object_pose" topic="debris_pose" interactive_marker="debris"/>
         </command_block>
     </module>
@@ -221,7 +221,7 @@
     </interactive_marker>
 
     <interactive_marker name="debris">
-	<object name="right_hand">
+	<!-- <object name="right_hand">
 	    <property name="scale_x" value="0.001"/>
 	    <property name="scale_y" value="0.001"/>
 	    <property name="scale_z" value="0.001"/>
@@ -236,38 +236,36 @@
 	    <property name="id" value="1"/>
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_left_softhand.dae"/>
-	</object>
-	<object name="debris_1">
+      </object> -->
+	<object name="right_debris">
 	    <property name="scale_x" value="0.05"/>
 	    <property name="scale_y" value="0.05"/>
 	    <property name="scale_z" value="1.5"/>
 	    <property name="id" value="0"/>
 	    <property name="type" value="visualization_msgs::Marker::CUBE"/>
 	    <property name="mesh" value=""/>
-            <property name="position.x" value="0.63"/>
-            <property name="position.y" value="-0.28"/>
-            <property name="position.z" value="1.00"/>
-            <property name="orientation.x" value="0"/>
-            <property name="orientation.y" value="-0.5591931143131625"/>
-            <property name="orientation.z" value="0"/>
-            <property name="orientation.w" value="0.8290374303399975"/>
+            <property name="position.x" value="0.69"/>
+            <property name="position.y" value="-0.29"/>
+            <property name="position.z" value="-0.27"/>
+            <property name="orientation.x" value="0.588"/>
+            <property name="orientation.y" value="0.587"/>
+            <property name="orientation.z" value="0.393"/>
+            <property name="orientation.w" value="0.394"/>
 	</object>
-	<object name="debris_2">
+	<object name="left_debris">
             <property name="scale_x" value="0.05"/>
             <property name="scale_y" value="0.05"/>
             <property name="scale_z" value="1.5"/>
             <property name="id" value="1"/>
             <property name="type" value="visualization_msgs::Marker::CUBE"/>
             <property name="mesh" value=""/>
-<!--             <property name="position.x" value="0.58"/> -->
-            <property name="position.x" value="0.61"/>
-            <property name="position.y" value="0.16"/> <!--0.18-->
-<!--             <property name="position.z" value="0.82"/> -->
-            <property name="position.z" value="0.95"/>
-            <property name="orientation.x" value="0"/>
-            <property name="orientation.y" value="-0.5591931143131625"/>
-            <property name="orientation.z" value="0"/>
-            <property name="orientation.w" value="0.8290374303399975"/>
+            <property name="position.x" value="0.69"/>
+            <property name="position.y" value="0.39"/>
+            <property name="position.z" value="-0.27"/>
+            <property name="orientation.x" value="0.588"/>
+            <property name="orientation.y" value="0.587"/>
+            <property name="orientation.z" value="0.393"/>
+            <property name="orientation.w" value="0.394"/>
 	</object>
     </interactive_marker>
 
