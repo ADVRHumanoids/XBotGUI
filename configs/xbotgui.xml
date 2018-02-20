@@ -1,6 +1,7 @@
 <visualization>
     <!-- NOTE: the properties reflect rviz display properties, please use the correct name -->
     <frames>
+      <frame name="torso_2"/>
       <frame name="base_link"/> <!-- 1st is used as default fixed frame -->
       <frame name="world"/>
       <frame name="world_odom"/>
@@ -177,7 +178,7 @@
 
 <interactive_markers>
 
-    <interactive_marker name="valve">
+    <!--<interactive_marker name="valve">
 	<object name="valve">
 	    <property name="scale_x" value="0.01"/>
 	    <property name="scale_y" value="0.01"/>
@@ -218,7 +219,7 @@
 	    <property name="position.y" value="-0.05"/>
 	    <property name="position.z" value="0"/>
 	</object>
-    </interactive_marker>
+  </interactive_marker>-->
 
     <interactive_marker name="debris">
 	<!-- <object name="right_hand">
@@ -237,7 +238,7 @@
 	    <property name="type" value="visualization_msgs::Marker::MESH_RESOURCE"/>
 	    <property name="mesh" value="walkman_left_softhand.dae"/>
       </object> -->
-	<object name="right_debris">
+	<object name="1_right_debris">
 	    <property name="scale_x" value="0.05"/>
 	    <property name="scale_y" value="0.05"/>
 	    <property name="scale_z" value="1.5"/>
@@ -252,7 +253,7 @@
             <property name="orientation.z" value="0.393"/>
             <property name="orientation.w" value="0.394"/>
 	</object>
-	<object name="left_debris">
+	<object name="2_left_debris">
             <property name="scale_x" value="0.05"/>
             <property name="scale_y" value="0.05"/>
             <property name="scale_z" value="1.5"/>
@@ -269,7 +270,7 @@
 	</object>
     </interactive_marker>
 
-    <interactive_marker name="extinguisher">
+    <!--<interactive_marker name="extinguisher">
 	<object name="handle">
 	    <property name="scale_x" value="0.1"/>
 	    <property name="scale_y" value="0.01"/>
@@ -294,10 +295,10 @@
 	    <property name="type" value="visualization_msgs::Marker::SPHERE"/>
 	    <property name="mesh" value=""/>
 	</object>
-      </interactive_marker>
+    </interactive_marker>-->
 
 </interactive_markers>
-
+<!--
 <interactive_markers_sequence>
     <interactive_marker name="feet">
 	<object name="right_foot" id="0">
@@ -316,3 +317,4 @@
 	</object>
     </interactive_marker>
 </interactive_markers_sequence>
+-->
